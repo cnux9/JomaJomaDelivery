@@ -11,7 +11,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/stores/{storeId}/menues")
+@RequestMapping("/stores/{storeId}/menus")
 public class MenuController {
     private final MenuService menuService;
 
@@ -21,7 +21,12 @@ public class MenuController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MenuResponseDto>> getMenus(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto) {
-        return ResponseEntity.ok(menuService.getMenues(storeId, menuRequestDto));
+    public ResponseEntity<List<MenuResponseDto>> getMenus(@PathVariable Long storeId) {
+        return ResponseEntity.ok(menuService.getMenus(storeId));
+    }
+
+    @GetMapping("/{menuId}")
+    public ResponseEntity<MenuResponseDto> getMenu(@PathVariable Long storeId, @PathVariable Long menuId) {
+        return ResponseEntity.ok(menuService.getMenu(storeId, menuId));
     }
 }

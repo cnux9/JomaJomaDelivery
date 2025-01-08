@@ -1,18 +1,16 @@
 package com.example.jomajomadelivery.menu.entity;
 
+import com.example.jomajomadelivery.common.BaseEntity;
+import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Menu {
+public class Menu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,20 +29,13 @@ public class Menu {
     private int price;
     @Column(name = "img_path")
     private String img_path;
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
-    public Menu() {}
-
-    public Menu(Store store, String name, String description, int price, String imgPath) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgPath = imgPath;
+    public Menu(Store store, MenuRequestDto dto) {
+        this.store = store;
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.price = dto.getPrice();
+        this.img_path = dto.getImg_path();
     }
 
 }
