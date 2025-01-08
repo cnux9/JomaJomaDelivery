@@ -48,8 +48,8 @@ public class Store extends BaseEntity {
     @Column(name = "close_time")
     private LocalTime closeTime;
 
-    @Column(name = "rating",columnDefinition = "default 0.0")
-    private Double rating;
+    @Column(name = "rating", nullable = false)
+    private Double rating=0.0;
 
     @Column(name = "min_order_price")
     private int minOrderPrice;
@@ -57,8 +57,8 @@ public class Store extends BaseEntity {
     @Column(name = "delivery_price")
     private int deliveryPrice;
 
-    @Column(name = "favorite_count",columnDefinition = "default 0")
-    private Long favoriteCount;
+    @Column(name = "favorite_count", nullable = false)
+    private Long favoriteCount=0L;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
