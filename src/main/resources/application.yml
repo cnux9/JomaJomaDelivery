@@ -1,1 +1,8 @@
-spring.application.name=JomaJomaDelivery
+
+spring:
+  application:
+    name:
+      JomaJomaDelivery
+  profiles:
+    include:
+      -env
