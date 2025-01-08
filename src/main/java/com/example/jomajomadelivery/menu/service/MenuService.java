@@ -1,7 +1,6 @@
 package com.example.jomajomadelivery.menu.service;
 
 import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
-import com.example.jomajomadelivery.menu.dto.response.MenuResponseDto;
 import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;

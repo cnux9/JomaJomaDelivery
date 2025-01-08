@@ -1,10 +1,8 @@
 package com.example.jomajomadelivery.menu.controller;
 
 import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
-import com.example.jomajomadelivery.menu.dto.response.MenuResponseDto;
 import com.example.jomajomadelivery.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
