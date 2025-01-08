@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### hidden env ###
-application-env.yml
+### MacOS ###
+.DS_Store
