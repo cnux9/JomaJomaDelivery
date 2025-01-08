@@ -1,10 +1,10 @@
 package com.example.jomajomadelivery.review.entity;
 
+import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
+import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "reviews")
-public class Review {
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -38,23 +38,17 @@ public class Review {
     @Column(columnDefinition = "TINYINT")
     private Integer rating;
 
-    @Column(name = "created_date_time")
-    private LocalDateTime createdDateTime;
-
-    @Column(name = "updated_date_time")
-    private LocalDateTime updatedDateTime;
-
-    public Review(ReviewCreateRequestDto dto) {
-        this.contents = dto.contents();
-        this.imgPath = dto.imgPath();
-        this.rating = dto.rating();
-    }
-
     public static Review createReview(ReviewCreateRequestDto dto) {
         return Review.builder()
                 .contents(dto.contents())
                 .imgPath(dto.imgPath())
                 .rating(dto.rating())
                 .build();
+    }
+
+    public void update(ReviewUpdateRequestDto dto) {
+        this.contents = dto.contents();
+        this.imgPath = dto.imgPath();
+        this.rating = dto.rating();
     }
 }

@@ -17,7 +17,7 @@ public class ReviewController {
 
 
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> create(ReviewCreateRequestDto dto) {
+    public ResponseEntity<ReviewResponseDto> create(@RequestBody ReviewCreateRequestDto dto) {
         return new ResponseEntity<>(reviewService.create(dto), HttpStatus.CREATED);
     }
 
@@ -26,7 +26,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ReviewResponseDto> update(@PathVariable Long id, @RequestBody ReviewUpdateRequestDto dto) {
         return new ResponseEntity<>(reviewService.update(id, dto), HttpStatus.OK);
     }

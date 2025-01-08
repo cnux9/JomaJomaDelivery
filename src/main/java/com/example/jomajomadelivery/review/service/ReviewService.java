@@ -18,7 +18,7 @@ public class ReviewService {
 
     @Transactional
     public ReviewResponseDto create(ReviewCreateRequestDto dto) {
-        Review review = new Review(dto);
+        Review review = Review.createReview(dto);
         Review savedReview = reviewRepository.save(review);
 
         return ReviewResponseDto.toDto(savedReview);
@@ -26,13 +26,13 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public ReviewResponseDto findById(Long id) {
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.OK, "No such review id: " + id));
+        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
         return ReviewResponseDto.toDto(foundReview);
     }
 
     @Transactional
     public ReviewResponseDto update(Long id, ReviewUpdateRequestDto dto) {
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.OK, "No such review id: " + id));
+        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
         foundReview.update(dto);
         return ReviewResponseDto.toDto(foundReview);
     }
