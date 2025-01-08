@@ -17,14 +17,19 @@ public class ReviewController {
 
 
     @PostMapping
-    public ResponseEntity<ReviewResponseDto> create(@RequestBody ReviewCreateRequestDto dto) {
-        return new ResponseEntity<>(reviewService.create(dto), HttpStatus.CREATED);
+    public ResponseEntity<ReviewResponseDto> create(@PathVariable Long storeId, @RequestBody ReviewCreateRequestDto dto) {
+        return new ResponseEntity<>(reviewService.create(storeId, dto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ReviewResponseDto> findById(@PathVariable Long id) {
-        return new ResponseEntity<>(reviewService.findById(id), HttpStatus.OK);
+    @GetMapping("/{userId}")
+    public ResponseEntity<ReviewResponseDto> findById(@PathVariable Long userId) {
+        return new ResponseEntity<>(reviewService.findById(userId), HttpStatus.OK);
     }
+
+//    @GetMapping
+//    public ResponseEntity<Page<ReviewResponseDto>> findAllById(@PathVariable Long storeId, Pageable pageable) {
+//        return new ResponseEntity<>(reviewService.findAllById(storeId, pageable), HttpStatus.OK);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReviewResponseDto> update(@PathVariable Long id, @RequestBody ReviewUpdateRequestDto dto) {

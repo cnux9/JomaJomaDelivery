@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 public record ReviewResponseDto(
         Long id,
-//        Long storeId,
+        Long storeId,
 //        Long orderId,
-//        Long userId,
+        Long userId,
         String contents,
         int rating,
         String imgPath,
@@ -16,10 +16,11 @@ public record ReviewResponseDto(
 ) {
     public static ReviewResponseDto toDto(Review savedReview) {
         return new ReviewResponseDto(
-                savedReview.getId(),
-//                savedReview.getStore().getId(),
+                savedReview.getReviewId(),
+                savedReview.getStore().getStoreId(),
 //                savedReview.getOrder().getId(),
-//                savedReview.getUser().getId,
+//                savedReview.getUser().getUserId(),
+                savedReview.getUserId(),
                 savedReview.getContents(),
                 savedReview.getRating(),
                 savedReview.getImgPath(),
