@@ -18,6 +18,7 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
 
+    //Todo:: 사장님 권한 확인 필요
     public void createMenu(Long storeId, MenuRequestDto menuRequestDto) {
         Store store = getStore(storeId);
         Menu menu = new Menu(store, menuRequestDto);
@@ -28,6 +29,13 @@ public class MenuService {
         Store store = getStore(storeId);
         List<Menu> menus = menuRepository.findAllByStore(store);
         return menus.stream().map(menu -> new MenuResponseDto(menu.getMenu_id(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImg_path())).toList();
+    }
+
+    public MenuResponseDto getMenu(Long storeId, Long menuId) {
+        Store store = getStore(storeId);
+        Menu menu = menuRepository.findByStoreAndMenu_id(store, menuId) //Todo:: 테스트 필요
+                .orElseThrow(() -> new NoSuchElementException("Menu with id " + menuId + " not found"));
+        return new MenuResponseDto(menu.getMenu_id(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImg_path());
     }
 
     /**
