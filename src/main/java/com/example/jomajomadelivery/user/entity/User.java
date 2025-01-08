@@ -46,14 +46,14 @@ public class User extends BaseEntity {
     protected User() {
     }
 
-    public User createUser(SignUpUserDto dto) {
-        UserBuilder user = User.builder()
+    public static User createUser(SignUpUserDto dto) {
+        return User.builder()
                 .email(dto.email())
                 .password(dto.password())
                 .name(dto.name())
                 .role(dto.role())
                 .nickName(dto.nickname())
-                .phoneNumber(dto.phoneNumber());
-        return this;
+                .phoneNumber(dto.phoneNumber())
+                .build();
     }
 }
