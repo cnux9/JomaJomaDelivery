@@ -29,4 +29,9 @@ public class MenuController {
     public ResponseEntity<MenuResponseDto> getMenu(@PathVariable Long storeId, @PathVariable Long menuId) {
         return ResponseEntity.ok(menuService.getMenu(storeId, menuId));
     }
+
+    @PutMapping("/{menuId}")
+    public void updateMenu(@PathVariable Long storeId, @PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto) {
+        menuService.updateMenu(storeId, menuId, menuRequestDto);
+    }
 }

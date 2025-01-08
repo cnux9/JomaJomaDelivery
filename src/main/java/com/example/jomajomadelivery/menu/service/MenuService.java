@@ -38,6 +38,15 @@ public class MenuService {
         return new MenuResponseDto(menu.getMenu_id(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImg_path());
     }
 
+    //Todo:: 사장님 권한 확인 필요
+    public void updateMenu(Long storeId, Long menuId, MenuRequestDto menuRequestDto) {
+        Store store = getStore(storeId);
+        Menu menu = menuRepository.findByStoreAndMenu_id(store, menuId) //Todo:: 테스트 필요
+                .orElseThrow(() -> new NoSuchElementException("Menu with id " + menuId + " not found"));
+        menu.updateMenu(menuRequestDto);
+        menuRepository.save(menu);
+    }
+
     /**
      * Store 객체 가져오며 예외처리
      */
