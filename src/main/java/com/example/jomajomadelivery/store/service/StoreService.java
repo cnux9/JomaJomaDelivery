@@ -1,11 +1,8 @@
 package com.example.jomajomadelivery.store.service;
 
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
-<<<<<<< HEAD
-=======
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.entity.Store;
->>>>>>> upstream/develop
 import com.example.jomajomadelivery.store.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
