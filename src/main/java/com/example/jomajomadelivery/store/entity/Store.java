@@ -48,11 +48,7 @@ public class Store extends BaseEntity {
     @Column(name = "close_time")
     private LocalTime closeTime;
 
-    /**
-     * precision: 전체 자리수 123.45 이면 5
-     * scale: 소수점 자리수 2 이면 0.nn
-     */
-    @Column(name = "rating")
+    @Column(name = "rating",columnDefinition = "default 0.0")
     private Double rating;
 
     @Column(name = "min_order_price")
@@ -61,7 +57,7 @@ public class Store extends BaseEntity {
     @Column(name = "delivery_price")
     private int deliveryPrice;
 
-    @Column(name = "favorite_count")
+    @Column(name = "favorite_count",columnDefinition = "default 0")
     private Long favoriteCount;
 
     @Column(name = "is_deleted", nullable = false)
