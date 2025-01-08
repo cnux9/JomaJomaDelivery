@@ -17,7 +17,8 @@ public record ReviewResponseDto(
     public static ReviewResponseDto toDto(Review savedReview) {
         return new ReviewResponseDto(
                 savedReview.getReviewId(),
-                savedReview.getStore().getStoreId(),
+//                savedReview.getStore().getStoreId(),
+                savedReview.getStoreId(),
 //                savedReview.getOrder().getId(),
 //                savedReview.getUser().getUserId(),
                 savedReview.getUserId(),
