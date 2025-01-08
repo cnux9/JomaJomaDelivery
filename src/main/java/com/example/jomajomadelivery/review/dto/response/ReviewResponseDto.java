@@ -2,6 +2,8 @@ package com.example.jomajomadelivery.review.dto.response;
 
 import com.example.jomajomadelivery.review.entity.Review;
 
+import java.time.LocalDateTime;
+
 public record ReviewResponseDto(
         Long id,
 //        Long storeId,
@@ -9,7 +11,8 @@ public record ReviewResponseDto(
 //        Long userId,
         String contents,
         int rating,
-        String imgPath
+        String imgPath,
+        LocalDateTime createdAt
 ) {
     public static ReviewResponseDto toDto(Review savedReview) {
         return new ReviewResponseDto(
@@ -19,7 +22,8 @@ public record ReviewResponseDto(
 //                savedReview.getUser().getId,
                 savedReview.getContents(),
                 savedReview.getRating(),
-                savedReview.getImgPath()
+                savedReview.getImgPath(),
+                savedReview.getCreatedAt()
         );
     }
 }
