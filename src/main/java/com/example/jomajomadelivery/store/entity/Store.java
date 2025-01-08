@@ -4,16 +4,15 @@ import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "stores")
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Store extends BaseEntity {
     @Id
@@ -64,8 +63,6 @@ public class Store extends BaseEntity {
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
-
-    protected Store(){}
 
     public static Store addStore(User user, StoreRequestDto dto){
         return Store.builder()
