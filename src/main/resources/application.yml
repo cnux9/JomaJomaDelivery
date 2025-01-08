@@ -29,7 +29,8 @@ spring:
 
         registration:
           naver:
-
+            client-id: iUUHltDBSq8BCxdIWlTz
+            client-secret: pVY9_B7bk2
             client-name: Naver
             scope:
               - name
