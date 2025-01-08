@@ -54,4 +54,10 @@ public class StoreService {
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
         return StoreResponseDto.toDTO(store);
     }
+    @Transactional
+    public void shutDownStore(Long storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
+        store.shutDownStore();
+    }
 }

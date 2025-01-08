@@ -94,4 +94,8 @@ public class Store extends BaseEntity {
         return this;
     }
 
+    public void shutDownStore(){
+        this.isDeleted=true;
+    }
+
 }

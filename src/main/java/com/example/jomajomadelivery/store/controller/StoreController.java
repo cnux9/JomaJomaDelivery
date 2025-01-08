@@ -23,26 +23,33 @@ public class StoreController {
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
 
     @PostMapping("/new")
-    public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto){
+    public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto) {
         storeService.addStore(dto);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable){
+    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable) {
         Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
 
     @GetMapping("/{store_id}")
-    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long store_id){
+    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long store_id) {
         StoreResponseDto responseDto = storeService.findById(store_id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PatchMapping("/{store_id}")
-    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,@RequestBody UpdateStoreRequestDto dto){
-        StoreResponseDto responseDto = storeService.updateStore(store_id,dto);
+    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
+                                                        @RequestBody UpdateStoreRequestDto dto) {
+        StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{store_id}")
+    public ResponseEntity<Void> shutDownStore(@PathVariable Long store_id) {
+        storeService.shutDownStore(store_id);
+        return ResponseEntity.ok().build();
     }
 }
