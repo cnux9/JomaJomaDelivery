@@ -50,7 +50,7 @@ public class Store extends BaseEntity {
     private LocalTime closeTime;
 
     @Column(name = "rating", nullable = false)
-    private Double rating=0.0;
+    private Double rating;
 
     @Column(name = "min_order_price")
     private int minOrderPrice;
@@ -59,7 +59,7 @@ public class Store extends BaseEntity {
     private int deliveryPrice;
 
     @Column(name = "favorite_count", nullable = false)
-    private Long favoriteCount=0L;
+    private Long favoriteCount;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
@@ -71,11 +71,15 @@ public class Store extends BaseEntity {
                 .name(dto.name())
                 .description(dto.description())
                 .address(dto.address())
+                .phoneNumber(dto.phoneNumber())
                 .imgPath(dto.imgPath())
                 .openTime(dto.openTime())
                 .closeTime(dto.closeTime())
                 .minOrderPrice(dto.minOrderPrice())
                 .deliveryPrice(dto.deliveryPrice())
+                .favoriteCount(0L)
+                .rating(0.0)
+                .isDeleted(false)
                 .build();
     }
 

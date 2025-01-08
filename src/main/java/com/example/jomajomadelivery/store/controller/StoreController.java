@@ -22,6 +22,8 @@ public class StoreController {
 
 
     private final StoreService storeService;
+    // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
+
     @PostMapping("/new")
     public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto){
         storeService.addStore(dto);
