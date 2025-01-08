@@ -42,7 +42,9 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    // JPA 스펙상 필요한 생성자
+    /**
+     * JPA 스펙상 필요한 생성자
+     */
     protected User() {
     }
 
