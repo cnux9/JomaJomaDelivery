@@ -1,8 +1,6 @@
-
 spring:
   application:
-    name:
-      JomaJomaDelivery
+    name: JomaJomaDelivery
   profiles:
     include:
-      -env
+      - env

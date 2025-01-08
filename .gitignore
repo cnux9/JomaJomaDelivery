@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### hidden env ###
-src/main/resources/application-env.yml
+application-env.yml
