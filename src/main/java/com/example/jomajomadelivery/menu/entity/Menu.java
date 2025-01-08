@@ -2,6 +2,7 @@ package com.example.jomajomadelivery.menu.entity;
 
 import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class Menu {
 
@@ -28,7 +30,7 @@ public class Menu {
     @Column(name = "price")
     private int price;
     @Column(name = "img_path")
-    private String imgPath;
+    private String img_path;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -44,4 +46,5 @@ public class Menu {
         this.price = price;
         this.imgPath = imgPath;
     }
+
 }
