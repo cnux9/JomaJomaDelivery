@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.menu.entity;
 
+import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -30,10 +31,10 @@ public class Menu {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Menu(Store store, String name, String description, int price, String img_path) {
+    public Menu(Store store, String name, String description, int price, String imgPath) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.img_path = img_path;
+        this.imgPath = imgPath;
     }
 }
