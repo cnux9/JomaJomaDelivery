@@ -1,12 +1,15 @@
 package com.example.jomajomadelivery.menu.entity;
 
+import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +25,7 @@ public class Menu {
     @Column(name = "price")
     private int price;
     @Column(name = "img_path")
-    private String imgPath;
+    private String img_path;
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -36,4 +39,5 @@ public class Menu {
         this.price = price;
         this.img_path = img_path;
     }
+
 }
