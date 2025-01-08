@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.store.service;
 
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
+import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
@@ -11,7 +12,10 @@ import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -34,5 +38,14 @@ public class StoreService {
         // Todo: 빈 배열일 경우 에러 던지깅
 
         return storeList.map(StoreResponseDto::toDTO);
+    }
+
+    @Transactional
+    public StoreResponseDto updateStore(Long storeId, UpdateStoreRequestDto dto) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
+        store.updateStore(dto);
+        return StoreResponseDto.toDTO(store);
+
     }
 }

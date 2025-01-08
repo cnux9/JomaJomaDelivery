@@ -2,6 +2,7 @@ package com.example.jomajomadelivery.store.entity;
 
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
+import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -81,6 +82,16 @@ public class Store extends BaseEntity {
                 .rating(0.0)
                 .isDeleted(false)
                 .build();
+    }
+
+    public Store updateStore(UpdateStoreRequestDto dto){
+        this.description=dto.description();
+        this.imgPath=dto.imgPath();
+        this.openTime=dto.openTime();
+        this.closeTime=dto.closeTime();
+        this.minOrderPrice=dto.minOrderPrice();
+        this.deliveryPrice=dto.deliveryPrice();
+        return this;
     }
 
 }
