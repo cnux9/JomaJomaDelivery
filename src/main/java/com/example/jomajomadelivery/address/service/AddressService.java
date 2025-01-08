@@ -1,11 +1,9 @@
-package com.example.jomajomadelivery.review.service;
+package com.example.jomajomadelivery.address.service;
 
-import com.example.jomajomadelivery.address.dto.AddressResponseDto;
-import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
-import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
-import com.example.jomajomadelivery.review.dto.response.ReviewResponseDto;
-import com.example.jomajomadelivery.review.entity.Review;
-import com.example.jomajomadelivery.review.repository.ReviewRepository;
+import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
+import com.example.jomajomadelivery.address.dto.response.AddressResponseDto;
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,40 +23,50 @@ public class AddressService {
 
 
     @Transactional
-    public AddressResponseDto create(ReviewCreateRequestDto dto) {
-//        User foundUser = userRepository.getReferenceById(dto.uesrId());
-        // 현재 로그인된 유저 -> 리뷰 작성자
-        // FIXME:
-
-//        Store foundStore = storeRepository.getReferenceById(storeId);
-
-//        Review review = Review.createReview(foundUser, foundStore, dto);
-        Review review = Review.createReview(1L, 1L, dto);
-        Review savedReview = reviewRepository.save(review);
-
-        return ReviewResponseDto.toDto(savedReview);
+    public AddressResponseDto create(AddressRequestDto dto) {
+        // 유저면 본인인지 확인
+        // 가게면 사장님인지 확인
+//        HasAddress entity = switch (dto.type()) {
+//            case USER -> userRepository.findById(dto.entityId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user id: " + dto.entityId()));
+//            case STORE -> storeRepository.findById(dto.entityId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such store id: " + dto.entityId()));
+//        };
+        Address address = new Address(dto);
+        Address savedAddress = addressRepository.save(address);
+        return AddressResponseDto.toDto(savedAddress);
     }
 
     @Transactional(readOnly = true)
     public AddressResponseDto findById(Long id) {
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
-        return ReviewResponseDto.toDto(foundReview);
+        Address foundReview = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
+        return AddressResponseDto.toDto(foundReview);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AddressResponseDto> findAllById(Pageable pageable) {
+        // 사장일 경우 가게들의 주소 반환
+
+        // 유저일 경우 배송지들의 주소 반환
+
+//        return addressRepository.findByUserId(userId, pageable);
+        return addressRepository.findByUserId(pageable);
     }
 
     @Transactional
-    public AddressResponseDto update(Long id, ReviewUpdateRequestDto dto) {
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
-        foundReview.update(dto);
-        return ReviewResponseDto.toDto(foundReview);
+    public AddressResponseDto update(Long id, AddressRequestDto dto) {
+        Address foundAddress = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
+        Address newAddress = foundAddress.getUpdatedAddress(dto);
+        foundAddress.softDelete();
+        Address savedAddress = addressRepository.save(newAddress);
+        foundAddress.softDelete();
+        return AddressResponseDto.toDto(savedAddress);
     }
 
     @Transactional
     public void delete(Long id) {
+        // TODO: 유저가 주소의 주인인지 확인
         // TODO: not found 에러 처리?
-        reviewRepository.deleteById(id);
-    }
-
-    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
-        return reviewRepository.findByStoreId(storeId, pageable);
+        Address foundAddress = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id:" + id));
+        // TODO: 주소가 고아라면 -> 이 주소를 참조하는 오더가 하나도 없다면 -> Hard Delete?
+        foundAddress.softDelete();
     }
 }

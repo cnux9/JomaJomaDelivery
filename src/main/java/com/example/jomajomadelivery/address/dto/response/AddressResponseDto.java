@@ -1,4 +1,23 @@
-package com.example.jomajomadelivery.address.dto;
+package com.example.jomajomadelivery.address.dto.response;
 
-public enum AddressResponseDto {
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.entity.EntityType;
+
+import java.time.LocalDateTime;
+
+public record AddressResponseDto(
+        Long addressId,
+        EntityType type,
+        Long entityId,
+        String name,
+        String zipcode,
+        String state,
+        String city,
+        String street,
+        String detailedAddress,
+        LocalDateTime creaetdAt
+) {
+    public static AddressResponseDto toDto(Address savedAddress) {
+
+    }
 }
