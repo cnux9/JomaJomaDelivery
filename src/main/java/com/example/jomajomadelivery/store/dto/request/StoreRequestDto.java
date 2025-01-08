@@ -1,24 +1,20 @@
 package com.example.jomajomadelivery.store.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.time.LocalTime;
-@Getter
-@AllArgsConstructor
-public class StoreRequestDto {
-    private String category;
+public record StoreRequestDto (
+    String category,
     @NotBlank
-    private String name;
-    private String description;
+    String name,
+     String description,
     @NotBlank
-    private String address;
+     String address,
     @NotBlank
-    private String phoneNumber;
-    private String imgPath;
-    private LocalTime openTime;
-    private LocalTime closeTime;
-    private int minOrderPrice;
-    private int deliveryPrice;
-}
+     String phoneNumber,
+     String imgPath,
+     LocalTime openTime,
+     LocalTime closeTime,
+     int minOrderPrice,
+     int deliveryPrice
+){}
