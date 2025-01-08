@@ -2,12 +2,14 @@ package com.example.jomajomadelivery.menu.entity;
 
 import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 public class Menu {
 
     @Id
