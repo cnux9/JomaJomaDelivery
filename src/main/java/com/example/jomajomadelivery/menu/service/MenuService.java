@@ -43,6 +43,11 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
+    //Todo:: 사장님 권한 확인 필요
+    public void deleteMenu(Long menuId) {
+        Menu menu = getMenuEntity(menuId);
+        menuRepository.delete(menu);
+    }
 
     /**
      * Store 객체 가져오며 예외처리
