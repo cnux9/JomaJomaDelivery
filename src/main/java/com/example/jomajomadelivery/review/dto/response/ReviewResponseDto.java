@@ -1,4 +1,25 @@
 package com.example.jomajomadelivery.review.dto.response;
 
-public record ReviewResponseDto() {
+import com.example.jomajomadelivery.review.entity.Review;
+
+public record ReviewResponseDto(
+        Long id,
+//        Long storeId,
+//        Long orderId,
+//        Long userId,
+        String contents,
+        int rating,
+        String imgPath
+) {
+    public static ReviewResponseDto toDto(Review savedReview) {
+        return new ReviewResponseDto(
+                savedReview.getId(),
+//                savedReview.getStore().getId(),
+//                savedReview.getOrder().getId(),
+//                savedReview.getUser().getId,
+                savedReview.getContents(),
+                savedReview.getRating(),
+                savedReview.getImgPath()
+        );
+    }
 }

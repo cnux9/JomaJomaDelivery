@@ -1,12 +1,12 @@
 package com.example.jomajomadelivery.store.entity;
 
+import com.example.jomajomadelivery.common.BaseEntity;
+import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -14,14 +14,13 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
-public class Store {
-
+public class Store extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 자동 생성
     @Column(name = "store_id")
     private Long storeId;
 
+    //Todo: userid대신 User객체 사용해야함.
     @Column(name = "user_id")
     private Long userId;
 
@@ -41,7 +40,7 @@ public class Store {
     private String phoneNumber;
 
     @Column(name = "img_path")
-    private String imgPath;
+    private String img_path;
 
     @Column(name = "open_time")
     private LocalTime openTime;
@@ -49,12 +48,8 @@ public class Store {
     @Column(name = "close_time")
     private LocalTime closeTime;
 
-    /**
-     * precision: 전체 자리수 123.45 이면 5
-     * scale: 소수점 자리수 2 이면 0.nn
-     */
-    @Column(name = "rating", precision = 2, scale = 1)
-    private Double rating;
+    @Column(name = "rating", nullable = false)
+    private Double rating=0.0;
 
     @Column(name = "min_order_price")
     private int minOrderPrice;
@@ -62,15 +57,24 @@ public class Store {
     @Column(name = "delivery_price")
     private int deliveryPrice;
 
-    @Column(name = "favorite_count")
-    private Long favoriteCount;
-
-    @Column(name = "created_date_time", nullable = false)
-    private LocalDateTime createdDateTime;
-
-    @Column(name = "updated_date_time")
-    private LocalDateTime updatedDateTime;
+    @Column(name = "favorite_count", nullable = false)
+    private Long favoriteCount=0L;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
+
+    public Store addStore(Long user_id,StoreRequestDto dto){
+        this.userId=user_id;
+        this.category=dto.getCategory();
+        this.name=dto.getName();
+        this.description=dto.getDescription();
+        this.address=dto.getAddress();
+        this.img_path=dto.getImgPath();
+        this.openTime=dto.getOpenTime();
+        this.closeTime=dto.getCloseTime();
+        this.minOrderPrice=dto.getMinOrderPrice();
+        this.deliveryPrice=dto.getDeliveryPrice();
+        return this;
+    }
+
 }
