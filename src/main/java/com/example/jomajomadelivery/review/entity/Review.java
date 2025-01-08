@@ -1,10 +1,12 @@
 package com.example.jomajomadelivery.review.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Table(name = "reviews")
 @NoArgsConstructor
 public class Review {
