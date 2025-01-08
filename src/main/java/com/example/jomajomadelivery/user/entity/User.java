@@ -3,14 +3,13 @@ package com.example.jomajomadelivery.user.entity;
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "users")
 public class User extends BaseEntity {
 
@@ -41,12 +40,6 @@ public class User extends BaseEntity {
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
-
-    /**
-     * JPA 스펙상 필요한 생성자
-     */
-    protected User() {
-    }
 
     public static User createUser(SignUpUserDto dto) {
         return User.builder()
