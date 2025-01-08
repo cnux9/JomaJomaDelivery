@@ -1,7 +1,6 @@
 package com.example.jomajomadelivery.review.dto.request;
 
-public record ReviewRequestDto(
-        Long orderId,
+public record ReviewUpdateRequestDto(
         String contents,
         Integer rating,
         String imgPath
