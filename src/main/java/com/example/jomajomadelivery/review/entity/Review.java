@@ -1,16 +1,17 @@
 package com.example.jomajomadelivery.review.entity;
 
-import com.example.jomajomadelivery.review.dto.request.ReviewRequestDto;
+import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
 @Entity
+@Getter
+@Builder
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "reviews")
-@NoArgsConstructor
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,9 +44,17 @@ public class Review {
     @Column(name = "updated_date_time")
     private LocalDateTime updatedDateTime;
 
-    public Review(ReviewRequestDto dto) {
+    public Review(ReviewCreateRequestDto dto) {
         this.contents = dto.contents();
         this.imgPath = dto.imgPath();
         this.rating = dto.rating();
+    }
+
+    public static Review createReview(ReviewCreateRequestDto dto) {
+        return Review.builder()
+                .contents(dto.contents())
+                .imgPath(dto.imgPath())
+                .rating(dto.rating())
+                .build();
     }
 }
