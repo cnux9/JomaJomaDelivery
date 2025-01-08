@@ -1,9 +1,10 @@
 package com.example.jomajomadelivery.menu.entity;
 
+import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -38,13 +39,12 @@ public class Menu {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public Menu() {}
-
-    public Menu(Store store, String name, String description, int price, String imgPath) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.imgPath = imgPath;
+    public Menu(Store store, MenuRequestDto dto) {
+        this.store = store;
+        this.name = dto.getName();
+        this.description = dto.getDescription();
+        this.price = dto.getPrice();
+        this.img_path = dto.getImg_path();
     }
 
 }
