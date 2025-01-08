@@ -22,4 +22,5 @@ public class StoreController {
         storeService.addStore(dto);
         return ResponseEntity.ok().build();
     }
+
 }

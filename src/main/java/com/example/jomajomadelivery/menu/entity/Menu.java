@@ -5,10 +5,8 @@ import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @Getter
 public class Menu extends BaseEntity {
 
@@ -30,12 +28,22 @@ public class Menu extends BaseEntity {
     @Column(name = "img_path")
     private String img_path;
 
+    protected Menu() {
+    }
+
     public Menu(Store store, MenuRequestDto dto) {
         this.store = store;
         this.name = dto.getName();
         this.description = dto.getDescription();
         this.price = dto.getPrice();
         this.img_path = dto.getImg_path();
+    }
+
+    public void updateMenu(MenuRequestDto dto){
+        this.name=dto.getName();
+        this.description=dto.getDescription();
+        this.price=dto.getPrice();
+        this.img_path=dto.getImg_path();
     }
 
 }
