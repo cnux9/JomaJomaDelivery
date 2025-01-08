@@ -9,13 +9,16 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Menu {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_id")
     private Long menu_id;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
+
     @Column(name = "name")
     private String name;
     @Column(name = "description")
@@ -30,6 +33,8 @@ public class Menu {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public Menu() {}
 
     public Menu(Store store, String name, String description, int price, String imgPath) {
         this.name = name;
