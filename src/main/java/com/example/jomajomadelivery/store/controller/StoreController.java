@@ -34,6 +34,12 @@ public class StoreController {
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
 
+    @GetMapping("/{store_id}")
+    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long store_id){
+        StoreResponseDto responseDto = storeService.findById(store_id);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    }
+
     @PatchMapping("/{store_id}")
     public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,@RequestBody UpdateStoreRequestDto dto){
         StoreResponseDto responseDto = storeService.updateStore(store_id,dto);

@@ -48,4 +48,10 @@ public class StoreService {
         return StoreResponseDto.toDTO(store);
 
     }
+
+    public StoreResponseDto findById(Long storeId) {
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
+        return StoreResponseDto.toDTO(store);
+    }
 }
