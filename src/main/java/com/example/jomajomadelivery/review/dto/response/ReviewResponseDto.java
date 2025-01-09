@@ -18,7 +18,7 @@ public record ReviewResponseDto(
         return new ReviewResponseDto(
                 savedReview.getReviewId(),
 //                savedReview.getStore().getStoreId(),
-                savedReview.getStoreId(),
+                savedReview.getStore().getStoreId(),
 //                savedReview.getOrder().getId(),
 //                savedReview.getUser().getUserId(),
                 savedReview.getUserId(),

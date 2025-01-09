@@ -23,6 +23,14 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     @Query("""
             SELECT new com.example.jomajomadelivery.address.dto.response.AddressResponseDto (
                 a.addressId,
+                a.type,
+                a.entityId,
+                a.name,
+                a.zipcode,
+                a.state,
+                a.city,
+                a.street,
+                a.detailedAddress,
                 a.createdAt
             ) FROM Address a WHERE a.type = "USER" AND a.entityId = :userId""")
     Page<AddressResponseDto> findByUserId(@Param("userId") Long userId, Pageable pageable);

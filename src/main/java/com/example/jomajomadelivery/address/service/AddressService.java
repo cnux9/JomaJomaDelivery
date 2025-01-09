@@ -30,11 +30,12 @@ public class AddressService {
 //            case USER -> userRepository.findById(dto.entityId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user id: " + dto.entityId()));
 //            case STORE -> storeRepository.findById(dto.entityId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such store id: " + dto.entityId()));
 //        };
-        Address address = new Address(dto);
+        Address address = Address.createAddress(dto);
         Address savedAddress = addressRepository.save(address);
         return AddressResponseDto.toDto(savedAddress);
     }
 
+    // TODO: 트랜잭션 필요성?
     @Transactional(readOnly = true)
     public AddressResponseDto findById(Long id) {
         Address foundReview = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
@@ -48,14 +49,13 @@ public class AddressService {
         // 유저일 경우 배송지들의 주소 반환
 
 //        return addressRepository.findByUserId(userId, pageable);
-        return addressRepository.findByUserId(pageable);
+        return addressRepository.findByUserId(1L, pageable);
     }
 
     @Transactional
     public AddressResponseDto update(Long id, AddressRequestDto dto) {
         Address foundAddress = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
         Address newAddress = foundAddress.getUpdatedAddress(dto);
-        foundAddress.softDelete();
         Address savedAddress = addressRepository.save(newAddress);
         foundAddress.softDelete();
         return AddressResponseDto.toDto(savedAddress);

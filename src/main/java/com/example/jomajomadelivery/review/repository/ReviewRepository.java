@@ -19,12 +19,12 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("""
         SELECT new com.example.jomajomadelivery.review.dto.response.ReviewResponseDto(
             r.reviewId,
-            r.storeId,
+            r.store.storeId,
             r.userId,
             r.contents,
             r.rating,
             r.imgPath,
             r.createdAt
-        ) FROM Review r WHERE r.storeId = :storeId""")
+        ) FROM Review r WHERE r.store.storeId = :storeId""")
     Page<ReviewResponseDto> findByStoreId(@Param("storeId") Long storeId, Pageable pageable);
 }

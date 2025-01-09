@@ -17,7 +17,18 @@ public record AddressResponseDto(
         String detailedAddress,
         LocalDateTime creaetdAt
 ) {
-    public static AddressResponseDto toDto(Address savedAddress) {
-
+    public static AddressResponseDto toDto(Address address) {
+        return new AddressResponseDto(
+                address.getAddressId(),
+                address.getType(),
+                address.getEntityId(),
+                address.getName(),
+                address.getZipcode(),
+                address.getState(),
+                address.getCity(),
+                address.getStreet(),
+                address.getDetailedAddress(),
+                address.getCreatedAt()
+        );
     }
 }
