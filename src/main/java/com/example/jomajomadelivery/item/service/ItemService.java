@@ -19,8 +19,8 @@ public class ItemService {
     private final MenuRepository menuRepository;
 
     public List<ItemResponseDto> findAllItem(Long cartId) {
-        itmeRepositoy.findAllByCart_CartId(cartId);
-        return null;
+        List<Item> itemList = itmeRepositoy.findAllByCart_CartId(cartId);
+        return itemList.stream().map(ItemResponseDto::toDto).toList();
     }
 
     public void addItem(AddCartRequestDto dto, Cart cart) {
