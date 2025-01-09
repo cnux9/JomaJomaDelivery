@@ -13,6 +13,7 @@ import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,10 +32,17 @@ public class ItemService {
         itmeRepositoy.save(item);
     }
 
+    @Transactional(readOnly = true)
     public List<ItemResponseDto> findAllItem() {
         User user = userRepository.findById(1L).get();
         Cart cart = cartRepository.findCartByUserAndStatus(user,CartStatus.ORDERING).orElseThrow(()-> new RuntimeException());
         List<Item> itemList = itmeRepositoy.findAllByCart(cart);
         return itemList.stream().map(ItemResponseDto::toDto).toList();
+    }
+
+    @Transactional
+    public void updateQuantity(Long itemId, int quantity) {
+        Item item = itmeRepositoy.findById(itemId).get();
+        item.updateQuantity(quantity);
     }
 }

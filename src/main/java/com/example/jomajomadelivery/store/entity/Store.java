@@ -22,7 +22,7 @@ public class Store extends BaseEntity {
     private Long storeId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)

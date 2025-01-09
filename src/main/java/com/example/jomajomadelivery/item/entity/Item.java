@@ -47,4 +47,7 @@ public class Item {
                 .totalPrice(menu.getPrice()*quantity)
                 .build();
     }
+    public void updateQuantity(int quantity){
+        this.quantity=quantity;
+    }
 }
