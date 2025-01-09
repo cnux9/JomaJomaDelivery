@@ -40,4 +40,10 @@ public class ItemController {
         itemService.updateQuantity(itemId,quantity);
         return "redirect:/items";
     }
+
+    @DeleteMapping("/{itemId}")
+    public String deleteItem(@PathVariable Long itemId){
+        itemService.deleteItem(itemId);
+        return "redirect:/items";
+    }
 }

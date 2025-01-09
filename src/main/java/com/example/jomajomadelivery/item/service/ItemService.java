@@ -45,4 +45,9 @@ public class ItemService {
         Item item = itmeRepositoy.findById(itemId).get();
         item.updateQuantity(quantity);
     }
+
+    public void deleteItem(Long itemId) {
+        Item item = itmeRepositoy.findById(itemId).get();
+        itmeRepositoy.delete(item);
+    }
 }
