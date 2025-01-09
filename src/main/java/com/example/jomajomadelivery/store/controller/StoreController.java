@@ -23,18 +23,23 @@ public class StoreController {
     private final StoreService storeService;
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
 
+    //    @PostMapping("/new")
+//    public ResponseEntity<Void> addStore(@Valid @ModelAttribute StoreRequestDto dto) {
+//        storeService.addStore(dto);
+//        return ResponseEntity.ok().build();
+//    }
     @PostMapping("/new")
-    public ResponseEntity<Void> addStore(@Valid @ModelAttribute StoreRequestDto dto) {
-        System.out.println("gkdguwhew!!!!!!!!!!!!!");
+    public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto) {
         storeService.addStore(dto);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/new")
     public String addStoreForm() {
         return "/seller/store/CreateStoreForm";
     }
 
-//    @GetMapping
+    //    @GetMapping
 //    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable) {
 //        Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
 //        return new ResponseEntity<>(storeList, HttpStatus.OK);
@@ -42,7 +47,7 @@ public class StoreController {
     @GetMapping
     public String findAllStore(Pageable pageable, Model model) {
         Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
-        model.addAttribute("storeList",storeList);
+        model.addAttribute("storeList", storeList);
         return "storesview";
     }
 
@@ -59,9 +64,15 @@ public class StoreController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/update/{store_id}")
+    public String updateStoreForm(@PathVariable Long store_id, Model model) {
+        model.addAttribute("store_id", store_id);
+        return "/seller/store/UpdateStoreForm";
+    }
+
     @PatchMapping("/{store_id}")
     public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
-                                                        @RequestBody UpdateStoreRequestDto dto) {
+                                                        UpdateStoreRequestDto dto) {
         StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }

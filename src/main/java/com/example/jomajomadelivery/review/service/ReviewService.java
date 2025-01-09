@@ -5,9 +5,12 @@ import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import com.example.jomajomadelivery.review.dto.response.ReviewResponseDto;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.review.repository.ReviewRepository;
+import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,11 +29,10 @@ public class ReviewService {
 //        User foundUser = userRepository.getReferenceById(dto.uesrId());
         // 현재 로그인된 유저 -> 리뷰 작성자
         // FIXME:
-
-//        Store foundStore = storeRepository.getReferenceById(storeId);
+        Store foundStore = storeRepository.getReferenceById(storeId);
 
 //        Review review = Review.createReview(foundUser, foundStore, dto);
-        Review review = Review.createReview(1L, 1L, dto);
+        Review review = Review.createReview(1L, foundStore , dto);
         Review savedReview = reviewRepository.save(review);
 
         return ReviewResponseDto.toDto(savedReview);
@@ -55,7 +57,7 @@ public class ReviewService {
         reviewRepository.deleteById(id);
     }
 
-//    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
-//        return reviewRepository.findByStoreId(storeId, pageable);
-//    }
+    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
+        return reviewRepository.findByStoreId(storeId, pageable);
+    }
 }
