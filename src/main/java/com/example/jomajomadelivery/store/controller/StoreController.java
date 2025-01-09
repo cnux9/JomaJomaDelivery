@@ -46,6 +46,13 @@ public class StoreController {
         return "storesview";
     }
 
+    @GetMapping("/seller")
+    public String findAllStoreBySeller(Pageable pageable, Model model) {
+        Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable);
+        model.addAttribute("storeList", storeList);
+        return "storesview";
+    }
+
     @GetMapping("/{store_id}")
     public ResponseEntity<StoreResponseDto> findById(@PathVariable Long store_id) {
         StoreResponseDto responseDto = storeService.findById(store_id);
