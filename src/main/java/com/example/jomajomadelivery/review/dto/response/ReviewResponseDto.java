@@ -5,7 +5,7 @@ import com.example.jomajomadelivery.review.entity.Review;
 import java.time.LocalDateTime;
 
 public record ReviewResponseDto(
-        Long id,
+        Long reviewId,
         Long storeId,
 //        Long orderId,
         Long userId,

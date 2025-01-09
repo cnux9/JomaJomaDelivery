@@ -15,6 +15,6 @@ public record StoreRequestDto (
      String imgPath,
      LocalTime openTime,
      LocalTime closeTime,
-     int minOrderPrice,
-     int deliveryPrice
+     Integer minOrderPrice,
+     Integer deliveryPrice
 ){}
