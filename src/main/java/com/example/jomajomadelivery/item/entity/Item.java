@@ -22,7 +22,7 @@ public class Item {
     private Cart cart;
 
     @ManyToOne
-    @Column(name = "menu_id", nullable = false)
+    @JoinColumn(name = "menu_id", nullable = false)
     private Menu menu;
 
     @Column(name = "name", nullable = false)
