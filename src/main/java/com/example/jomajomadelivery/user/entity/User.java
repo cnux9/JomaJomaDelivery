@@ -49,6 +49,7 @@ public class User extends BaseEntity {
                 .role(dto.role())
                 .nickName(dto.nickname())
                 .phoneNumber(dto.phoneNumber())
+                .isDeleted(false)
                 .build();
     }
 }
