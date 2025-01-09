@@ -38,18 +38,18 @@ public class Menu extends BaseEntity {
     public static Menu newMenu(Store store, MenuRequestDto dto) {
         return Menu.builder()
                 .store(store)
-                .name(dto.getName())
-                .description(dto.getDescription())
-                .price(dto.getPrice())
-                .img_path(dto.getImg_path())
+                .name(dto.name())
+                .description(dto.description())
+                .price(dto.price())
+                .img_path(dto.img_path())
                 .build();
     }
 
     public void updateMenu(MenuRequestDto dto){
-        this.name=dto.getName();
-        this.description=dto.getDescription();
-        this.price=dto.getPrice();
-        this.img_path=dto.getImg_path();
+        this.name=dto.name();
+        this.description=dto.description();
+        this.price=dto.price();
+        this.img_path=dto.img_path();
     }
 
 }
