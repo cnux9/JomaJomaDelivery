@@ -37,4 +37,14 @@ public class Item {
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
 
+    public static Item selectItme(Cart cart,Menu menu,int quantity){
+        return Item.builder()
+                .cart(cart)
+                .menu(menu)
+                .name(menu.getName())
+                .quantity(quantity)
+                .price(menu.getPrice())
+                .totalPrice(menu.getPrice()*quantity)
+                .build();
+    }
 }
