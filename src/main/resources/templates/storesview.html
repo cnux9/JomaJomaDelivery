@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .pagination {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            color: black;
+        }
+        .pagination a:hover {
+            background-color: #f2f2f2;
+        }
+        .pagination .current {
+            font-weight: bold;
+            color: white;
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+<h1>Store List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Store ID</th>
+        <th>Category</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th>Open Time</th>
+        <th>Close Time</th>
+        <th>Rating</th>
+        <th>Min Order Price</th>
+        <th>Delivery Price</th>
+        <th>Favorite Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf iteration to display store data -->
+    <tr th:each="store : ${storeList.content}">
+        <td th:text="${store.storeId}"></td>
+        <td th:text="${store.category}"></td>
+        <td th:text="${store.name}"></td>
+        <td th:text="${store.description ?: '-'}"></td>
+        <td th:text="${store.address}"></td>
+        <td th:text="${store.phoneNumber}"></td>
+        <td th:text="${store.openTime ?: '-'}"></td>
+        <td th:text="${store.closeTime ?: '-'}"></td>
+        <td th:text="${store.rating ?: '-'}"></td>
+        <td th:text="${store.minOrderPrice}"></td>
+        <td th:text="${store.deliveryPrice}"></td>
+        <td th:text="${store.favoriteCount ?: 0}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<div class="pagination">
+    <a th:href="@{|/stores?page=${storeList.number - 1}|}" th:if="${!storeList.first}">Previous</a>
+    <span th:each="pageNum : ${#numbers.sequence(0, storeList.totalPages - 1)}">
+            <a th:href="@{|/stores?page=${pageNum}|}" th:classappend="${pageNum == storeList.number} ? 'current'" th:text="${pageNum + 1}"></a>
+        </span>
+    <a th:href="@{|/stores?page=${storeList.number + 1}|}" th:if="${!storeList.last}">Next</a>
+</div>
+</body>
+</html>
