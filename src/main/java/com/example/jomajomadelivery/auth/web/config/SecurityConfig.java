@@ -22,7 +22,7 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF 보호 비활성화 (CSRF:악의적인 사이트에서 사용자의 인증된 세션을 악용해 요청을 보내는 공격)
                 .authorizeHttpRequests(auth ->
-//                        auth.requestMatchers("/", "/login", "/css/**").permitAll() // 해당 요청을 인증 없이 허용
+//                        auth.requestMatchers("/", "/login", "/css/**", "/images/**").permitAll() // 해당 요청을 인증 없이 허용
                         auth.requestMatchers("/**").permitAll() // 해당 요청을 인증 없이 허용
                                 .anyRequest().authenticated()
                 )
@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .oauth2Login(auth ->
                         auth.loginPage("/login")
                                 .defaultSuccessUrl("/")
-                                .failureUrl("/")
+                                .failureUrl("/login")
                                 .userInfoEndpoint( user ->
                                         user.userService(oAuth2UserService())
                                 )

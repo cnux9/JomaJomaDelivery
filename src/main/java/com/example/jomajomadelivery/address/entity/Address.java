@@ -3,6 +3,7 @@ package com.example.jomajomadelivery.address.entity;
 
 import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
 import com.example.jomajomadelivery.common.BaseEntity;
+import com.example.jomajomadelivery.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,10 @@ public class Address extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private EntityType type;
-//    private User
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 //    private Store
     private Long entityId;
 
