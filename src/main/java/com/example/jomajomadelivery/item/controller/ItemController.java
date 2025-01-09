@@ -29,9 +29,9 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/{cartId}")
-    public ResponseEntity<List<ItemResponseDto>> findAllItem(@PathVariable Long cartId) {
-        List<ItemResponseDto> itemList = itemService.findAllItem(cartId);
+    @GetMapping()
+    public ResponseEntity<List<ItemResponseDto>> findAllItem() {
+        List<ItemResponseDto> itemList = itemService.findAllItem();
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 }
