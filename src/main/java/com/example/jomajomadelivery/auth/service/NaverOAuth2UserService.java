@@ -36,7 +36,6 @@ public class NaverOAuth2UserService implements OAuth2UserService<OAuth2UserReque
         }
 
         String id = (String) response.get("id");
-        String nickname = (String) response.get("nickname");
         String email = (String) response.get("email");
 
         //    DB 연동: 해당 naverId나 email로
