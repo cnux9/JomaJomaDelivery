@@ -30,4 +30,10 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Item> items = new ArrayList<>();
 
+    public static Cart newCart(User user){
+        return Cart.builder()
+                .user(user)
+                .status(CartStatus.ORDERING)
+                .build();
+    }
 }
