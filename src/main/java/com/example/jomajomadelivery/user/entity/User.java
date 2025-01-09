@@ -1,9 +1,14 @@
 package com.example.jomajomadelivery.user.entity;
 
+import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,8 +40,12 @@ public class User extends BaseEntity {
 
     private String phoneNumber;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Address> addresses = new ArrayList<>(); Todo: Address 클래스 연결 필요
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Address> addresses = new ArrayList<>();
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
@@ -46,10 +55,19 @@ public class User extends BaseEntity {
                 .email(dto.email())
                 .password(dto.password())
                 .name(dto.name())
-                .role(dto.role())
+                .role(Role.USER)
                 .nickName(dto.nickname())
                 .phoneNumber(dto.phoneNumber())
                 .isDeleted(false)
                 .build();
+    }
+
+    public User updateUser(UserUpdateDto dto) {
+        this.email = dto.email();
+        this.password = dto.password();
+        this.name = dto.name();
+        this.nickName = dto.nickname();
+        this.phoneNumber = dto.phoneNumber();
+        return this;
     }
 }
