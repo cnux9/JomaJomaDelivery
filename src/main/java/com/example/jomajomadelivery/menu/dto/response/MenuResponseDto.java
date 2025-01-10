@@ -5,6 +5,6 @@ public record MenuResponseDto(
         String name,
         String description,
         int price,
-        String img_path
+        String imgPath
 ) {
 }

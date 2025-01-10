@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.user.entity;
 
 public enum Role {
-    USER, SELLER
+    ROLE_USER,
+    ROLE_SELLER
 }
