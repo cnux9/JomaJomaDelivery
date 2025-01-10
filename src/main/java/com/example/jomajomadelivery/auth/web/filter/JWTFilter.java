@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.List;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
+    private static final String[] WHITE_LIST = {"/", "/signup", "/login"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -70,6 +72,19 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+
+        for (String pattern : WHITE_LIST) {
+            if (PatternMatchUtils.simpleMatch(pattern, requestURI)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean isStaticResource(String url) {
