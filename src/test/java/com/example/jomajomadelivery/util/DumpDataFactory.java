@@ -4,7 +4,6 @@ import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
-import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 
 import java.time.LocalTime;

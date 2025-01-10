@@ -1,8 +1,10 @@
 package com.example.jomajomadelivery.auth.web.config;
 
-import com.example.jomajomadelivery.auth.oauth.handler.CustomAuthenticationFailureHandler;
-import com.example.jomajomadelivery.auth.oauth.handler.CustomAuthenticationSuccessHandler;
-import com.example.jomajomadelivery.auth.oauth.OAuth2AuthenticationService;
+import com.example.jomajomadelivery.auth.jwt.TokenProvider;
+import com.example.jomajomadelivery.auth.oauth2.OAuth2AuthenticationService;
+import com.example.jomajomadelivery.auth.oauth2.handler.CustomAuthenticationFailureHandler;
+import com.example.jomajomadelivery.auth.oauth2.handler.CustomAuthenticationSuccessHandler;
+import com.example.jomajomadelivery.auth.web.filter.JWTFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -18,6 +21,7 @@ public class SecurityConfig {
     private final OAuth2AuthenticationService oAuth2AuthenticationService;
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final TokenProvider tokenProvider;
 
     /**
      * Spring Security 설정
@@ -40,14 +44,17 @@ public class SecurityConfig {
         // oauth2
         http
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
-                        .successHandler(customAuthenticationSuccessHandler)
-                        .failureHandler(customAuthenticationFailureHandler)
-                        .defaultSuccessUrl("/")
                         .userInfoEndpoint(endpoint -> endpoint
                                 .userService(oAuth2AuthenticationService)
                         )
+                        .loginPage("/login")
+                        .successHandler(customAuthenticationSuccessHandler)
+                        .failureHandler(customAuthenticationFailureHandler)
                 );
+
+        // JWTFilter
+        http
+                .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         // 경로별 인가
         http

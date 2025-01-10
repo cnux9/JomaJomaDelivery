@@ -1,6 +1,10 @@
 spring:
   application:
     name: JomaJomaDelivery
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
   jwt:
     secret-key: D3AA89C3729F6627EA157124738DFAAAF66CEB85B3A79392473BECB3D9

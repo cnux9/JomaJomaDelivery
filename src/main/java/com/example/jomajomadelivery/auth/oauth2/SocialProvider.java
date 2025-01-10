@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.auth.oauth;
+package com.example.jomajomadelivery.auth.oauth2;
 
 import com.example.jomajomadelivery.auth.dto.response.NaverUserInfoResponse;
 import com.example.jomajomadelivery.auth.dto.response.OAuth2UserInfo;
