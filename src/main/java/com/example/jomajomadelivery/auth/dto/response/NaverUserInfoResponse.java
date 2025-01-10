@@ -1,6 +1,6 @@
 package com.example.jomajomadelivery.auth.dto.response;
 
-import com.example.jomajomadelivery.auth.oauth.SocialProvider;
+import com.example.jomajomadelivery.auth.oauth2.SocialProvider;
 
 import java.util.Map;
 

@@ -5,24 +5,33 @@ import com.example.jomajomadelivery.menu.dto.response.MenuResponseDto;
 import com.example.jomajomadelivery.menu.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/stores/{storeId}/menus")
 public class MenuController {
     private final MenuService menuService;
 
+    @GetMapping("/new")
+    public String createMenuForm(@PathVariable Long storeId, Model model) {
+        model.addAttribute("storeId", storeId);
+        return "/seller/store/CreateMenuForm";
+    }
+
     @PostMapping
-    public void createMenu(@PathVariable Long storeId, @RequestBody MenuRequestDto menuRequestDto) {
+    public String createMenu(@PathVariable Long storeId, @ModelAttribute MenuRequestDto menuRequestDto) {
         menuService.createMenu(storeId, menuRequestDto);
+        return "redirect:/stores/" + storeId + "/menus";
     }
 
     @GetMapping
-    public ResponseEntity<List<MenuResponseDto>> getMenus(@PathVariable Long storeId) {
-        return ResponseEntity.ok(menuService.getMenus(storeId));
+    public String getMenus(@PathVariable Long storeId, Model model) {
+        model.addAttribute("menus", menuService.getMenus(storeId));
+        model.addAttribute("storeId",storeId);
+        return "/seller/store/MenuList";
     }
 
     @GetMapping("/{menuId}")
@@ -31,8 +40,9 @@ public class MenuController {
     }
 
     @PutMapping("/{menuId}")
-    public void updateMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto) {
+    public ResponseEntity<String> updateMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto) {
         menuService.updateMenu(menuId, menuRequestDto);
+        return ResponseEntity.ok("메뉴 수정 성공");
     }
 
     @DeleteMapping("/{menuId}")

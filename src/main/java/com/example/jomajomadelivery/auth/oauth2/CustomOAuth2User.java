@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.auth.oauth;
+package com.example.jomajomadelivery.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
