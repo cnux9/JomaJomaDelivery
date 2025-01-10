@@ -1,50 +1,20 @@
-package com.example.jomajomadelivery.unit.review;
+package com.example.jomajomadelivery.util;
 
+import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
-import com.example.jomajomadelivery.review.entity.Review;
-import com.example.jomajomadelivery.review.repository.ReviewRepository;
-import com.example.jomajomadelivery.review.service.ReviewService;
 import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalTime;
 
-@SpringBootTest
-public class ReviewServiceTest {
-//    @Autowired
-    @InjectMocks
-    ReviewService reviewService;
+public class DumpDataFactory {
 
-    @Mock
-    ReviewRepository reviewRepository;
+    public static Review review() {
+        return review(store());
+    }
 
-//    @Test
-//    void 리뷰_생성() {
-//        // Given
-//        ReviewCreateRequestDto requestDto = new ReviewCreateRequestDto(1L, "머리카락이 나왔어요.", 5, "someImg.jpg");
-//
-//        // FIXME
-//        User user = newTestUser();
-//        Store store = newTestStore(user);
-//        Review review = newTestReview(store);
-//
-//        ReviewResponseDto expectedResult = new ReviewResponseDto();
-//
-//        when(reviewRepository.save(any(Review.class))).thenReturn(review);
-//
-//        // When
-//        ReviewResponseDto actualResult = reviewService.create(1L, requestDto);
-//
-//        // Then
-//        assertThat(actualResult).isEqualTo(expectedResult);
-////        assertsThat
-//    }
-
-    private static Review newTestReview(Store store) {
+    public static Review review(Store store) {
         return Review.builder()
 //                .user(user)
                 .userId(1L)
@@ -56,7 +26,7 @@ public class ReviewServiceTest {
                 .build();
     }
 
-    private static User newTestUser() {
+    public static User user() {
         return User.builder()
                 .email("abc@naver.com")
                 .password("1111")
@@ -68,7 +38,11 @@ public class ReviewServiceTest {
                 .build();
     }
 
-    private static Store newTestStore(User user) {
+    public static Store store() {
+        return store(user());
+    }
+
+    public static Store store(User user) {
         return Store.builder()
                 .user(user)
                 .category(Category.JAPANESE)
