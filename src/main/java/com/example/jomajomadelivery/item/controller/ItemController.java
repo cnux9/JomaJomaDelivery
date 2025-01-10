@@ -29,9 +29,21 @@ public class ItemController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<List<ItemResponseDto>> findAllItem() {
         List<ItemResponseDto> itemList = itemService.findAllItem();
         return new ResponseEntity<>(itemList, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{itemId}")
+    public String updateQuantity(@PathVariable Long itemId,@RequestParam int quantity){
+        itemService.updateQuantity(itemId,quantity);
+        return "redirect:/items";
+    }
+
+    @DeleteMapping("/{itemId}")
+    public String deleteItem(@PathVariable Long itemId){
+        itemService.deleteItem(itemId);
+        return "redirect:/items";
     }
 }
