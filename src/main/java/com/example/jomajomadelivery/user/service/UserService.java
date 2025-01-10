@@ -1,6 +1,6 @@
 package com.example.jomajomadelivery.user.service;
 
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
