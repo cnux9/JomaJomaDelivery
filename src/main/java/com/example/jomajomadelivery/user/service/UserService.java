@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.user.service;
 
+import com.example.jomajomadelivery.auth.oauth.SocialProvider;
 import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import com.example.jomajomadelivery.user.entity.User;
@@ -7,6 +8,8 @@ import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,10 @@ public class UserService {
 
         // Todo: Address 생성 및 적용
         userRepository.save(user);
+    }
+
+    public Optional<User> findBySocialTypeAndProviderId(SocialProvider socialType, String providerId) {
+        return userRepository.findBySocialTypeAndProviderId(socialType, providerId);
     }
 
     public User findById(Long id) {
