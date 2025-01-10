@@ -1,11 +1,12 @@
 package com.example.jomajomadelivery.store.service;
 
+import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class StoreService {
     private final UserRepository userRepository;
     public void addStore(StoreRequestDto dto) {
 
-        SignUpUserDto signUpUserDto = new SignUpUserDto("aa","aa","dd","dd","dd","","","","","","");
+        SignUpUserDto signUpUserDto = new SignUpUserDto("aa","aa","dd","dd","dd","","","","","","", Role.ROLE_USER);
         User user = User.createUser(signUpUserDto);
         userRepository.save(user);
         Store store =Store.addStore(user,dto);
