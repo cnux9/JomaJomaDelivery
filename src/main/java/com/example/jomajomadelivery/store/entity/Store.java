@@ -22,7 +22,7 @@ public class Store extends BaseEntity {
     private Long storeId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Enumerated(EnumType.STRING)
@@ -54,10 +54,10 @@ public class Store extends BaseEntity {
     private Double rating;
 
     @Column(name = "min_order_price")
-    private int minOrderPrice;
+    private Integer minOrderPrice;
 
     @Column(name = "delivery_price")
-    private int deliveryPrice;
+    private Integer deliveryPrice;
 
     @Column(name = "favorite_count", nullable = false)
     private Long favoriteCount;

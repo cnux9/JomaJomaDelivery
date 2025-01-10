@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,16 +23,31 @@ public class StoreController {
     private final StoreService storeService;
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
 
+//    @PostMapping("/new")
+//    public ResponseEntity<Void> addStore(@Valid @ModelAttribute StoreRequestDto dto) {
+//        storeService.addStore(dto);
+//        return ResponseEntity.ok().build();
+//    }
     @PostMapping("/new")
     public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto) {
         storeService.addStore(dto);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/new")
+    public String addStoreForm() {
+        return "/seller/store/CreateStoreForm";
+    }
 
+//    @GetMapping
+//    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable) {
+//        Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
+//        return new ResponseEntity<>(storeList, HttpStatus.OK);
+//    }
     @GetMapping
-    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable) {
+    public String findAllStore(Pageable pageable, Model model) {
         Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
-        return new ResponseEntity<>(storeList, HttpStatus.OK);
+        model.addAttribute("storeList",storeList);
+        return "storesview";
     }
 
     @GetMapping("/{store_id}")

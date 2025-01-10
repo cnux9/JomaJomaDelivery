@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.example.jomajomadelivery.menu.entity.Menu.newMenu;
+
 @RequiredArgsConstructor
 @Service
 public class MenuService {
@@ -21,7 +23,7 @@ public class MenuService {
     //Todo:: 사장님 권한 확인 필요
     public void createMenu(Long storeId, MenuRequestDto menuRequestDto) {
         Store store = getStoreEntity(storeId);
-        Menu menu = new Menu(store, menuRequestDto);
+        Menu menu = newMenu(store, menuRequestDto);
         menuRepository.save(menu);
     }
 

@@ -17,8 +17,8 @@ public record StoreResponseDto(
         LocalTime openTime,
         LocalTime closeTime,
         Double rating,
-        int minOrderPrice,
-        int deliveryPrice,
+        Integer minOrderPrice,
+        Integer deliveryPrice,
         Long favoriteCount
 ) {
     public static StoreResponseDto toDTO(Store store) {
