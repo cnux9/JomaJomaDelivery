@@ -21,10 +21,11 @@ public class MenuService {
     private final StoreRepository storeRepository;
 
     //Todo:: 사장님 권한 확인 필요
-    public void createMenu(Long storeId, MenuRequestDto menuRequestDto) {
+    public MenuResponseDto createMenu(Long storeId, MenuRequestDto menuRequestDto) {
         Store store = getStoreEntity(storeId);
         Menu menu = newMenu(store, menuRequestDto);
-        menuRepository.save(menu);
+        Menu savedMenu = menuRepository.save(menu);
+        return new MenuResponseDto(savedMenu.getMenu_id(), savedMenu.getName(), savedMenu.getDescription(), savedMenu.getPrice(), savedMenu.getImg_path());
     }
 
     public List<MenuResponseDto> getMenus(Long storeId) {
@@ -39,10 +40,11 @@ public class MenuService {
     }
 
     //Todo:: 사장님 권한 확인 필요
-    public void updateMenu(Long menuId, MenuRequestDto menuRequestDto) {
+    public MenuResponseDto updateMenu(Long menuId, MenuRequestDto menuRequestDto) {
         Menu menu = getMenuEntity(menuId);
         menu.updateMenu(menuRequestDto);
-        menuRepository.save(menu);
+        Menu savedMenu = menuRepository.save(menu);
+        return new MenuResponseDto(savedMenu.getMenu_id(), savedMenu.getName(), savedMenu.getDescription(), savedMenu.getPrice(), savedMenu.getImg_path());
     }
 
     //Todo:: 사장님 권한 확인 필요

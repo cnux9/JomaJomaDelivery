@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.orders.service;
 
 import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.repository.CartRepository;
 import com.example.jomajomadelivery.orders.dto.response.OrdersResponseDto;
