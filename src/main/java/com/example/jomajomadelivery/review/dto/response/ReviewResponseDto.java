@@ -10,7 +10,7 @@ public record ReviewResponseDto(
 //        Long orderId,
         Long userId,
         String contents,
-        int rating,
+        Integer rating,
         String imgPath,
         LocalDateTime createdAt
 ) {
