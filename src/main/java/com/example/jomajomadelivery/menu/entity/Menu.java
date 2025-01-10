@@ -20,7 +20,7 @@ public class Menu extends BaseEntity {
     private Long menu_id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Store store;
 
     @Column(name = "name")
