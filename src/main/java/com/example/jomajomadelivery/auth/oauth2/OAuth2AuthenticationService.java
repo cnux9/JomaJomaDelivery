@@ -1,8 +1,8 @@
-package com.example.jomajomadelivery.auth.oauth;
+package com.example.jomajomadelivery.auth.oauth2;
 
 import com.example.jomajomadelivery.auth.dto.response.OAuth2UserInfo;
+import com.example.jomajomadelivery.auth.repository.UserAuthRepository;
 import com.example.jomajomadelivery.user.entity.User;
-import com.example.jomajomadelivery.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OAuth2AuthenticationService extends DefaultOAuth2UserService {
 
-    private final UserService userService;
+    private final UserAuthRepository userAuthRepository;
 
     /**
      * 리소스 서버에서 제공되는 데이터를 받음
@@ -52,7 +52,7 @@ public class OAuth2AuthenticationService extends DefaultOAuth2UserService {
 
         log.info("social={}", socialType);
 
-        Optional<User> userOptional = userService.findBySocialTypeAndProviderId(socialType, providerId);
+        Optional<User> userOptional = userAuthRepository.findBySocialTypeAndProviderId(socialType, providerId);
 
         if (userOptional.isEmpty()) {
             saveToSession(providerId, name, email);
