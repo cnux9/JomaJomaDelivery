@@ -62,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasRole("USER") // ROLE_USER 권한만 접근 가능
                         .requestMatchers("/seller/**").hasRole("SELLER") // ROLE_SELLER 권한만 접근 가능
                         .requestMatchers("/","/login/**","/signup/**" , "/css/**", "/images/**").permitAll() // 해당 요청을 인증 없이 허용
+//                        .requestMatchers("/**").permitAll() // 해당 요청을 인증 없이 허용
                         .anyRequest().authenticated()
                 );
 
