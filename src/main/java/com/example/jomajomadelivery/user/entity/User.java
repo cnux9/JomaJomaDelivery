@@ -3,7 +3,7 @@ package com.example.jomajomadelivery.user.entity;
 import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.auth.oauth2.SocialProvider;
 import com.example.jomajomadelivery.common.BaseEntity;
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -63,7 +63,7 @@ public class User extends BaseEntity {
                 .password(dto.password())
                 .name(dto.name())
                 .role(Role.ROLE_USER)
-                .nickName(dto.nickname())
+                .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
                 .isDeleted(false)
                 .build();

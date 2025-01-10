@@ -12,13 +12,13 @@ public enum SocialProvider {
             return new NaverUserInfoResponse(attributes);
         }
     },
-    KAKAO{
+    KAKAO {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
             return null;
         }
     },
-    GOOGLE{
+    GOOGLE {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
             return null;

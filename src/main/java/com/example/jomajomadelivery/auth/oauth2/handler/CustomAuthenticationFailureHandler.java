@@ -19,7 +19,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         if (exception instanceof OAuth2AuthenticationException ex && ex.getError().getErrorCode().equals("redirect_signup")) {
             log.info("Social Login Fail - Redirecting to /");
 
-            response.sendRedirect("/");
+            response.sendRedirect("/login");
             return;
         }
 

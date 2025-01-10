@@ -1,10 +1,11 @@
 package com.example.jomajomadelivery.auth.controller;
 
+import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AuthController {
@@ -16,19 +17,31 @@ public class AuthController {
      */
     @GetMapping("/login")
     public String loginPage() {
-        return "login/login";
+        return "auth/login";
     }
 
     /**
      * 로그인 처리
      */
     @PostMapping("/login")
-    public ModelAndView loginProcess(@RequestParam String username, @RequestParam String password) {
-        return new ModelAndView();
+    public String loginProcess(@RequestParam String username, @RequestParam String password) {
+//        로그인 로직
+//        실패하면 다시 로그인 화면으로 리다이렉트
+//        홈화면 리다이렉트
+        return "redirect:/home";
     }
 
+    /**
+     * 회원가입 페이지
+     */
     @GetMapping("/signup")
-    public String signupPage() {
-        return "signup";
+    public String signUpPage(Model model) {
+        model.addAttribute("userSignUp", SignUpUserDto.empty());
+        return "auth/signup";
+    }
+
+    @PostMapping("/signup")
+    public String signupProcess() {
+        return "redirect:/login";
     }
 }
