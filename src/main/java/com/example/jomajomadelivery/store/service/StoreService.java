@@ -32,6 +32,7 @@ public class StoreService {
     }
 
     //Todo: 요청에따라 필터링
+    @Transactional(readOnly = true)
     public Page<StoreResponseDto> findAllStore(Pageable pageable) {
         Page<Store> storeList = storeRepository.findAll(pageable);
         // Todo: 빈 배열일 경우 에러 던지깅
@@ -48,6 +49,7 @@ public class StoreService {
 
     }
 
+    @Transactional(readOnly = true)
     public StoreResponseDto findById(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
@@ -58,5 +60,14 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
         store.shutDownStore();
+    }
+
+    @Transactional
+    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable) {
+        User user = userRepository.findById(1L).get();
+        Page<Store> storeList = storeRepository.findAllByUser(user,pageable);
+        // Todo: 빈 배열일 경우 에러 던지깅
+
+        return storeList.map(StoreResponseDto::toDTO);
     }
 }
