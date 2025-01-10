@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.user.entity;
 
 import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.auth.oauth.SocialProvider;
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
@@ -23,6 +24,12 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "social_type")
+    private SocialProvider socialType;
+
+    private String providerId;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -31,10 +38,6 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     private String nickName;
 
@@ -47,6 +50,10 @@ public class User extends BaseEntity {
     )
     private List<Address> addresses = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
@@ -55,7 +62,7 @@ public class User extends BaseEntity {
                 .email(dto.email())
                 .password(dto.password())
                 .name(dto.name())
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .nickName(dto.nickname())
                 .phoneNumber(dto.phoneNumber())
                 .isDeleted(false)
