@@ -7,7 +7,6 @@ import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.review.repository.ReviewRepository;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
-import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class ReviewService {
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
     private final StoreRepository storeRepository;
 
 
@@ -44,6 +43,10 @@ public class ReviewService {
         return ReviewResponseDto.toDto(foundReview);
     }
 
+    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
+        return reviewRepository.findByStoreId(storeId, pageable);
+    }
+
     @Transactional
     public ReviewResponseDto update(Long id, ReviewUpdateRequestDto dto) {
         Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
@@ -55,9 +58,5 @@ public class ReviewService {
     public void delete(Long id) {
         // TODO: not found 에러 처리?
         reviewRepository.deleteById(id);
-    }
-
-    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
-        return reviewRepository.findByStoreId(storeId, pageable);
     }
 }
