@@ -3,7 +3,6 @@ package com.example.jomajomadelivery.util;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
-import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 
 import java.time.LocalTime;
@@ -31,7 +30,6 @@ public class DumpDataFactory {
                 .email("abc@naver.com")
                 .password("1111")
                 .name("조훈")
-                .role(Role.USER)
                 .nickName("홍박사")
                 .phoneNumber("010-0000-0000")
                 .isDeleted(false)
