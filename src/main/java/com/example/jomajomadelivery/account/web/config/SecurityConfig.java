@@ -1,10 +1,10 @@
-package com.example.jomajomadelivery.account.auth.web.config;
+package com.example.jomajomadelivery.account.web.config;
 
-import com.example.jomajomadelivery.account.auth.jwt.TokenProvider;
-import com.example.jomajomadelivery.account.auth.oauth2.OAuth2AuthenticationService;
-import com.example.jomajomadelivery.account.auth.oauth2.handler.CustomAuthenticationFailureHandler;
-import com.example.jomajomadelivery.account.auth.oauth2.handler.CustomAuthenticationSuccessHandler;
-import com.example.jomajomadelivery.account.auth.web.filter.JWTFilter;
+import com.example.jomajomadelivery.account.jwt.TokenProvider;
+import com.example.jomajomadelivery.account.oauth2.service.OAuth2AuthenticationService;
+import com.example.jomajomadelivery.account.oauth2.service.handler.CustomAuthenticationFailureHandler;
+import com.example.jomajomadelivery.account.oauth2.service.handler.CustomAuthenticationSuccessHandler;
+import com.example.jomajomadelivery.account.web.filter.JWTFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
