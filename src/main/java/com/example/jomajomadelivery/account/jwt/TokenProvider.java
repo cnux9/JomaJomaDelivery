@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.account.auth.jwt;
+package com.example.jomajomadelivery.account.jwt;
 
 import com.example.jomajomadelivery.user.entity.Role;
 import io.jsonwebtoken.JwtException;
@@ -54,6 +54,9 @@ public class TokenProvider {
                 .get("role", Role.class);
     }
 
+    /**
+     * 토큰 만료시간 검증
+     */
     public Boolean isExpired(String token) {
         try {
             Jwts.parser()
@@ -64,6 +67,22 @@ public class TokenProvider {
         } catch (JwtException e) {
             log.info("token 만료");
             return true;
+        }
+    }
+
+    /**
+     * 토큰의 유효성 검증
+     */
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
