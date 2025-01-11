@@ -1,6 +1,6 @@
-package com.example.jomajomadelivery.auth.dto.request;
+package com.example.jomajomadelivery.account.auth.dto.request;
 
-import com.example.jomajomadelivery.auth.oauth2.SocialProvider;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.user.entity.Role;
 
 public record SignUpUserDto(

@@ -1,6 +1,6 @@
-package com.example.jomajomadelivery.auth.repository;
+package com.example.jomajomadelivery.account.auth.repository;
 
-import com.example.jomajomadelivery.auth.oauth2.SocialProvider;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
