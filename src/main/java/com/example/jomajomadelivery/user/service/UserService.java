@@ -1,6 +1,5 @@
 package com.example.jomajomadelivery.user.service;
 
-import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
@@ -14,14 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-
-    @Transactional
-    public void saveUser(SignUpUserDto dto) {
-        User user = User.createUser(dto);
-
-        // Todo: Address 생성 및 적용
-        userRepository.save(user);
-    }
 
     public User findById(Long id) {
         return userRepository.findById(id)
