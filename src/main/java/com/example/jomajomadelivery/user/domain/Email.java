@@ -22,11 +22,11 @@ public class Email {
      */
     public static Email generateEmail(String email) {
         if (email == null || email.isEmpty()) {
-//            throw new InvalidEmailException(HttpStatus.BAD_REQUEST, "Email must not be empty");
+            throw new IllegalArgumentException("Email must not be empty");
         }
 
         if (!validateEmail(email)) {
-//            throw new InvalidEmailException(HttpStatus.BAD_REQUEST, "Email is not valid");
+            throw new IllegalArgumentException("이메일 형식이 맞지 않습니다.");
         }
 
         return new Email(email);
