@@ -30,18 +30,17 @@ public class User extends BaseEntity {
 
     private String providerId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String nickName;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
     @OneToMany(
@@ -58,12 +57,19 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    public static User createUser(SignUpUserDto dto, String email, String password) {
+    public static User createUser(SignUpUserDto dto) {
         return User.builder()
                 .socialType(dto.socialType())
                 .providerId(dto.providerId())
-                .email(email)
-                .password(password)
+                .email(
+                        Email.generateEmail(dto.email())
+                                .getEmailText()
+                )
+                .password(
+                        Password.validatePassword(dto.password())
+                                .generateEncryptedPassword()
+                                .getStringPassword()
+                )
                 .name(dto.name())
                 .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())

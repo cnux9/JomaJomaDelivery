@@ -17,7 +17,7 @@ public class Menu extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "menu_id")
-    private Long menu_id;
+    private Long menuId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
@@ -33,7 +33,7 @@ public class Menu extends BaseEntity {
     private int price;
 
     @Column(name = "img_path")
-    private String img_path;
+    private String imgPath;
 
     public static Menu newMenu(Store store, MenuRequestDto dto) {
         return Menu.builder()
@@ -41,7 +41,7 @@ public class Menu extends BaseEntity {
                 .name(dto.name())
                 .description(dto.description())
                 .price(dto.price())
-                .img_path(dto.img_path())
+                .imgPath(dto.img_path())
                 .build();
     }
 
@@ -49,7 +49,7 @@ public class Menu extends BaseEntity {
         this.name=dto.name();
         this.description=dto.description();
         this.price=dto.price();
-        this.img_path=dto.img_path();
+        this.imgPath =dto.img_path();
     }
 
 }

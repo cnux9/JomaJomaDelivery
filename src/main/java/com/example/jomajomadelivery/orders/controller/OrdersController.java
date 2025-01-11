@@ -1,8 +1,9 @@
 package com.example.jomajomadelivery.orders.controller;
 
-import com.example.jomajomadelivery.orders.dto.response.OrdersResponseDto;
+import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +16,24 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @PostMapping
-    public void createOrder() {
-        ordersService.createOrder();
+    public ResponseEntity<OrderResponseDto> createOrder() {
+        return new ResponseEntity<>(ordersService.createOrder(), HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrdersResponseDto> getOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(ordersService.getOrder(orderId));
+    public ResponseEntity<OrderResponseDto> find(@PathVariable Long orderId) {
+        return ResponseEntity.ok(ordersService.find(orderId));
     }
 
     @PatchMapping("/{orderId}")
-    public void updateOrder(@PathVariable Long orderId) {
-        ordersService.updateOrder(orderId);
+    public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(ordersService.updateOrder(orderId));
     }
 
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId) {
-        ordersService.deleteOrder(orderId);
+    public ResponseEntity<Void> delete(@PathVariable Long orderId) {
+        ordersService.delete(orderId);
+        return ResponseEntity.ok().build();
     }
 
 }

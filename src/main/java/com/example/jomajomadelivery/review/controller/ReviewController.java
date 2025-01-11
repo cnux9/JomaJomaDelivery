@@ -33,15 +33,16 @@ public class ReviewController {
         return "redirect:/stores/"+storeId+"/reviews";
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<ReviewResponseDto> findById(@PathVariable Long userId) {
-        return new ResponseEntity<>(reviewService.findById(userId), HttpStatus.OK);
-    }
-
     @GetMapping
-    public String findAllById(@PathVariable Long storeId, Pageable pageable,Model model) {
-        model.addAttribute("storeId",storeId);
-        model.addAttribute("reviews",reviewService.findAllById(storeId, pageable));
+    public String findAllById(
+            @PathVariable Long storeId,
+            @RequestParam(defaultValue = "1") Integer minRating,
+            @RequestParam(defaultValue = "5") Integer maxRating,
+            Pageable pageable,
+            Model model
+    ) {
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("reviews", reviewService.findAllById(storeId, minRating, maxRating, pageable));
         return "ReviewList";
     }
 
