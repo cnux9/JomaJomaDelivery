@@ -22,8 +22,15 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             r.createdAt
         )
         FROM Review r
-        WHERE r.store.storeId = :storeId AND r.rating BETWEEN :minRating AND :maxRating
+        WHERE
+            r.store.storeId = :storeId AND
+            r.rating BETWEEN :minRating AND :maxRating
         ORDER BY r.createdAt DESC
         """)
-    Page<ReviewResponseDto> findByStoreId(@Param("storeId") Long storeId, @Param("minRating") Integer minRating, @Param("maxRating") Integer maxRating, Pageable pageable);
+    Page<ReviewResponseDto> findByStoreId(
+            @Param("storeId") Long storeId,
+            @Param("minRating") Integer minRating,
+            @Param("maxRating") Integer maxRating,
+            Pageable pageable
+    );
 }
