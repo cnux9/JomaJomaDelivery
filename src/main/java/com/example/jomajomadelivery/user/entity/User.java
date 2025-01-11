@@ -1,11 +1,11 @@
 package com.example.jomajomadelivery.user.entity;
 
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.domain.Email;
 import com.example.jomajomadelivery.user.domain.Password;
-import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
-import com.example.jomajomadelivery.common.BaseEntity;
-import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;

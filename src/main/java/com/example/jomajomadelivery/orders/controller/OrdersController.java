@@ -33,7 +33,7 @@ public class OrdersController {
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> delete(@PathVariable Long orderId) {
         ordersService.delete(orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }

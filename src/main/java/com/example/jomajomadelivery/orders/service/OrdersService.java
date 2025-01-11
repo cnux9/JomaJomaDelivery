@@ -95,7 +95,7 @@ public class OrdersService {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
-        return new OrderResponseDto(order.getStatus(), order.getAddress().toString());
+        return OrderResponseDto.toDto(order);
     }
 
     public void delete(Long orderId) {
