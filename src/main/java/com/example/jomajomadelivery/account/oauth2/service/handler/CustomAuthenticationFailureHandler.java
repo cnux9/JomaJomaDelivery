@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.account.auth.oauth2.handler;
+package com.example.jomajomadelivery.account.oauth2.service.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.account.auth.oauth2;
+package com.example.jomajomadelivery.account.oauth2.service;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

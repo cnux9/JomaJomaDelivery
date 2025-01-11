@@ -1,6 +1,6 @@
-package com.example.jomajomadelivery.account.auth.oauth2;
+package com.example.jomajomadelivery.account.oauth2.service;
 
-import com.example.jomajomadelivery.account.auth.dto.response.OAuth2UserInfo;
+import com.example.jomajomadelivery.account.oauth2.dto.response.OAuth2UserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
