@@ -38,7 +38,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         try {
-            Cookie cookie = userAuthService.authenticateLoginUser(dto);
+            Cookie cookie = userAuthService.authenticateUser(dto);
             response.addCookie(cookie);
             return "redirect:/";
         } catch (IllegalArgumentException ex) {
