@@ -38,7 +38,7 @@ public class AddressService {
     // TODO: 트랜잭션 필요성?
     @Transactional(readOnly = true)
     public AddressResponseDto findById(Long id) {
-        Address foundReview = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
+        Address foundReview = getById(id);
         return AddressResponseDto.toDto(foundReview);
     }
 
@@ -48,13 +48,13 @@ public class AddressService {
 
         // 유저일 경우 배송지들의 주소 반환
 
-//        return addressRepository.findByUserId(userId, pageable);
-        return addressRepository.findByUserId(1L, pageable);
+        Long userId = 1L;
+        return addressRepository.findByUserId(userId, pageable);
     }
 
     @Transactional
     public AddressResponseDto update(Long id, AddressRequestDto dto) {
-        Address foundAddress = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
+        Address foundAddress = getById(id);
         Address newAddress = foundAddress.getUpdatedAddress(dto);
         Address savedAddress = addressRepository.save(newAddress);
         foundAddress.softDelete();
@@ -63,10 +63,13 @@ public class AddressService {
 
     @Transactional
     public void delete(Long id) {
-        // TODO: 유저가 주소의 주인인지 확인
-        // TODO: not found 에러 처리?
-        Address foundAddress = addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id:" + id));
+        // TODO: 유저가 주소의 주인인지 확인?
+        Address foundAddress = getById(id);
         // TODO: 주소가 고아라면 -> 이 주소를 참조하는 오더가 하나도 없다면 -> Hard Delete?
         foundAddress.softDelete();
+    }
+
+    private Address getById(Long id) {
+        return addressRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such address id: " + id));
     }
 }
