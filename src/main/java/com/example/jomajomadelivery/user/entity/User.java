@@ -30,17 +30,18 @@ public class User extends BaseEntity {
 
     private String providerId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String nickName;
 
+    @Column(nullable = false)
     private String phoneNumber;
 
     @OneToMany(
