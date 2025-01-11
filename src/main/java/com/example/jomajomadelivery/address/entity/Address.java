@@ -75,4 +75,8 @@ public class Address extends BaseEntity {
     private <T> T coalesce(T var1, T var2) {
         return var1 == null ? var2 : var1;
     }
+
+    public String toString() {
+        return zipcode + state + city + street + detailedAddress;
+    }
 }
