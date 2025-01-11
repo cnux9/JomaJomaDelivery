@@ -41,8 +41,8 @@ public class ReviewController {
             Pageable pageable,
             Model model
     ) {
-        model.addAttribute("storeId",storeId);
-        model.addAttribute("reviews",reviewService.findAllById(storeId, minRating, maxRating, pageable));
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("reviews", reviewService.findAllById(storeId, minRating, maxRating, pageable));
         return "ReviewList";
     }
 
