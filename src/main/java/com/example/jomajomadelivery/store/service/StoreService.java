@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.store.service;
 
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
 import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.address.entity.EntityType;
@@ -31,9 +32,12 @@ public class StoreService {
     private final AddressRepository addressRepository;
     private final ImageHandler imageHandler;
 
-    public void addStore(StoreRequestDto dto,Long userId) {
-        User user = userRepository.findById(userId).get();
+    public void addStore(StoreRequestDto dto) {
+//        User user = userRepository.findById(userId).get();
+        SignUpUserDto signUpUserDto = new SignUpUserDto(null,"aa","dd","dd","dd","","","","","","","","",Role.ROLE_SELLER);
+        User user = User.createUser(signUpUserDto);
         userRepository.save(user);
+
 
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
