@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.store.controller;
 
+import com.example.jomajomadelivery.common.aop.account.CurrentUserId;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
@@ -23,9 +24,9 @@ public class StoreController {
     private final StoreService storeService;
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
 
-        @PostMapping("/new")
-    public String addStore(@Valid @ModelAttribute StoreRequestDto dto) {
-        storeService.addStore(dto);
+    @PostMapping("/new")
+    public String addStore(@Valid @ModelAttribute StoreRequestDto dto, @CurrentUserId Long userId) {
+        storeService.addStore(dto,userId);
         return "redirect:/stores/seller";
     }
 //    @PostMapping("/new")
@@ -70,7 +71,7 @@ public class StoreController {
         return "/seller/store/UpdateStoreForm";
     }
 
-//    @PatchMapping("/{store_id}")
+    //    @PatchMapping("/{store_id}")
 //    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
 //                                                        UpdateStoreRequestDto dto) {
 //        StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
@@ -78,7 +79,7 @@ public class StoreController {
 //    }
     @PatchMapping("/{store_id}")
     public String updateStore(@PathVariable Long store_id,
-                                                        UpdateStoreRequestDto dto) {
+                              UpdateStoreRequestDto dto) {
         System.out.println(dto.description());
         StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
         return "redirect:/stores/seller";
