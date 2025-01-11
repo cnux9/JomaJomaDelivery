@@ -29,13 +29,7 @@ public class ReviewService {
 
     @Transactional
     public ReviewResponseDto create(Long storeId, ReviewCreateRequestDto dto) {
-        if (dto.rating()<1 || 5<dto.rating()) {
-            throw new CustomException(ReviewErrorCode.RATING_NOT_VALID);
-        }
-
-        if (dto.contents().length()>200) {
-            throw new CustomException(ReviewErrorCode.CONTENTS_LENGTH_NOT_VALID);
-        }
+        validateDto(dto.rating(), dto.contents());
 
         // 현재 로그인된 유저 -> 리뷰 작성자
         // FIXME: 실제 로그인된 userId값으로 대체
@@ -60,35 +54,36 @@ public class ReviewService {
         return ReviewResponseDto.toDto(savedReview);
     }
 
-    @Transactional(readOnly = true)
-    public ReviewResponseDto findById(Long id) {
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
-        return ReviewResponseDto.toDto(foundReview);
-    }
-
     public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
         return reviewRepository.findByStoreId(storeId, pageable);
     }
 
     @Transactional
     public ReviewResponseDto update(Long id, ReviewUpdateRequestDto dto) {
-        if (dto.rating()<1 || 5<dto.rating()) {
-            throw new CustomException(ReviewErrorCode.RATING_NOT_VALID);
-        }
+        validateDto(dto.rating(), dto.contents());
+        Review foundReview = getById(id);
+        foundReview.update(dto);
+        return ReviewResponseDto.toDto(foundReview);
+    }
 
-        if (dto.contents().length()>200) {
+    private Review getById(Long id) {
+        return reviewRepository.findById(id).orElseThrow(() -> new CustomException(ReviewErrorCode.REVIEW_NOT_FOUND));
+    }
+
+    private static void validateDto(Integer rating, String contents) {
+        if (contents.length()>200) {
             throw new CustomException(ReviewErrorCode.CONTENTS_LENGTH_NOT_VALID);
         }
 
-        Review foundReview = reviewRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id));
-        foundReview.update(dto);
-        return ReviewResponseDto.toDto(foundReview);
+        if (rating<1 || 5< rating) {
+            throw new CustomException(ReviewErrorCode.RATING_NOT_VALID);
+        }
     }
 
     @Transactional
     public void delete(Long id) {
         if (!reviewRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such review id: " + id);
+            throw new CustomException(ReviewErrorCode.REVIEW_NOT_FOUND);
         }
         reviewRepository.deleteById(id);
     }
