@@ -1,8 +1,8 @@
-package com.example.jomajomadelivery.auth.controller;
+package com.example.jomajomadelivery.account.auth.controller;
 
-import com.example.jomajomadelivery.auth.dto.request.LoginUserDto;
-import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
-import com.example.jomajomadelivery.auth.service.UserAuthService;
+import com.example.jomajomadelivery.account.auth.dto.request.LoginUserDto;
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.auth.service.UserAuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthController {
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("loginUserForm", LoginUserDto.empty());
-        return "auth/login";
+        return "account/login";
     }
 
     /**
@@ -44,7 +44,7 @@ public class AuthController {
         } catch (IllegalArgumentException ex) {
             model.addAttribute("loginUserForm", LoginUserDto.empty());
             model.addAttribute("errorMessage", ex.getMessage());
-            return "auth/login";
+            return "account/login";
         }
     }
 
@@ -54,7 +54,7 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUpPage(Model model) {
         model.addAttribute("userSignUp", SignUpUserDto.empty());
-        return "auth/signup";
+        return "account/signup";
     }
 
     /**

@@ -1,7 +1,7 @@
-package com.example.jomajomadelivery.account.auth.controller;
+package com.example.jomajomadelivery.account.oauth2.controller;
 
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
-import com.example.jomajomadelivery.account.auth.oauth2.SocialProvider;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +26,6 @@ public class SocialAuthController {
         model.addAttribute("socialType", socialType);
         model.addAttribute("providerId", providerId);
         model.addAttribute("isSocial", true);
-        return "auth/signup";
+        return "account/signup";
     }
 }
