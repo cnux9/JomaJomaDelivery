@@ -43,7 +43,7 @@ public class OrdersService {
 
     @AfterReturning(pointcut = "ordersServicePointcut()",returning = "result")
     public void logOrderActivity(Object result) {
-        if (result instanceof Orders order) {
+        if (result instanceof Order order) {
             log.info("Order Log - 상태: {}, 요청 시각: {}, 가게 ID: {}, 주문 ID: {}",
                     order.getStatus(),
                     LocalTime.now(),
@@ -53,12 +53,10 @@ public class OrdersService {
     }
 
     //Todo:: User, Store, Cart, Address 주입 필요
-    public OrdersResponseDto createOrder() {
+    public OrderResponseDto createOrder() {
         User user = userRepository.findById(1L).get();
         Store store = storeRepository.findById(1L).get();
         Cart cart = cartRepository.findById(1L).get();
-        User user = cart.getUser();
-        Store store = cart.getItems().get(0).getMenu().getStore();
         Address address = user.getAddresses().get(0);
 
         throwIfCartIsEmpty(cart);
@@ -83,7 +81,7 @@ public class OrdersService {
     }
 
     @Transactional
-    public OrdersResponseDto updateOrder(Long orderId) {
+    public OrderResponseDto updateOrder(Long orderId) {
         // FIXME:
         User loginUser = userRepository.getReferenceById(1L);
         if (loginUser.getRole().equals(Role.ROLE_USER)) {
@@ -97,7 +95,7 @@ public class OrdersService {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
-        return new OrdersResponseDto(orders.getStatus(), orders.getAddress());
+        return new OrderResponseDto(order.getStatus(), order.getAddress().toString());
     }
 
     public void delete(Long orderId) {

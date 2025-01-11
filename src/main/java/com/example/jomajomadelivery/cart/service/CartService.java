@@ -31,6 +31,7 @@ public class CartService {
         Cart foundCart = foundOptionalCart.orElseGet(() ->
                 cartRepository.save(Cart.newCart(user))
         );
+        return CartResponseDto.toDto(foundCart);
     }
 
     @Transactional(readOnly = true)
