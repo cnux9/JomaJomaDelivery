@@ -54,8 +54,8 @@ public class ReviewService {
         return ReviewResponseDto.toDto(savedReview);
     }
 
-    public Page<ReviewResponseDto> findAllById(Long storeId, Pageable pageable) {
-        return reviewRepository.findByStoreId(storeId, pageable);
+    public Page<ReviewResponseDto> findAllById(Long storeId, Integer minRating, Integer maxRating, Pageable pageable) {
+        return reviewRepository.findByStoreId(storeId, minRating, maxRating, pageable);
     }
 
     @Transactional
