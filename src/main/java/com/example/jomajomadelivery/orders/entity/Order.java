@@ -15,7 +15,7 @@ import org.apache.coyote.BadRequestException;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
-public class Orders extends BaseEntity {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +41,8 @@ public class Orders extends BaseEntity {
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    public static Orders newOrders(User user, Store store, Cart cart, Address address) {
-        return Orders.builder()
+    public static Order newOrders(User user, Store store, Cart cart, Address address) {
+        return Order.builder()
                 .user(user)
                 .store(store)
                 .cart(cart)
@@ -53,13 +53,15 @@ public class Orders extends BaseEntity {
 
     public void updateStatus() throws BadRequestException {
         if(this.status==Status.ORDERED) {
-            this.status=Status.InProgress;
+            this.status=Status.IN_PROGRESS;
         }
-        if(this.status==Status.InProgress) {
+        if(this.status==Status.IN_PROGRESS) {
             this.status=Status.DELIVERED;
         }
         if(this.status==Status.DELIVERED) {
             throw new BadRequestException("이미 배달이 완료된 주문입니다.");
+//            TODO: CustomException으로 리팩토링
+//            throw new CustomeException(OrderErrorCode.ALREADY_COMPLETE_ORDER);
         }
     }
 }

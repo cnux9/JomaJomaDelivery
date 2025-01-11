@@ -2,6 +2,6 @@ package com.example.jomajomadelivery.orders.entity;
 
 public enum Status {
     ORDERED,
-    InProgress,
+    IN_PROGRESS,
     DELIVERED
 }
