@@ -35,7 +35,7 @@ public class StoreService {
     public void addStore(StoreRequestDto dto) {
 //        User user = userRepository.findById(userId).get();
         SignUpUserDto signUpUserDto = new SignUpUserDto(null,"aa","dd","dd","dd","","","","","","","","",Role.ROLE_SELLER);
-        User user = User.createUser(signUpUserDto);
+        User user = User.createUser(signUpUserDto, "dd", "dd");
         userRepository.save(user);
 
 

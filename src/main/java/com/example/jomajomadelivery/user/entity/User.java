@@ -57,19 +57,12 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    public static User createUser(SignUpUserDto dto) {
+    public static User createUser(SignUpUserDto dto, String email, String password) {
         return User.builder()
                 .socialType(dto.socialType())
                 .providerId(dto.providerId())
-                .email(
-                        Email.generateEmail(dto.email())
-                                .getEmailText()
-                )
-                .password(
-                        Password.validatePassword(dto.password())
-                                .generateEncryptedPassword()
-                                .getStringPassword()
-                )
+                .email(email)
+                .password(password)
                 .name(dto.name())
                 .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
