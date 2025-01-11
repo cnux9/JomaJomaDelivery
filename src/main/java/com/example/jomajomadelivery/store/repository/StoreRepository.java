@@ -12,11 +12,6 @@ public interface StoreRepository extends JpaRepository<Store,Long> {
     Page<Store> findAll(Pageable pageable);
     Page<Store> findAllByUser(User user, Pageable pageable);
 
-//    @Query("""
-//        SELECT
-//        FROM Store s
-//        WHERE s.name = :storeName
-//    """)
 
     @Query("""
         SELECT COUNT(*)

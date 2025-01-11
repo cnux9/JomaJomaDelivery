@@ -65,15 +65,15 @@ public class Store extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    public static Store addStore(User user, StoreRequestDto dto){
+    public static Store addStore(User user, StoreRequestDto dto,String imgPath){
         return Store.builder()
                 .user(user)
                 .category(Category.valueOf(dto.category()))
                 .name(dto.name())
                 .description(dto.description())
-                .address(dto.address())
+                .address(dto.fullAddress())
                 .phoneNumber(dto.phoneNumber())
-                .imgPath(dto.imgPath())
+                .imgPath(imgPath)
                 .openTime(dto.openTime())
                 .closeTime(dto.closeTime())
                 .minOrderPrice(dto.minOrderPrice())

@@ -4,49 +4,284 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa; /* 연한 회색 배경 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #ffffff; /* 흰색 배경 */
+            border: 1px solid #ddd; /* 부드러운 테두리 */
+            border-radius: 10px;
+            padding: 50px;
+            width: 400px; /* 폼 길이 조정 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #333; /* 텍스트 색상 */
+            font-size: 14px;
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 30px; /* 글씨 크기 키움 */
+            color: #007bff; /* 제목 색상 */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-container input,
+        .form-container select,
+        .form-container textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc; /* 입력창 테두리 */
+            font-size: 14px;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff; /* 버튼 배경색 */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px; /* 버튼 글씨 크기 */
+        }
+
+        .form-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-row input {
+            flex: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
+        }
+
+        .modal-content h2 {
+            margin: 0 0 15px 0;
+        }
+
+        .modal-content .input-group {
+            margin-bottom: 12px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .modal-content .modal-buttons {
+            text-align: right;
+        }
+
+        .modal-content .modal-buttons button {
+            padding: 8px 12px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .modal-content .save-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .modal-content .cancel-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<h1>Create New Store</h1>
-<form action="/stores/new" method="post">
-    <label for="category">Category:</label><br>
-    <select id="category" name="category" required>
-        <option value="">--Select Category--</option>
-        <option value="KOREAN">한식</option>
-        <option value="CHINESE">중식</option>
-        <option value="JAPANESE">일식</option>
-        <option value="PIZZA">피자</option>
-        <option value="FAST_FOOD">패스트푸트</option>
-        <option value="CAFE">카페/디저트</option>
-    </select><br><br>
+<div class="form-container">
+    <h1>Create Store</h1>
+    <form action="/stores/new" method="post" enctype="multipart/form-data">
+        <label for="name">가게 이름</label>
+        <input type="text" id="name" name="name" required placeholder="가게 이름을 입력해주세요">
 
-    <label for="name">Store Name:</label><br>
-    <input type="text" id="name" name="name" required placeholder="Enter store name"><br><br>
+        <div class="input-row">
+            <div>
+                <label for="openTime">오픈 시간</label>
+                <input type="time" id="openTime" name="openTime" required>
+            </div>
+            <div>
+                <label for="closeTime">마감 시간</label>
+                <input type="time" id="closeTime" name="closeTime" required>
+            </div>
+        </div>
 
-    <label for="description">Description:</label><br>
-    <textarea id="description" name="description" placeholder="Enter store description"></textarea><br><br>
+        <label for="category">종목(카테고리)</label>
+        <select id="category" name="category" required>
+            <option value="" disabled selected>--선택해주세요--</option>
+            <option value="KOREAN">한식</option>
+            <option value="CHINESE">중식</option>
+            <option value="JAPANESE">일식</option>
+            <option value="PIZZA">피자</option>
+            <option value="CAFE">카페</option>
+        </select>
 
-    <label for="address">Address:</label><br>
-    <input type="text" id="address" name="address" required placeholder="Enter store address"><br><br>
+        <div class="input-row">
+            <div>
+                <label for="deliveryPrice">기본 배달팁 (원)</label>
+                <input type="number" id="deliveryPrice" name="deliveryPrice" placeholder="0" required>
+            </div>
+            <div>
+                <label for="minOrderPrice">최소 주문금액 (원)</label>
+                <input type="number" id="minOrderPrice" name="minOrderPrice" placeholder="0" required>
+            </div>
+        </div>
 
-    <label for="phoneNumber">Phone Number:</label><br>
-    <input type="text" id="phoneNumber" name="phoneNumber" required placeholder="Enter phone number"><br><br>
+        <label for="description">가게 설명</label>
+        <textarea id="description" name="description" required placeholder="가게 설명을 입력해주세요"></textarea>
 
-    <label for="imgPath">Image Path:</label><br>
-    <input type="text" id="imgPath" name="imgPath" placeholder="Enter image path"><br><br>
+        <label for="fullAddress">가게 주소</label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="fullAddress" name="fullAddress" placeholder="주소를 입력해주세요" readonly required>
+            <button type="button" onclick="openModal()">주소 입력</button>
+        </div>
 
-    <label for="openTime">Open Time:</label><br>
-    <input type="time" id="openTime" name="openTime"><br><br>
+        <input type="hidden" id="hiddenZipcode" name="zipcode">
+        <input type="hidden" id="hiddenState" name="state">
+        <input type="hidden" id="hiddenCity" name="city">
+        <input type="hidden" id="hiddenStreet" name="street">
+        <input type="hidden" id="hiddenDetailAddress" name="detailAddress">
 
-    <label for="closeTime">Close Time:</label><br>
-    <input type="time" id="closeTime" name="closeTime"><br><br>
+        <label for="phoneNumber">가게 전화</label>
+        <input type="text" id="phoneNumber" name="phoneNumber" required placeholder="전화번호를 입력해주세요">
 
-    <label for="minOrderPrice">Minimum Order Price:</label><br>
-    <input type="number" id="minOrderPrice" name="minOrderPrice" placeholder="Enter minimum order price"><br><br>
+        <label for="img">가게 대표 이미지(최대 1MB, 이미지 형식만 허용)</label>
+        <input type="file" id="img" name="img" accept="image/*" required>
 
-    <label for="deliveryPrice">Delivery Price:</label><br>
-    <input type="number" id="deliveryPrice" name="deliveryPrice" placeholder="Enter delivery price"><br><br>
+        <button type="submit">가게 생성하기</button>
+    </form>
+</div>
 
-    <button type="submit">Create Store</button>
-</form>
+<div class="modal" id="addressModal">
+    <div class="modal-content">
+        <h2>주소 입력</h2>
+        <div class="input-group">
+            <label for="zipcode">우편번호</label>
+            <input type="text" id="zipcode" placeholder="우편번호를 입력해주세요" required>
+        </div>
+        <div class="input-group">
+            <label for="state">도/시</label>
+            <input type="text" id="state" placeholder="예) 서울특별시" required>
+        </div>
+        <div class="input-group">
+            <label for="city">시/군/구</label>
+            <input type="text" id="city" placeholder="예) 강남구" required>
+        </div>
+        <div class="input-group">
+            <label for="street">도로명/지번</label>
+            <input type="text" id="street" placeholder="예) 테헤란로44길 8" required>
+        </div>
+        <div class="input-group">
+            <label for="detailAddress">상세주소</label>
+            <input type="text" id="detailAddress" placeholder="예) 황금빌딩 302호" required>
+        </div>
+        <div class="modal-buttons">
+            <button type="button" class="save-btn" onclick="saveAddress()">Save</button>
+            <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById('addressModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+        document.getElementById('addressModal').style.display = 'none';
+    }
+
+    function saveAddress() {
+        const zipcode = document.getElementById('zipcode').value;
+        const state = document.getElementById('state').value;
+        const city = document.getElementById('city').value;
+        const street = document.getElementById('street').value;
+        const detailAddress = document.getElementById('detailAddress').value;
+
+        const fullAddress = `${zipcode} ${state} ${city} ${street} ${detailAddress}`;
+        document.getElementById('fullAddress').value = fullAddress;
+
+        document.getElementById('hiddenZipcode').value = zipcode;
+        document.getElementById('hiddenState').value = state;
+        document.getElementById('hiddenCity').value = city;
+        document.getElementById('hiddenStreet').value = street;
+        document.getElementById('hiddenDetailAddress').value = detailAddress;
+        closeModal();
+    }
+
+    document.getElementById("img").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+
+        // 파일이 선택되지 않은 경우 처리
+        if (!file) {
+            alert("파일을 선택해주세요.");
+            return;
+        }
+        // 형식 제한: 이미지 파일 (JPEG, PNG 등)
+        const allowedTypes = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+        if (!allowedTypes.includes(file.type)) {
+            alert("이미지 형식은 JPG, PNG, GIF, 또는 WEBP만 가능합니다.");
+            event.target.value = ""; // 파일 입력 초기화
+            return;
+        }
+
+        // 용량 제한: 1MB
+        const maxSize = 1 * 1024 * 1024; // 1MB
+        if (file.size > maxSize) {
+            alert("이미지 용량은 1MB를 초과할 수 없습니다.");
+            event.target.value = ""; // 파일 입력 초기화
+            return;
+        }
+
+    });
+</script>
 </body>
 </html>

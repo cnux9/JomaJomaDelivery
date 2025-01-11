@@ -70,7 +70,7 @@ public class StoreController {
         return "/seller/store/UpdateStoreForm";
     }
 
-//    @PatchMapping("/{store_id}")
+    //    @PatchMapping("/{store_id}")
 //    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
 //                                                        UpdateStoreRequestDto dto) {
 //        StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
@@ -78,7 +78,7 @@ public class StoreController {
 //    }
     @PatchMapping("/{store_id}")
     public String updateStore(@PathVariable Long store_id,
-                                                        UpdateStoreRequestDto dto) {
+                              UpdateStoreRequestDto dto) {
         System.out.println(dto.description());
         StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
         return "redirect:/stores/seller";

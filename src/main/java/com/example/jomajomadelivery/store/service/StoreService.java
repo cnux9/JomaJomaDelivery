@@ -1,7 +1,11 @@
 package com.example.jomajomadelivery.store.service;
 
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
-import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
+import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.entity.EntityType;
+import com.example.jomajomadelivery.address.repository.AddressRepository;
+import com.example.jomajomadelivery.common.ImageHandler;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
@@ -14,7 +18,6 @@ import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,18 +29,28 @@ import org.springframework.web.server.ResponseStatusException;
 public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
+    private final ImageHandler imageHandler;
+
     public void addStore(StoreRequestDto dto) {
-        // 테스트용 유저 생성
-        SignUpUserDto signUpUserDto = new SignUpUserDto(SocialProvider.NAVER,"aa","wait@kbs.co.kr","1111","박대기","대기박","010-0000-0000","친구집","010-555","경기도","하남시", "위례중앙로", "아파트아파트", Role.ROLE_SELLER);
+//        User user = userRepository.findById(userId).get();
+        SignUpUserDto signUpUserDto = new SignUpUserDto(null,"aa","dd","dd","dd","","","","","","","","",Role.ROLE_SELLER);
         User user = User.createUser(signUpUserDto);
         userRepository.save(user);
+
 
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
 
-        Store store = Store.addStore(user,dto);
-//        //Todo dto에서 세부 주소를 따로 받고 store 엔티티 수정해야함.
-        storeRepository.save(store);
+        String imgPath = imageHandler.save(dto.img());
+        Store store = Store.addStore(user, dto, imgPath);
+        store = storeRepository.save(store);
+        AddressRequestDto addressRequestDto = new AddressRequestDto(
+                EntityType.STORE, store.getStoreId(), store.getName(),
+                dto.zipcode(), dto.state(), dto.city(), dto.street(),
+                dto.detailAddress());
+        Address address = Address.createAddress(addressRequestDto);
+        addressRepository.save(address);
     }
 
     //Todo: 요청에따라 필터링
@@ -73,16 +86,17 @@ public class StoreService {
     @Transactional
     public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable) {
         User user = userRepository.findById(1L).get();
-        PageImpl<StoreResponseDto> storeList = new PageImpl<>(storeRepository.findAllByUser(user,pageable).stream().filter(s -> !s.getIsDeleted()).map(StoreResponseDto::toDTO).toList());
+        Page<Store> storeList = storeRepository.findAllByUser(user, pageable);
         // Todo: 빈 배열일 경우 에러 던지깅
 
-        return storeList;
+        return storeList.map(StoreResponseDto::toDTO);
     }
+
     private Store getStore(Long storeId) {
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "없슈"));
         if (store.getIsDeleted()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "없슈");
         }
         return store;
     }
