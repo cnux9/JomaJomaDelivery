@@ -1,12 +1,10 @@
 package com.example.jomajomadelivery.store.service;
 
-import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
 import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.address.entity.EntityType;
 import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.common.ImageHandler;
-import com.example.jomajomadelivery.common.aop.account.CurrentUserId;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
@@ -49,7 +47,6 @@ public class StoreService {
                 dto.detailAddress());
         Address address = Address.createAddress(addressRequestDto);
         addressRepository.save(address);
-
     }
 
     //Todo: 요청에따라 필터링

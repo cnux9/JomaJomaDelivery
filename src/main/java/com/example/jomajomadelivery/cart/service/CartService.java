@@ -21,7 +21,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
 
-    public CartResponseDto create() {
+    public CartResponseDto add() {
         // TODO
         Long userId = 1L;
 //        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND));
@@ -31,7 +31,6 @@ public class CartService {
         Cart foundCart = foundOptionalCart.orElseGet(() ->
                 cartRepository.save(Cart.newCart(user))
         );
-        return CartResponseDto.toDto(foundCart);
     }
 
     @Transactional(readOnly = true)
@@ -43,7 +42,6 @@ public class CartService {
     public Cart getByCartId(Long cartId) {
         return cartRepository.findCartByCartIdAndStatus(cartId, CartStatus.ORDERING).orElseThrow(() -> new CustomException(CartErrorCode.CART_NOT_FOUND));
     }
-
 
     @Transactional
     public void delete(Long cartId) {

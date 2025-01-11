@@ -16,7 +16,7 @@ public class OrdersController {
     private final OrdersService ordersService;
 
     @PostMapping
-    public ResponseEntity<OrderResponseDto> create() {
+    public ResponseEntity<OrdersResponseDto> createOrder() {
         return new ResponseEntity<>(ordersService.create(), HttpStatus.CREATED);
     }
 
@@ -26,8 +26,8 @@ public class OrdersController {
     }
 
     @PatchMapping("/{orderId}")
-    public void update(@PathVariable Long orderId) {
-        ordersService.update(orderId);
+    public ResponseEntity<OrdersResponseDto> updateOrder(@PathVariable Long orderId) {
+        return ResponseEntity.ok(ordersService.updateOrder(orderId));
     }
 
     @DeleteMapping("/{orderId}")

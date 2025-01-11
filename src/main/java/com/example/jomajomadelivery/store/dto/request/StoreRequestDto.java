@@ -6,8 +6,6 @@ import java.time.LocalTime;
 
 public record StoreRequestDto(
         String category,
-        String name,
-        String description,
         String fullAddress,
         String zipcode,
         String state,
@@ -16,6 +14,8 @@ public record StoreRequestDto(
         String detailAddress,
         String phoneNumber,
         MultipartFile img,
+        String name,
+        String description,
         LocalTime openTime,
         LocalTime closeTime,
         Integer minOrderPrice,
