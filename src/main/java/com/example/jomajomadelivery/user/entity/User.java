@@ -1,8 +1,11 @@
 package com.example.jomajomadelivery.user.entity;
 
 import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.user.domain.Email;
+import com.example.jomajomadelivery.user.domain.Password;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.common.BaseEntity;
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,6 +26,12 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "social_type")
+    private SocialProvider socialType;
+
+    private String providerId;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -31,10 +40,6 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String name;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Role role;
 
     private String nickName;
 
@@ -47,17 +52,31 @@ public class User extends BaseEntity {
     )
     private List<Address> addresses = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
     public static User createUser(SignUpUserDto dto) {
         return User.builder()
-                .email(dto.email())
-                .password(dto.password())
+                .socialType(dto.socialType())
+                .providerId(dto.providerId())
+                .email(
+                        Email.generateEmail(dto.email())
+                                .getEmailText()
+                )
+                .password(
+                        Password.validatePassword(dto.password())
+                                .generateEncryptedPassword()
+                                .getStringPassword()
+                )
                 .name(dto.name())
-                .role(Role.USER)
-                .nickName(dto.nickname())
+                .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
+                // 주소 입력 필요
+                .role(dto.role())
                 .isDeleted(false)
                 .build();
     }

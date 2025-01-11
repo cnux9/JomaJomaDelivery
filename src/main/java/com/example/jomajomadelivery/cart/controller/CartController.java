@@ -1,14 +1,12 @@
 package com.example.jomajomadelivery.cart.controller;
 
-import com.example.jomajomadelivery.cart.dto.requestDto.AddCartRequestDto;
-import com.example.jomajomadelivery.cart.entity.Cart;
+import com.example.jomajomadelivery.cart.dto.request.AddCartRequestDto;
+import com.example.jomajomadelivery.cart.dto.response.CartResponseDto;
 import com.example.jomajomadelivery.cart.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,13 +15,21 @@ public class CartController {
     private final CartService cartService;
 
     @PostMapping
-    public String addCart(@RequestBody AddCartRequestDto dto, Model model) {
-        Cart cart = cartService.addCart();
-        model.addAttribute("dto", dto);
-        model.addAttribute("cart", cart);
-        System.out.println("cart "+dto.menu_id());
-        System.out.println("cart "+dto.quantity());
+    public String add(@RequestBody AddCartRequestDto requestDto, Model model) {
+        CartResponseDto responseDto = cartService.create();
+        model.addAttribute("dto", requestDto);
+        model.addAttribute("cart", responseDto);
+//        System.out.println("cart " + requestDto.menuId());
+//        System.out.println("cart " + requestDto.quantity());
         return "forward:/items";
+    }
+
+    @GetMapping("/{cartId}")
+    public String find(@PathVariable Long cartId, Model model) {
+        CartResponseDto responseDto = cartService.find(cartId);
+        model.addAttribute("cart", responseDto);
+        // TODO:
+        return "/carts";
     }
 
 }

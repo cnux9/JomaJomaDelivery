@@ -10,7 +10,7 @@ public record ReviewResponseDto(
 //        Long orderId,
         Long userId,
         String contents,
-        int rating,
+        Integer rating,
         String imgPath,
         LocalDateTime createdAt
 ) {
@@ -21,7 +21,7 @@ public record ReviewResponseDto(
                 savedReview.getStore().getStoreId(),
 //                savedReview.getOrder().getId(),
 //                savedReview.getUser().getUserId(),
-                savedReview.getUserId(),
+                savedReview.getUser().getUserId(),
                 savedReview.getContents(),
                 savedReview.getRating(),
                 savedReview.getImgPath(),

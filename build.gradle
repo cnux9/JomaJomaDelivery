@@ -31,6 +31,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-devtools'
+
+    // jwt
+    implementation "io.jsonwebtoken:jjwt-api:0.12.6"
+    implementation "io.jsonwebtoken:jjwt-impl:0.12.6"
+    runtimeOnly "io.jsonwebtoken:jjwt-gson:0.12.6"
 
     // thymeleaf
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
@@ -38,8 +45,6 @@ dependencies {
     // lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
 
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'

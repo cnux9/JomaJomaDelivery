@@ -23,16 +23,16 @@ public class StoreController {
     private final StoreService storeService;
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
 
-    //    @PostMapping("/new")
-//    public ResponseEntity<Void> addStore(@Valid @ModelAttribute StoreRequestDto dto) {
+        @PostMapping("/new")
+    public String addStore(@Valid @ModelAttribute StoreRequestDto dto) {
+        storeService.addStore(dto);
+        return "redirect:/stores/seller";
+    }
+//    @PostMapping("/new")
+//    public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto) {
 //        storeService.addStore(dto);
 //        return ResponseEntity.ok().build();
 //    }
-    @PostMapping("/new")
-    public ResponseEntity<Void> addStore(@Valid @RequestBody StoreRequestDto dto) {
-        storeService.addStore(dto);
-        return ResponseEntity.ok().build();
-    }
 
     @GetMapping("/new")
     public String addStoreForm() {
@@ -55,7 +55,7 @@ public class StoreController {
     public String findAllStoreBySeller(Pageable pageable, Model model) {
         Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable);
         model.addAttribute("storeList", storeList);
-        return "storesview";
+        return "/seller/store/storesview";
     }
 
     @GetMapping("/{store_id}")
@@ -70,11 +70,18 @@ public class StoreController {
         return "/seller/store/UpdateStoreForm";
     }
 
+//    @PatchMapping("/{store_id}")
+//    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
+//                                                        UpdateStoreRequestDto dto) {
+//        StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
+//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+//    }
     @PatchMapping("/{store_id}")
-    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable Long store_id,
+    public String updateStore(@PathVariable Long store_id,
                                                         UpdateStoreRequestDto dto) {
+        System.out.println(dto.description());
         StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+        return "redirect:/stores/seller";
     }
 
     @DeleteMapping("/{store_id}")

@@ -1,0 +1,50 @@
+/* 배경 색상과 스타일 */
+body {
+    background: linear-gradient(135deg, #f0f0f0, #d6eaf8);
+}
+
+/* 카드 스타일 */
+.card {
+    border-radius: 10px;
+}
+
+/* 폼 입력 스타일 */
+.form-control {
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+/* 버튼 스타일 */
+.btn {
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* 소셜 로그인 섹션 스타일 */
+.d-flex.flex-column {
+    margin-top: 20px;
+}
+
+.d-flex.flex-column a {
+    text-decoration: none;
+    width: fit-content; /* 이미지 크기에 맞춤 */
+    margin-bottom: 10px; /* 이미지 간격 */
+}
+
+.d-flex.flex-column img {
+    border-radius: 5px; /* 이미지에 약간의 둥근 효과 */
+    transition: transform 0.3s ease-in-out; /* 호버 효과를 위한 부드러운 전환 */
+}
+
+.d-flex.flex-column img:hover {
+    transform: scale(1.1); /* 호버 시 이미지 확대 */
+}
+
+.is-invalid {
+    border-color: red !important;
+}
+
+.invalid-feedback {
+    color: red;
+    font-size: 0.875rem;
+}
