@@ -25,8 +25,8 @@ public class TokenProvider {
 
     public String createToken(Long id, Role role) {
         HashMap<String, Object> claims = new HashMap<>();
-        claims.put("id", id);
-        claims.put("roles", role);
+        claims.put("id", String.valueOf(id));
+        claims.put("role", String.valueOf(role));
 
         return Jwts.builder()
                 .claims(claims)
@@ -37,21 +37,25 @@ public class TokenProvider {
     }
 
     public Long getUserId(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("id", Long.class);
+        return Long.parseLong(
+                Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .get("id", String.class)
+        );
     }
 
     public Role getRole(String token) {
-        return  Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .get("role", Role.class);
+        return Role.valueOf(
+                Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload()
+                        .get("role", String.class)
+        );
     }
 
     /**
