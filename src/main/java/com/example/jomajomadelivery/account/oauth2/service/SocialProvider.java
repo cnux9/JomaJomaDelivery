@@ -1,7 +1,9 @@
-package com.example.jomajomadelivery.account.auth.oauth2;
+package com.example.jomajomadelivery.account.oauth2.service;
 
-import com.example.jomajomadelivery.account.auth.dto.response.NaverUserInfoResponse;
-import com.example.jomajomadelivery.account.auth.dto.response.OAuth2UserInfo;
+import com.example.jomajomadelivery.account.oauth2.dto.response.GoogleUserInfoResponse;
+import com.example.jomajomadelivery.account.oauth2.dto.response.KakaoUserInfoResponse;
+import com.example.jomajomadelivery.account.oauth2.dto.response.NaverUserInfoResponse;
+import com.example.jomajomadelivery.account.oauth2.dto.response.OAuth2UserInfo;
 
 import java.util.Map;
 
@@ -15,13 +17,13 @@ public enum SocialProvider {
     KAKAO {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
-            return null;
+            return new KakaoUserInfoResponse(attributes);
         }
     },
     GOOGLE {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
-            return null;
+            return new GoogleUserInfoResponse(attributes);
         }
     };
 
