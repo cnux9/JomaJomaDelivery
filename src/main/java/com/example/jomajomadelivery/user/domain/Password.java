@@ -16,7 +16,7 @@ public class Password {
 
     private Password(String encryptedPassword) {
         if (encryptedPassword == null || encryptedPassword.isEmpty()) {
-//            throw new InvalidPasswordException(HttpStatus.BAD_REQUEST, "Password must not be null or empty");
+            throw new IllegalArgumentException("Password must not be null or empty");
         }
 
         this.stringPassword = encryptedPassword;
@@ -41,7 +41,7 @@ public class Password {
      */
     public static Password validatePassword(String password) {
         if (!pattern.matcher(password).matches()) {
-//            throw new InvalidPasswordException(HttpStatus.BAD_REQUEST, "Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.");
+            throw new IllegalArgumentException("Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.");
         }
         return new Password(password);
     }

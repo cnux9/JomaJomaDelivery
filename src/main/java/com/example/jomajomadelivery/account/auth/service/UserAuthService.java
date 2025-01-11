@@ -2,9 +2,10 @@ package com.example.jomajomadelivery.account.auth.service;
 
 import com.example.jomajomadelivery.account.auth.dto.request.LoginUserDto;
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
-import com.example.jomajomadelivery.account.auth.repository.UserAuthRepository;
 import com.example.jomajomadelivery.account.jwt.TokenProvider;
 import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
+import com.example.jomajomadelivery.account.auth.repository.UserAuthRepository;
+import com.example.jomajomadelivery.user.domain.Email;
 import com.example.jomajomadelivery.user.domain.Password;
 import com.example.jomajomadelivery.user.entity.User;
 import jakarta.servlet.http.Cookie;
@@ -29,7 +30,19 @@ public class UserAuthService {
 
     @Transactional
     public void registerUser(SignUpUserDto dto) {
-        userAuthRepository.save(User.createUser(dto));
+        if (dto.socialType() == null) {
+            String stringPassword = Password.validatePassword(dto.password())
+                    .generateEncryptedPassword()
+                    .getStringPassword();
+
+            String stringEmail = Email.generateEmail(dto.email())
+                    .getEmailText();
+
+            userAuthRepository.save(User.createUser(dto, stringEmail, stringPassword));
+            return;
+        }
+
+        userAuthRepository.save(User.createUser(dto, dto.email(), dto.password()));
     }
 
     public Cookie authenticateUser(LoginUserDto dto) {
@@ -41,6 +54,12 @@ public class UserAuthService {
         }
 
         return createCookie(user);
+    }
+
+    public void emailDuplicate(String email) {
+        if (userAuthRepository.findByEmailAndSocialTypeIsNull(email).isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 이메일 입니다.");
+        }
     }
 
     private Cookie createCookie(User user) {

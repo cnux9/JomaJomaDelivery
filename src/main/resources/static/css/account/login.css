@@ -22,18 +22,20 @@ body {
 
 /* 소셜 로그인 섹션 스타일 */
 .d-flex.flex-column {
-    margin-top: 20px;
+    margin-top: 5px;
 }
 
 .d-flex.flex-column a {
     text-decoration: none;
     width: fit-content; /* 이미지 크기에 맞춤 */
-    margin-bottom: 10px; /* 이미지 간격 */
+    margin-bottom: 3px; /* 이미지 간격 */
 }
 
 .d-flex.flex-column img {
     border-radius: 5px; /* 이미지에 약간의 둥근 효과 */
     transition: transform 0.3s ease-in-out; /* 호버 효과를 위한 부드러운 전환 */
+    height: 45px; /* 모든 이미지의 세로 크기를 동일하게 */
+    width: 180px;
 }
 
 .d-flex.flex-column img:hover {
