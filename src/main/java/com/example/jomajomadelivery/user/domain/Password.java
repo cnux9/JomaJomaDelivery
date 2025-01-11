@@ -1,6 +1,6 @@
-package com.example.jomajomadelivery.auth.domain;
+package com.example.jomajomadelivery.user.domain;
 
-import com.example.jomajomadelivery.auth.util.BCryptUtil;
+import com.example.jomajomadelivery.user.util.BCryptUtil;
 import lombok.Getter;
 
 import java.util.regex.Pattern;

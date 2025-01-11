@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.auth.domain;
+package com.example.jomajomadelivery.user.domain;
 
 import lombok.Getter;
 
