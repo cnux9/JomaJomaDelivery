@@ -26,14 +26,14 @@ public class OrdersController {
     }
 
     @PatchMapping("/{orderId}")
-    public void update(@PathVariable Long orderId) {
-        ordersService.update(orderId);
+    public ResponseEntity<OrderResponseDto> update(@PathVariable Long orderId) {
+        return ResponseEntity.ok(ordersService.update(orderId));
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<Void> delete(@PathVariable Long orderId) {
         ordersService.delete(orderId);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
     }
 
 }

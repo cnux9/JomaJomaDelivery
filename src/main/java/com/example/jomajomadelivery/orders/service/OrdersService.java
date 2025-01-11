@@ -10,26 +10,45 @@ import com.example.jomajomadelivery.orders.entity.Order;
 import com.example.jomajomadelivery.orders.exception.OrderErrorCode;
 import com.example.jomajomadelivery.orders.repository.OrdersRepository;
 import com.example.jomajomadelivery.store.entity.Store;
-import com.example.jomajomadelivery.store.repository.StoreRepository;
 import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 import java.util.NoSuchElementException;
 
+@Slf4j
+@Aspect
 @Service
 @RequiredArgsConstructor
 public class OrdersService {
 
     private final OrdersRepository ordersRepository;
     private final UserRepository userRepository;
-    private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
+
+    @Pointcut("execution(* com.example.jomajomadelivery.orders.service.OrdersService.create(..)) ||" +
+            "execution(* com.example.jomajomadelivery.orders.service.OrdersService.update(..))")
+    public void ordersServicePointcut() {}
+
+    @AfterReturning(pointcut = "ordersServicePointcut()",returning = "result")
+    public void logOrderActivity(Object result) {
+        if (result instanceof Order order) {
+            log.info("Order Log - 상태: {}, 요청 시각: {}, 가게 ID: {}, 주문 ID: {}",
+                    order.getStatus(),
+                    LocalTime.now(),
+                    order.getStore().getStoreId(),
+                    order.getOrderId());
+        }
+    }
 
     //Todo:: User, Store, Cart, Address 주입 필요
     public OrderResponseDto create() {
@@ -60,7 +79,7 @@ public class OrdersService {
     }
 
     @Transactional
-    public void update(Long orderId) {
+    public OrderResponseDto update(Long orderId) {
         // FIXME:
         User loginUser = userRepository.getReferenceById(1L);
         if (loginUser.getRole().equals(Role.ROLE_USER)) {
@@ -74,6 +93,8 @@ public class OrdersService {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
+
+        return OrderResponseDto.toDto(order);
     }
 
     public void delete(Long orderId) {
