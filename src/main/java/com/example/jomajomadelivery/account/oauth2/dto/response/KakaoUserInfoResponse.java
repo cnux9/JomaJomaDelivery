@@ -8,7 +8,7 @@ public class KakaoUserInfoResponse implements OAuth2UserInfo{
 
     private final Map<String, Object> attributes;
 
-    private final SocialProvider socialProvider = SocialProvider.GOOGLE;
+    private final SocialProvider socialProvider = SocialProvider.KAKAO;
 
     public KakaoUserInfoResponse(Map<String, Object> attributes) {
         this.attributes = attributes;
@@ -16,21 +16,21 @@ public class KakaoUserInfoResponse implements OAuth2UserInfo{
 
     @Override
     public SocialProvider getProvider() {
-        return null;
+        return socialProvider;
     }
 
     @Override
     public String getProviderId() {
-        return "";
+        return attributes.get("id").toString();
     }
 
     @Override
     public String getName() {
-        return "";
+        return ((Map<?, ?>) attributes.get("properties")).get("nickname").toString();
     }
 
     @Override
     public String getEmail() {
-        return "";
+        return ((Map<?, ?>) attributes.get("kakao_account")).get("email").toString();
     }
 }
