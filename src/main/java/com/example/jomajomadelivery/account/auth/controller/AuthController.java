@@ -38,7 +38,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         try {
-            Cookie cookie = userAuthService.authenticateUser(dto);
+            Cookie cookie = userAuthService.authenticateLoginUser(dto);
             response.addCookie(cookie);
             return "redirect:/";
         } catch (IllegalArgumentException ex) {
@@ -54,6 +54,8 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUpPage(Model model) {
         model.addAttribute("userSignUp", SignUpUserDto.empty());
+        model.addAttribute("errorMessage", null);
+        model.addAttribute("isSocial", false);
         return "account/signup";
     }
 
@@ -61,9 +63,18 @@ public class AuthController {
      * 회원가입 처리
      */
     @PostMapping("/signup")
-    public String signupProcess(SignUpUserDto dto) {
+    public String signupProcess(SignUpUserDto dto, Model model) {
         log.info("회원가입 폼: {}", dto.toString());
-        userAuthService.registerUser(dto);
-        return "redirect:/login";
+
+        try {
+            userAuthService.emailDuplicate(dto.email());
+            userAuthService.registerUser(dto);
+            return "redirect:/login";
+        } catch (IllegalArgumentException ex) {
+            model.addAttribute("userSignUp", dto);
+            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("isSocial", false);
+            return "account/signup";
+        }
     }
 }
