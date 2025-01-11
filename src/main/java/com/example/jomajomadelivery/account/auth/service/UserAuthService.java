@@ -46,7 +46,7 @@ public class UserAuthService {
     }
 
     public Cookie authenticateUser(LoginUserDto dto) {
-        User user = userAuthRepository.findByEmail(dto.email())
+        User user = userAuthRepository.findByEmailAndSocialTypeIsNull(dto.email())
                 .orElseThrow(() -> new IllegalArgumentException("아이디(로그인 전화번호, 로그인 전용 아이디) 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요."));
 
         if (!Password.generatePassword(user.getPassword()).matchPassword(dto.password())) {
