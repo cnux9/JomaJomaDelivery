@@ -35,6 +35,15 @@ public class ReviewService {
         // FIXME: 실제 로그인된 userId값으로 대체
         Long userId = 1L;
 
+//        if (!orderRepository.existsById(dto.getOrderId())) {
+//            // FIXME: order 쪽 예외로 대체
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user id.");
+//        }
+//        Order orderRef = orderRepository.getReferenceById(dto.getOrderId);
+//        if (!orderRef.getStatus().equals(OrderStatus.COMPLETE)) {
+//            throw new CustomException(ReviewErrorCode.ORDER_NOT_COMPLETE);
+//        }
+
         // 로그인된 사용자로 부터 가져온 ID인데 무슨 경우?
         if (!userRepository.existsById(userId)) {
             // FIXME: user 쪽 예외로 대체
