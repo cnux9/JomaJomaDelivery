@@ -61,7 +61,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**").hasRole("USER") // ROLE_USER 권한만 접근 가능
                         .requestMatchers("/seller/**").hasRole("SELLER") // ROLE_SELLER 권한만 접근 가능
-                        .requestMatchers("/","/login/**","/signup/**" , "/css/**","/js/**" , "/images/**").permitAll() // 해당 요청을 인증 없이 허용
+//                        .requestMatchers("/","/login/**","/signup/**" , "/css/**","/js/**" , "/images/**").permitAll() // 해당 요청을 인증 없이 허용
+                        .requestMatchers("/**","/login/**","/signup/**" , "/css/**","/js/**" , "/images/**").permitAll() // 해당 요청을 인증 없이 허용
                         .anyRequest().authenticated()
                 );
 

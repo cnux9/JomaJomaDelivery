@@ -11,16 +11,11 @@ import org.springframework.data.repository.query.Param;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     // Order 추가될 경우
     //    r.order.orderId,
-
-    // USER, STORE 객체로 대체
-    //            r.store.storeId,
-    //            r.user.userId,
-//        ) FROM Review r WHERE r.store.storeId = :storeId""")
     @Query("""
         SELECT new com.example.jomajomadelivery.review.dto.response.ReviewResponseDto(
             r.reviewId,
             r.store.storeId,
-            r.userId,
+            r.user.userId,
             r.contents,
             r.rating,
             r.imgPath,

@@ -1,9 +1,12 @@
 package com.example.jomajomadelivery.util;
 
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.entity.EntityType;
 import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
+import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 
 import java.time.LocalTime;
@@ -11,15 +14,14 @@ import java.time.LocalTime;
 public class DumpDataFactory {
 
     public static Review review() {
-        return review(store());
+        return review(store(), user());
     }
 
-    public static Review review(Store store) {
+    public static Review review(Store store, User user) {
         return Review.builder()
-//                .user(user)
-                .userId(1L)
+                .reviewId(1L)
+                .user(user)
                 .store(store)
-//                .storeId(storeId)
                 .contents("머리카락이 나왔어요.")
                 .imgPath("someImg.jpg")
                 .rating(5)
@@ -28,6 +30,7 @@ public class DumpDataFactory {
 
     public static User user() {
         return User.builder()
+                .userId(1L)
                 .email("abc@naver.com")
                 .password("1111")
                 .name("조훈")
@@ -70,6 +73,32 @@ public class DumpDataFactory {
                 .description("강태공이 낚은 햄부기")
                 .price(10000)
                 .img_path("some_img")
+                .build();
+    }
+
+    public static Address address() {
+        return Address.builder()
+                .type(EntityType.USER)
+                .entityId(1L)
+                .name("친구집")
+                .zipcode("335-003")
+                .state("경기도")
+                .city("하남시")
+                .street("위례중앙로")
+                .detailedAddress("아파트아파트 5동 5호")
+                .build();
+    }
+
+    public static Address addressOther() {
+        return Address.builder()
+                .type(EntityType.USER)
+                .entityId(1L)
+                .name("르탄이집")
+                .zipcode("111-222")
+                .state("충청도")
+                .city("충주시")
+                .street("사과로")
+                .detailedAddress("111-1")
                 .build();
     }
 }

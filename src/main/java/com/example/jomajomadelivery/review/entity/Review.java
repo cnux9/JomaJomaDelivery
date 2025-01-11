@@ -4,6 +4,7 @@ import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
 import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import com.example.jomajomadelivery.store.entity.Store;
+import com.example.jomajomadelivery.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,12 +19,9 @@ public class Review extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-    // TODO:USER로 변경
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 //    @ManyToOne
 //    @JoinColumn(name = "order_id")
@@ -32,9 +30,6 @@ public class Review extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
-    // TODO:STORE로 변경
-//    @Column(name = "store_id")
-//    private Long storeId;
 
 
     private String contents;
@@ -45,13 +40,10 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "TINYINT")
     private Integer rating;
 
-//    public static Review createReview(User user, Store store, ReviewCreateRequestDto dto) {
-    public static Review createReview(Long userId, Store store, ReviewCreateRequestDto dto) {
+    public static Review createReview(User user, Store store, ReviewCreateRequestDto dto) {
         return Review.builder()
-//                .user(user)
-                .userId(userId)
+                .user(user)
                 .store(store)
-//                .storeId(storeId)
                 .contents(dto.contents())
                 .imgPath(dto.imgPath())
                 .rating(dto.rating())
