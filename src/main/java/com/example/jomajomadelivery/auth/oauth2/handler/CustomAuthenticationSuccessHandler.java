@@ -1,7 +1,7 @@
-package com.example.jomajomadelivery.auth.oauth.handler;
+package com.example.jomajomadelivery.auth.oauth2.handler;
 
 import com.example.jomajomadelivery.auth.jwt.TokenProvider;
-import com.example.jomajomadelivery.auth.oauth.CustomOAuth2User;
+import com.example.jomajomadelivery.auth.oauth2.CustomOAuth2User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,11 +37,12 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         String token = tokenProvider.createToken(email, roles);
 
-        response.addCookie(createCookie("Authorization", token));
+        response.addCookie(createCookie(token));
+        response.sendRedirect("/");
     }
 
-    private Cookie createCookie(String key, String token) {
-        Cookie cookie = new Cookie(key, token);
+    private Cookie createCookie(String token) {
+        Cookie cookie = new Cookie("Authorization", token);
         cookie.setMaxAge(60 * 60 * 60);
         cookie.setPath("/");
         cookie.setHttpOnly(true);

@@ -1,11 +1,12 @@
 package com.example.jomajomadelivery.store.service;
 
+import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class StoreService {
     private final UserRepository userRepository;
     public void addStore(StoreRequestDto dto) {
 
-        SignUpUserDto signUpUserDto = new SignUpUserDto("aa","aa","dd","dd","dd","","","","","","");
+        SignUpUserDto signUpUserDto = new SignUpUserDto("aa","aa","dd","dd","dd","","","","","","", Role.ROLE_USER);
         User user = User.createUser(signUpUserDto);
         userRepository.save(user);
         Store store =Store.addStore(user,dto);
@@ -32,6 +33,7 @@ public class StoreService {
     }
 
     //Todo: 요청에따라 필터링
+    @Transactional(readOnly = true)
     public Page<StoreResponseDto> findAllStore(Pageable pageable) {
         Page<Store> storeList = storeRepository.findAll(pageable);
         // Todo: 빈 배열일 경우 에러 던지깅
@@ -48,6 +50,7 @@ public class StoreService {
 
     }
 
+    @Transactional(readOnly = true)
     public StoreResponseDto findById(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
@@ -58,5 +61,14 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"없슈"));
         store.shutDownStore();
+    }
+
+    @Transactional
+    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable) {
+        User user = userRepository.findById(1L).get();
+        Page<Store> storeList = storeRepository.findAllByUser(user,pageable);
+        // Todo: 빈 배열일 경우 에러 던지깅
+
+        return storeList.map(StoreResponseDto::toDTO);
     }
 }

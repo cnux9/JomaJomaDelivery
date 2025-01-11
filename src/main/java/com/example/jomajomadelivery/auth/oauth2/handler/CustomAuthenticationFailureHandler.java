@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.auth.oauth.handler;
+package com.example.jomajomadelivery.auth.oauth2.handler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         if (exception instanceof OAuth2AuthenticationException ex && ex.getError().getErrorCode().equals("redirect_signup")) {
             log.info("Social Login Fail - Redirecting to /");
 
-            response.sendRedirect("/");
+            response.sendRedirect("/login");
             return;
         }
 

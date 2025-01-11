@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.auth.oauth;
+package com.example.jomajomadelivery.auth.oauth2;
 
 import com.example.jomajomadelivery.auth.dto.response.NaverUserInfoResponse;
 import com.example.jomajomadelivery.auth.dto.response.OAuth2UserInfo;
@@ -12,13 +12,13 @@ public enum SocialProvider {
             return new NaverUserInfoResponse(attributes);
         }
     },
-    KAKAO{
+    KAKAO {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
             return null;
         }
     },
-    GOOGLE{
+    GOOGLE {
         @Override
         public OAuth2UserInfo getOAuth2UserInfo(Map<String, Object> attributes) {
             return null;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Store</title>
+</head>
+<body>
+<h1>Update Store</h1>
+
+<!-- store_id를 숨겨진 입력 필드로 전달 -->
+<form action="/stores/{store_id}" method="post" th:action="@{|/stores/${store_id}|}" th:method="patch">
+  <input type="hidden" name="store_id" th:value="${store_id}">
+
+  <label for="description">Description:</label>
+  <input type="text" id="description" name="description" placeholder="Enter store description" required>
+  <br>
+
+  <label for="imgPath">Image Path:</label>
+  <input type="text" id="imgPath" name="imgPath" placeholder="Enter image path">
+  <br>
+
+  <label for="openTime">Open Time:</label>
+  <input type="time" id="openTime" name="openTime" required>
+  <br>
+
+  <label for="closeTime">Close Time:</label>
+  <input type="time" id="closeTime" name="closeTime" required>
+  <br>
+
+  <label for="minOrderPrice">Minimum Order Price:</label>
+  <input type="number" id="minOrderPrice" name="minOrderPrice" placeholder="Enter minimum order price" required>
+  <br>
+
+  <label for="deliveryPrice">Delivery Price:</label>
+  <input type="number" id="deliveryPrice" name="deliveryPrice" placeholder="Enter delivery price" required>
+  <br>
+
+  <button type="submit">Update Store</button>
+</form>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.util;
 
+import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.address.entity.EntityType;
 import com.example.jomajomadelivery.review.entity.Review;
@@ -32,6 +33,7 @@ public class DumpDataFactory {
                 .email("abc@naver.com")
                 .password("1111")
                 .name("조훈")
+                .role(Role.ROLE_USER)
                 .nickName("홍박사")
                 .phoneNumber("010-0000-0000")
                 .isDeleted(false)
@@ -44,6 +46,7 @@ public class DumpDataFactory {
 
     public static Store store(User user) {
         return Store.builder()
+                .storeId(1L)
                 .user(user)
                 .category(Category.JAPANESE)
                 .name("파파스터치")
@@ -58,6 +61,17 @@ public class DumpDataFactory {
                 .favoriteCount(0L)
                 .rating(0.0)
                 .isDeleted(false)
+                .build();
+    }
+
+    public static Menu menu(Store store) {
+        return Menu.builder()
+                .menu_id(1L)
+                .store(store)
+                .name("햄부기")
+                .description("강태공이 낚은 햄부기")
+                .price(10000)
+                .img_path("some_img")
                 .build();
     }
 

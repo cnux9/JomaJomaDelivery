@@ -1,7 +1,7 @@
 package com.example.jomajomadelivery.auth.web.filter;
 
 import com.example.jomajomadelivery.auth.jwt.TokenProvider;
-import com.example.jomajomadelivery.auth.oauth.CustomOAuth2User;
+import com.example.jomajomadelivery.auth.oauth2.CustomOAuth2User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -22,11 +23,23 @@ import java.util.List;
 public class JWTFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
+    private static final String[] WHITE_LIST = {"/", "/signup", "/login"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie[] cookies = request.getCookies();
+        String requestURI = request.getRequestURI();
 
+        /**
+         * filter 가 불필요한 url 검증
+         */
+        if (isStaticResource(requestURI)) {
+            log.info("Skip filter for url: {}", requestURI);
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        Cookie[] cookies = request.getCookies();
         String token = getCookieValue(cookies);
 
         /**
@@ -36,15 +49,17 @@ public class JWTFilter extends OncePerRequestFilter {
             log.info("token null");
 
             filterChain.doFilter(request, response);
+            return;
         }
 
         /**
          * 토큰 만료 시간 검증
          */
-        if (tokenProvider.isExpired(token)) {
+        if (Boolean.TRUE.equals(tokenProvider.isExpired(token))) {
             log.info("token expired");
 
             filterChain.doFilter(request, response);
+            return;
         }
 
         String email = tokenProvider.getEmail(token);
@@ -57,6 +72,26 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+
+        for (String pattern : WHITE_LIST) {
+            if (PatternMatchUtils.simpleMatch(pattern, requestURI)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isStaticResource(String url) {
+        return url.startsWith("/css/")
+                || url.startsWith("/js/")
+                || url.startsWith("/favicon.ico/")
+                || url.startsWith("/images/");
     }
 
     private String getCookieValue(Cookie[] cookies) {

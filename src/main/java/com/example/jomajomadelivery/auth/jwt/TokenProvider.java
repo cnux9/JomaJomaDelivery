@@ -1,7 +1,9 @@
 package com.example.jomajomadelivery.auth.jwt;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Component
 public class TokenProvider {
 
@@ -52,12 +55,15 @@ public class TokenProvider {
     }
 
     public Boolean isExpired(String token) {
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration()
-                .before(new Date());
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+            return false;
+        } catch (JwtException e) {
+            log.info("token 만료");
+            return true;
+        }
     }
 }

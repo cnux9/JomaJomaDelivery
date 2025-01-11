@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Review</title>
+  <style>
+    .star-rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: center;
+    }
+
+    .star-rating input {
+      display: none;
+    }
+
+    .star-rating label {
+      font-size: 2rem;
+      color: gray;
+      cursor: pointer;
+    }
+
+    .star-rating input:checked ~ label {
+      color: gold;
+    }
+
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+      color: gold;
+    }
+  </style>
+</head>
+<body>
+<h1>Create a Review</h1>
+<form th:action="@{/stores/{storeId}/reviews(storeId=${storeId})}" method="post">
+
+  <label for="orderId">Order ID:</label>
+  <input type="number" id="orderId" name="orderId" required>
+  <br><br>
+
+  <label for="contents">Review Content:</label>
+  <textarea id="contents" name="contents" rows="4" cols="50" required></textarea>
+  <br><br>
+
+  <label for="rating">Rating:</label>
+  <div class="star-rating">
+    <input type="radio" id="star5" name="rating" value="5">
+    <label for="star5">&#9733;</label>
+    <input type="radio" id="star4" name="rating" value="4">
+    <label for="star4">&#9733;</label>
+    <input type="radio" id="star3" name="rating" value="3">
+    <label for="star3">&#9733;</label>
+    <input type="radio" id="star2" name="rating" value="2">
+    <label for="star2">&#9733;</label>
+    <input type="radio" id="star1" name="rating" value="1">
+    <label for="star1">&#9733;</label>
+  </div>
+  <br><br>
+
+  <label for="imgPath">Image Path (optional):</label>
+  <input type="text" id="imgPath" name="imgPath">
+  <br><br>
+
+  <button type="submit">Submit Review</button>
+</form>
+
+<script>
+  // Replace {storeId} in the form's action attribute with the actual storeId
+  document.getElementById('reviewForm').action = `/stores/${storeId}/reviews`;
+</script>
+</body>
+</html>

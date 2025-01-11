@@ -1,0 +1,66 @@
+/* Form 전체 스타일 */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 3rem; /* 하단 공백을 조금 더 늘림 */
+}
+
+/* 제목 스타일 */
+h2 {
+    font-weight: bold;
+    color: #343a40;
+}
+
+/* 입력 필드 스타일 */
+.form-label {
+    font-weight: bold;
+    color: #495057;
+}
+
+.form-control, .form-select {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    height: 45px;
+    font-size: 0.9rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* 섹션 간 여백 */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+/* 버튼 스타일 */
+button[type="submit"] {
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0.7rem 1.7rem; /* 버튼 높이 및 가로 패딩 조정 */
+    width: 55%; /* 버튼 길이를 살짝 더 늘림 */
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    margin: 0 auto; /* 버튼을 중앙 정렬 */
+    display: block;
+}
+
+button[type="submit"]:hover {
+    transform: scale(1.05); /* 마우스 호버 시 약간 커짐 */
+    background-color: #0056b3; /* 약간 더 어두운 파란색 */
+}
+
+button[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    form {
+        padding: 1rem;
+    }
+    button[type="submit"] {
+        width: 75%; /* 작은 화면에서 버튼 길이 조정 */
+    }
+}
