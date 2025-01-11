@@ -1,9 +1,9 @@
 package com.example.jomajomadelivery.account.oauth2.service.handler;
 
+import com.example.jomajomadelivery.account.auth.service.UserAuthService;
 import com.example.jomajomadelivery.account.jwt.TokenProvider;
 import com.example.jomajomadelivery.account.oauth2.service.CustomOAuth2User;
 import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
-import com.example.jomajomadelivery.account.auth.service.UserAuthService;
 import com.example.jomajomadelivery.user.entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
