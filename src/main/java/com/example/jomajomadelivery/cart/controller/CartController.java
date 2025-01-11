@@ -16,7 +16,7 @@ public class CartController {
 
     @PostMapping
     public String add(@RequestBody AddCartRequestDto requestDto, Model model) {
-        CartResponseDto responseDto = cartService.create();
+        CartResponseDto responseDto = cartService.add();
         model.addAttribute("dto", requestDto);
         model.addAttribute("cart", responseDto);
 //        System.out.println("cart " + requestDto.menuId());
@@ -25,7 +25,7 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}")
-    public String find(@PathVariable Long cartId, Model model) {
+    public String find(@PathVariable Long cartId, Model model){
         CartResponseDto responseDto = cartService.find(cartId);
         model.addAttribute("cart", responseDto);
         // TODO:

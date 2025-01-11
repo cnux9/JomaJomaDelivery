@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.store.service;
 
-import com.example.jomajomadelivery.auth.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
@@ -27,14 +28,14 @@ public class StoreService {
     private final UserRepository userRepository;
     public void addStore(StoreRequestDto dto) {
         // 테스트용 유저 생성
-        SignUpUserDto signUpUserDto = new SignUpUserDto("aa","aa","dd","dd","dd","","","","","","", Role.ROLE_USER);
+        SignUpUserDto signUpUserDto = new SignUpUserDto(SocialProvider.NAVER,"aa","wait@kbs.co.kr","1111","박대기","대기박","010-0000-0000","친구집","010-555","경기도","하남시", "위례중앙로", "아파트아파트", Role.ROLE_SELLER);
         User user = User.createUser(signUpUserDto);
         userRepository.save(user);
 
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
 
-        Store store =Store.addStore(user,dto);
+        Store store = Store.addStore(user,dto);
 //        //Todo dto에서 세부 주소를 따로 받고 store 엔티티 수정해야함.
         storeRepository.save(store);
     }
