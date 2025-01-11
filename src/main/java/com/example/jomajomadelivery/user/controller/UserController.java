@@ -15,17 +15,9 @@ public class UserController {
     
     private final UserService userService;
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<String> signUp() {
-//
-//        // Todo: 회원가입은 소셜로그인을 통해 진행
-//
-//        return ResponseEntity.ok("");
-//    }
-
     @GetMapping
     public ResponseEntity<String> findUserById() {
-//        userService.findById()
+//        userService.findById(userId);
 
         return ResponseEntity.ok("");
     }

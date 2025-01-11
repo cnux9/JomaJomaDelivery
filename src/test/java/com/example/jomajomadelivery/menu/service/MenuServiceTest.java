@@ -63,8 +63,8 @@ class MenuServiceTest {
 
         when(storeRepository.findById(any(Long.class))).thenReturn(Optional.ofNullable(mockStore));
         List<Menu> menus = List.of(
-                Menu.builder().store(mockStore).name("강피자").description("강태공이 버린 피자").price(15000).img_path("path1").build(),
-                Menu.builder().store(mockStore).name("강버거").description("강태공이 주운 버거").price(10000).img_path("path2").build()
+                Menu.builder().store(mockStore).name("강피자").description("강태공이 버린 피자").price(15000).imgPath("path1").build(),
+                Menu.builder().store(mockStore).name("강버거").description("강태공이 주운 버거").price(10000).imgPath("path2").build()
         );
         when(menuRepository.findAllByStore(mockStore)).thenReturn(menus);
 

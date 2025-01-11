@@ -10,12 +10,13 @@ public record AddressResponseDto(
         EntityType type,
         Long entityId,
         String name,
+
         String zipcode,
         String state,
         String city,
         String street,
         String detailedAddress,
-        LocalDateTime creaetdAt
+        LocalDateTime createdAt
 ) {
     public static AddressResponseDto toDto(Address address) {
         return new AddressResponseDto(
