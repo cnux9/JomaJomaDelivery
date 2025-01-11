@@ -1,11 +1,9 @@
 package com.example.jomajomadelivery.user.entity;
 
-import com.example.jomajomadelivery.address.entity.Address;
-import com.example.jomajomadelivery.user.domain.Email;
-import com.example.jomajomadelivery.user.domain.Password;
-import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
-import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,17 +30,18 @@ public class User extends BaseEntity {
 
     private String providerId;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String nickName;
 
+    @Column(nullable = false)
     private String phoneNumber;
 
     @OneToMany(
@@ -59,19 +58,12 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    public static User createUser(SignUpUserDto dto) {
+    public static User createUser(SignUpUserDto dto, String email, String password) {
         return User.builder()
                 .socialType(dto.socialType())
                 .providerId(dto.providerId())
-                .email(
-                        Email.generateEmail(dto.email())
-                                .getEmailText()
-                )
-                .password(
-                        Password.validatePassword(dto.password())
-                                .generateEncryptedPassword()
-                                .getStringPassword()
-                )
+                .email(email)
+                .password(password)
                 .name(dto.name())
                 .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
