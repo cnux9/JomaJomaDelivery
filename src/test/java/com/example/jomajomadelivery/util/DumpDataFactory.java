@@ -1,5 +1,7 @@
 package com.example.jomajomadelivery.util;
 
+import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.entity.EntityType;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
@@ -56,6 +58,32 @@ public class DumpDataFactory {
                 .favoriteCount(0L)
                 .rating(0.0)
                 .isDeleted(false)
+                .build();
+    }
+
+    public static Address address() {
+        return Address.builder()
+                .type(EntityType.USER)
+                .entityId(1L)
+                .name("친구집")
+                .zipcode("335-003")
+                .state("경기도")
+                .city("하남시")
+                .street("위례중앙로")
+                .detailedAddress("아파트아파트 5동 5호")
+                .build();
+    }
+
+    public static Address addressOther() {
+        return Address.builder()
+                .type(EntityType.USER)
+                .entityId(1L)
+                .name("르탄이집")
+                .zipcode("111-222")
+                .state("충청도")
+                .city("충주시")
+                .street("사과로")
+                .detailedAddress("111-1")
                 .build();
     }
 }
