@@ -48,7 +48,7 @@
             <div class="invalid-feedback">유효한 이메일을 입력하세요.</div>
         </div>
         <!-- 비밀번호 -->
-        <div class="form-group">
+        <div class="form-group" th:if="${!isSocial}">
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" id="password" th:field="*{password}"
                    class="form-control"
