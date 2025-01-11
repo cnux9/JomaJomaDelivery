@@ -1,9 +1,11 @@
 package com.example.jomajomadelivery.user.entity;
 
 import com.example.jomajomadelivery.address.entity.Address;
-import com.example.jomajomadelivery.auth.oauth2.SocialProvider;
+import com.example.jomajomadelivery.user.domain.Email;
+import com.example.jomajomadelivery.user.domain.Password;
+import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
 import com.example.jomajomadelivery.common.BaseEntity;
-import com.example.jomajomadelivery.user.dto.request.SignUpUserDto;
+import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
@@ -59,12 +61,22 @@ public class User extends BaseEntity {
 
     public static User createUser(SignUpUserDto dto) {
         return User.builder()
-                .email(dto.email())
-                .password(dto.password())
+                .socialType(dto.socialType())
+                .providerId(dto.providerId())
+                .email(
+                        Email.generateEmail(dto.email())
+                                .getEmailText()
+                )
+                .password(
+                        Password.validatePassword(dto.password())
+                                .generateEncryptedPassword()
+                                .getStringPassword()
+                )
                 .name(dto.name())
-                .role(Role.ROLE_USER)
-                .nickName(dto.nickname())
+                .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
+                // 주소 입력 필요
+                .role(dto.role())
                 .isDeleted(false)
                 .build();
     }

@@ -1,8 +1,9 @@
 package com.example.jomajomadelivery.orders.controller;
 
-import com.example.jomajomadelivery.orders.dto.response.OrdersResponseDto;
+import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +17,12 @@ public class OrdersController {
 
     @PostMapping
     public ResponseEntity<OrdersResponseDto> createOrder() {
-        return ResponseEntity.ok(ordersService.createOrder());
+        return new ResponseEntity<>(ordersService.create(), HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<OrdersResponseDto> getOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(ordersService.getOrder(orderId));
+    public ResponseEntity<OrderResponseDto> find(@PathVariable Long orderId) {
+        return ResponseEntity.ok(ordersService.find(orderId));
     }
 
     @PatchMapping("/{orderId}")
@@ -30,8 +31,9 @@ public class OrdersController {
     }
 
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable Long orderId) {
-        ordersService.deleteOrder(orderId);
+    public ResponseEntity<Void> delete(@PathVariable Long orderId) {
+        ordersService.delete(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

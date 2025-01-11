@@ -25,18 +25,18 @@ public class MenuService {
         Store store = getStoreEntity(storeId);
         Menu menu = newMenu(store, menuRequestDto);
         Menu savedMenu = menuRepository.save(menu);
-        return new MenuResponseDto(savedMenu.getMenu_id(), savedMenu.getName(), savedMenu.getDescription(), savedMenu.getPrice(), savedMenu.getImg_path());
+        return MenuResponseDto.toDto(savedMenu);
     }
 
     public List<MenuResponseDto> getMenus(Long storeId) {
         Store store = getStoreEntity(storeId);
         List<Menu> menus = menuRepository.findAllByStore(store);
-        return menus.stream().map(menu -> new MenuResponseDto(menu.getMenu_id(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImg_path())).toList();
+        return menus.stream().map(menu -> new MenuResponseDto(menu.getMenuId(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImgPath())).toList();
     }
 
     public MenuResponseDto getMenu(Long menuId) {
         Menu menu = getMenuEntity(menuId);
-        return new MenuResponseDto(menu.getMenu_id(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImg_path());
+        return MenuResponseDto.toDto(menu);
     }
 
     //Todo:: 사장님 권한 확인 필요
@@ -44,7 +44,7 @@ public class MenuService {
         Menu menu = getMenuEntity(menuId);
         menu.updateMenu(menuRequestDto);
         Menu savedMenu = menuRepository.save(menu);
-        return new MenuResponseDto(savedMenu.getMenu_id(), savedMenu.getName(), savedMenu.getDescription(), savedMenu.getPrice(), savedMenu.getImg_path());
+        return MenuResponseDto.toDto(savedMenu);
     }
 
     //Todo:: 사장님 권한 확인 필요
@@ -64,7 +64,7 @@ public class MenuService {
     /**
      * Menu 객체 가져오며 예외처리
      */
-    private Menu getMenuEntity(Long menuId) {
+    public Menu getMenuEntity(Long menuId) {
         return menuRepository.findById(menuId)
                 .orElseThrow(() -> new NoSuchElementException("Store with id " + menuId + " not found"));
     }

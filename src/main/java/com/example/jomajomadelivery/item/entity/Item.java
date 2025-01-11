@@ -37,7 +37,7 @@ public class Item {
     @Column(name = "total_price", nullable = false)
     private int totalPrice;
 
-    public static Item selectItme(Cart cart,Menu menu,int quantity){
+    public static Item selectItme(Cart cart, Menu menu, int quantity){
         return Item.builder()
                 .cart(cart)
                 .menu(menu)
@@ -48,6 +48,6 @@ public class Item {
                 .build();
     }
     public void updateQuantity(int quantity){
-        this.quantity=quantity;
+        this.quantity = quantity;
     }
 }

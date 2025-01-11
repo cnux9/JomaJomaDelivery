@@ -5,32 +5,45 @@ import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import com.example.jomajomadelivery.review.dto.response.ReviewResponseDto;
 import com.example.jomajomadelivery.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/stores/{storeId}/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
     private final ReviewService reviewService;
 
-
-    @PostMapping
-    public ResponseEntity<ReviewResponseDto> create(@PathVariable Long storeId, @RequestBody ReviewCreateRequestDto dto) {
-        return new ResponseEntity<>(reviewService.create(storeId, dto), HttpStatus.CREATED);
+    @GetMapping("/new")
+    public String create(@PathVariable Long storeId, Model model) {
+        model.addAttribute("storeId",storeId);
+        return "CreateReview";
     }
-
-    @GetMapping("/{userId}")
-    public ResponseEntity<ReviewResponseDto> findById(@PathVariable Long userId) {
-        return new ResponseEntity<>(reviewService.findById(userId), HttpStatus.OK);
+//    @PostMapping
+//    public ResponseEntity<ReviewResponseDto> create(@PathVariable Long storeId, ReviewCreateRequestDto dto) {
+//        return new ResponseEntity<>(reviewService.create(storeId, dto), HttpStatus.CREATED);
+//    }
+    @PostMapping
+    public String create(@PathVariable Long storeId, ReviewCreateRequestDto dto) {
+        reviewService.create(storeId, dto);
+        return "redirect:/stores/"+storeId+"/reviews";
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReviewResponseDto>> findAllById(@PathVariable Long storeId, Pageable pageable) {
-        return new ResponseEntity<>(reviewService.findAllById(storeId, pageable), HttpStatus.OK);
+    public String findAllById(
+            @PathVariable Long storeId,
+            @RequestParam(defaultValue = "1") Integer minRating,
+            @RequestParam(defaultValue = "5") Integer maxRating,
+            Pageable pageable,
+            Model model
+    ) {
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("reviews", reviewService.findAllById(storeId, minRating, maxRating, pageable));
+        return "ReviewList";
     }
 
     @PutMapping("/{id}")

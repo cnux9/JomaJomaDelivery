@@ -21,7 +21,7 @@ public record ReviewResponseDto(
                 savedReview.getStore().getStoreId(),
 //                savedReview.getOrder().getId(),
 //                savedReview.getUser().getUserId(),
-                savedReview.getUserId(),
+                savedReview.getUser().getUserId(),
                 savedReview.getContents(),
                 savedReview.getRating(),
                 savedReview.getImgPath(),
