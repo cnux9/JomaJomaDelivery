@@ -67,12 +67,12 @@ public class DumpDataFactory {
 
     public static Menu menu(Store store) {
         return Menu.builder()
-                .menu_id(1L)
+                .menuId(1L)
                 .store(store)
                 .name("햄부기")
                 .description("강태공이 낚은 햄부기")
                 .price(10000)
-                .img_path("some_img")
+                .imgPath("some_img")
                 .build();
     }
 

@@ -18,7 +18,7 @@ public record ItemResponseDto(
         return ItemResponseDto.builder()
                 .itemId(item.getItemId())
                 .cartId(item.getCart().getCartId())
-                .menuId(item.getMenu().getMenu_id())
+                .menuId(item.getMenu().getMenuId())
                 .name(item.getName())
                 .quantity(item.getQuantity())
                 .price(item.getPrice())

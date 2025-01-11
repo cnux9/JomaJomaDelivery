@@ -48,6 +48,7 @@ public class StoreService {
 
         return storeList.map(StoreResponseDto::toDTO);
     }
+
     @Transactional
     public StoreResponseDto updateStore(Long storeId, UpdateStoreRequestDto dto) {
         Store store = getStore(storeId);
