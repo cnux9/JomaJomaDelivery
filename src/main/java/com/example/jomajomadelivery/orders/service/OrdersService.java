@@ -4,6 +4,7 @@ import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.repository.CartRepository;
 import com.example.jomajomadelivery.exception.CustomException;
+import com.example.jomajomadelivery.item.entity.Item;
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.entity.Order;
 import com.example.jomajomadelivery.orders.exception.OrderErrorCode;
@@ -32,11 +33,12 @@ public class OrdersService {
 
     //Todo:: User, Store, Cart, Address 주입 필요
     public OrderResponseDto create() {
-        User user = userRepository.findById(1L).get();
-        Store store = storeRepository.findById(1L).get();
         Cart cart = cartRepository.findById(1L).get();
+        User user = cart.getUser();
+        Store store = cart.getItems().get(0).getMenu().getStore();
         Address address = user.getAddresses().get(0);
 
+        throwIfCartIsEmpty(cart);
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);
         throwIfStoreIsNotOpen(store);
 
@@ -44,6 +46,12 @@ public class OrdersService {
         Order savedOrder = ordersRepository.save(order);
 
         return OrderResponseDto.toDto(savedOrder);
+    }
+
+    private void throwIfCartIsEmpty(Cart cart) {
+        if (cart.getItems().isEmpty()) {
+            throw new CustomException(OrderErrorCode.EMPTY_CART);
+        }
     }
 
     public OrderResponseDto find(Long orderId) {
@@ -82,7 +90,7 @@ public class OrdersService {
     }
 
     private static void throwIfTotalPriceIsLowerThanMinOrderPrice(Cart cart, Store store) {
-        int totalPrice = cart.getItems().stream().mapToInt(i -> i.getTotalPrice()).sum();
+        int totalPrice = cart.getItems().stream().mapToInt(Item::getTotalPrice).sum();
         if (totalPrice< store.getMinOrderPrice()) {
             throw new CustomException(OrderErrorCode.LOWER_THAN_MIN_ORDER_PRICE);
         }
