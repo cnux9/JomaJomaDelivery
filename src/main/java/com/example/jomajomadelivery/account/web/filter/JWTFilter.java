@@ -1,6 +1,6 @@
-package com.example.jomajomadelivery.account.auth.web.filter;
+package com.example.jomajomadelivery.account.web.filter;
 
-import com.example.jomajomadelivery.account.auth.jwt.TokenProvider;
+import com.example.jomajomadelivery.account.jwt.TokenProvider;
 import com.example.jomajomadelivery.user.entity.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -45,9 +45,9 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = getCookieValue(cookies);
 
         /**
-         * 토큰 검증 Todo: 토큰 검증 조건 추가
+         * 토큰 검증
          */
-        if (token == null) {
+        if (token == null || !tokenProvider.validateToken(token)) {
             log.info("token null");
 
             filterChain.doFilter(request, response);
