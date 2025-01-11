@@ -49,12 +49,13 @@ spring:
                 - account_email
                 - profile_nickname
 
-            google:
-              client-id: 559067136754-gq4p7f241dc200vljjlttllgc4cdsjmf.apps.googleusercontent.com
-              client-secret: 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
-              scope:
-                - profile
-                - email
+#            google:
+#              client-id: 559067136754-gq4p7f241dc200vljjlttllgc4cdsjmf.apps.googleusercontent.com
+#              client-secret: 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
+#              scope:
+#                - profile
+#                - email
+          # 시크릿 키라 에러 발생 추후 관리 예정
 
           provider: # provider 등록도 필수적이지만 전세계적으로 유명한 서비스(google, github 등)은 spring oauth2-client 가 자동으로 설정해줌 (네이버, 카카오 는 필수 등록)
             naver: # 서비스명
