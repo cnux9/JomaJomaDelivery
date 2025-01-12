@@ -57,7 +57,6 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUpPage(Model model) {
         model.addAttribute("userSignUp", SignUpUserDto.empty());
-        model.addAttribute("errorMessage", null);
         model.addAttribute("isSocial", false);
         return "account/signup";
     }
