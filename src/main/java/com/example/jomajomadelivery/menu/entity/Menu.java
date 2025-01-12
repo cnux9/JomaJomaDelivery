@@ -35,21 +35,21 @@ public class Menu extends BaseEntity {
     @Column(name = "img_path")
     private String imgPath;
 
-    public static Menu newMenu(Store store, MenuRequestDto dto) {
+    public static Menu newMenu(Store store, MenuRequestDto dto,String imgPath) {
         return Menu.builder()
                 .store(store)
                 .name(dto.name())
                 .description(dto.description())
                 .price(dto.price())
-                .imgPath(dto.img_path())
+                .imgPath(imgPath)
                 .build();
     }
 
-    public void updateMenu(MenuRequestDto dto){
+    public void updateMenu(MenuRequestDto dto,String imgPath){
         this.name=dto.name();
         this.description=dto.description();
         this.price=dto.price();
-        this.imgPath =dto.img_path();
+        this.imgPath =imgPath;
     }
 
 }
