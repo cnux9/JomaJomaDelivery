@@ -3,7 +3,6 @@ package com.example.jomajomadelivery.favorite.service;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.favorite.entity.Favorite;
 import com.example.jomajomadelivery.favorite.repository.FavoriteRepository;
-import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.exception.StoreErrorCode;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
@@ -33,10 +32,13 @@ public class FavoriteService {
         updateStoreFavoriteCount(foundStore);
     }
 
-    public List<StoreResponseDto> find() {
+//    public List<StoreResponseDto> find() {
+    public List<Long> find() {
         // TODO:
         Long userId = 1L;
-        return favoriteRepository.findFavoriteStoreIdsByUserId(userId);
+        List<Long> favoriteStoreIds = favoriteRepository.findFavoriteStoreIdsByUserId(userId);
+//        return List<StoreResponseDto>
+        return favoriteStoreIds;
     }
 
     public void delete(Long storeId) {

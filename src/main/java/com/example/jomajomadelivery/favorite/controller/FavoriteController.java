@@ -1,7 +1,6 @@
 package com.example.jomajomadelivery.favorite.controller;
 
 import com.example.jomajomadelivery.favorite.service.FavoriteService;
-import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +16,12 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @GetMapping
-    public List<StoreResponseDto> find(Model model) {
-        List<StoreResponseDto> favoriteStores = favoriteService.find();
+//    public List<StoreResponseDto> find(Model model) {
+    public List<Long> find(Model model) {
+//        List<StoreResponseDto> favoriteStores = favoriteService.find();
+        List<Long> favoriteStoreIds = favoriteService.find();
 
-        return favoriteStores;
+        return favoriteStoreIds;
 
 //        model.addAttribute("favoriteStores", favoriteStores);
 //        return "Favorites";
