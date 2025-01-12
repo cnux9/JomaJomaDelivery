@@ -2,14 +2,10 @@ package com.example.jomajomadelivery.user.entity;
 
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.account.oauth2.service.SocialProvider;
-import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.user.dto.request.UserUpdateDto;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -44,12 +40,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @OneToMany(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Address> addresses = new ArrayList<>();
+    @Column(nullable = false, unique = true)
+    private Long addressId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -58,7 +50,12 @@ public class User extends BaseEntity {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
 
-    public static User createUser(SignUpUserDto dto, String email, String password) {
+    public static User createUser(
+            SignUpUserDto dto,
+            String email,
+            String password,
+            Long addressId
+    ) {
         return User.builder()
                 .socialType(dto.socialType())
                 .providerId(dto.providerId())
@@ -67,7 +64,7 @@ public class User extends BaseEntity {
                 .name(dto.name())
                 .nickName(dto.nickName())
                 .phoneNumber(dto.phoneNumber())
-                // 주소 입력 필요
+                .addressId(addressId)
                 .role(dto.role())
                 .isDeleted(false)
                 .build();
