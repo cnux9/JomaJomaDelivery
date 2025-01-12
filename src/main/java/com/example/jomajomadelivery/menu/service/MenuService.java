@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.menu.service;
 
+import com.example.jomajomadelivery.common.ImageHandler;
 import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
 import com.example.jomajomadelivery.menu.dto.response.MenuResponseDto;
 import com.example.jomajomadelivery.menu.entity.Menu;
@@ -19,11 +20,13 @@ import static com.example.jomajomadelivery.menu.entity.Menu.newMenu;
 public class MenuService {
     private final MenuRepository menuRepository;
     private final StoreRepository storeRepository;
+    private final ImageHandler imageHandler;
 
     //Todo:: 사장님 권한 확인 필요
     public MenuResponseDto createMenu(Long storeId, MenuRequestDto menuRequestDto) {
         Store store = getStoreEntity(storeId);
-        Menu menu = newMenu(store, menuRequestDto);
+        String imgPath = imageHandler.save(menuRequestDto.img(), "menu");
+        Menu menu = newMenu(store, menuRequestDto, imgPath);
         Menu savedMenu = menuRepository.save(menu);
         return MenuResponseDto.toDto(savedMenu);
     }
@@ -31,7 +34,8 @@ public class MenuService {
     public List<MenuResponseDto> getMenus(Long storeId) {
         Store store = getStoreEntity(storeId);
         List<Menu> menus = menuRepository.findAllByStore(store);
-        return menus.stream().map(menu -> new MenuResponseDto(menu.getMenuId(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImgPath())).toList();
+        return menus.stream().map(menu -> new MenuResponseDto(menu.getMenuId(), menu.getName(), menu.getDescription()
+                , menu.getPrice(), menu.getImgPath())).toList();
     }
 
     public MenuResponseDto getMenu(Long menuId) {
@@ -42,7 +46,11 @@ public class MenuService {
     //Todo:: 사장님 권한 확인 필요
     public MenuResponseDto updateMenu(Long menuId, MenuRequestDto menuRequestDto) {
         Menu menu = getMenuEntity(menuId);
-        menu.updateMenu(menuRequestDto);
+        String imgPath = menu.getImgPath();
+        if (menuRequestDto.img() != null) {
+            imgPath = imageHandler.save(menuRequestDto.img(), "menu");
+        }
+        menu.updateMenu(menuRequestDto, imgPath);
         Menu savedMenu = menuRepository.save(menu);
         return MenuResponseDto.toDto(savedMenu);
     }

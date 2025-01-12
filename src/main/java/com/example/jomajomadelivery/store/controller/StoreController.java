@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.store.controller;
 
+import com.example.jomajomadelivery.common.aop.account.CurrentUserId;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
@@ -22,10 +23,14 @@ public class StoreController {
 
     private final StoreService storeService;
     // view를 위해 "/new"사용. GET메소드 사용시 폼 으로 이동.
+    @GetMapping("/new")
+    public String addStoreForm() {
+        return "/seller/store/CreateStoreForm";
+    }
 
     @PostMapping("/new")
-    public String addStore(@Valid @ModelAttribute StoreRequestDto dto) {
-        storeService.addStore(dto);
+    public String addStore(@Valid @ModelAttribute StoreRequestDto dto, @CurrentUserId Long userId) {
+        storeService.addStore(dto,userId);
         return "redirect:/stores/seller";
     }
 //    @PostMapping("/new")
@@ -34,10 +39,6 @@ public class StoreController {
 //        return ResponseEntity.ok().build();
 //    }
 
-    @GetMapping("/new")
-    public String addStoreForm() {
-        return "/seller/store/CreateStoreForm";
-    }
 
     //    @GetMapping
 //    public ResponseEntity<Page<StoreResponseDto>> findAllStore(Pageable pageable) {
@@ -52,10 +53,21 @@ public class StoreController {
     }
 
     @GetMapping("/seller")
-    public String findAllStoreBySeller(Pageable pageable, Model model) {
-        Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable);
+    public String findAllStoreBySeller(Pageable pageable, Model model,@CurrentUserId Long userId) {
+        Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable,userId);
         model.addAttribute("storeList", storeList);
         return "/seller/store/storesview";
+    }
+
+    @GetMapping("/seller/{storeId}")
+    public String sellerStoreMain(@PathVariable Long storeId,Model model) {
+        model.addAttribute("storeId",storeId);
+        return "/seller/store/SellerStoreMain";
+    }
+    @GetMapping("/seller/self/{storeId}")
+    public String sellerSelfService(@PathVariable Long storeId,Model model) {
+        model.addAttribute("storeId",storeId);
+        return "/seller/store/StoreSelfHome";
     }
 
     @GetMapping("/{store_id}")

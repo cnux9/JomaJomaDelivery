@@ -40,7 +40,7 @@ public class MenuController {
     }
 
     @PutMapping("/{menuId}")
-    public ResponseEntity<String> updateMenu(@PathVariable Long menuId, @RequestBody MenuRequestDto menuRequestDto) {
+    public ResponseEntity<String> updateMenu(@PathVariable Long menuId, @ModelAttribute MenuRequestDto menuRequestDto) {
         menuService.updateMenu(menuId, menuRequestDto);
         return ResponseEntity.ok("메뉴 수정 성공");
     }
