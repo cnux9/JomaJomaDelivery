@@ -18,10 +18,8 @@ import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -33,31 +31,20 @@ public class ReviewService {
 
 
     @Transactional
-    public ReviewResponseDto create(Long storeId, ReviewCreateRequestDto dto) {
+    public ReviewResponseDto create(Long storeId, Long userId, ReviewCreateRequestDto dto) {
         validateRatingAndContents(dto.rating(), dto.contents());
-
-        // 현재 로그인된 유저 -> 리뷰 작성자
-        // FIXME: 실제 로그인된 userId값으로 대체
-        Long userId = 1L;
 
         Order foundOrder = ordersService.getById(dto.orderId());
         if (!foundOrder.getStatus().equals(Status.DELIVERED)) {
             throw new CustomException(ReviewErrorCode.ORDER_NOT_COMPLETE);
         }
 
-        // 로그인된 사용자로 부터 가져온 ID인데 무슨 경우?
-        if (!userRepository.existsById(userId)) {
-            // FIXME: user 쪽 예외로 대체
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No such user id.");
-//            throw new CustomException(UserErrorCode.USER_NOT_FOUND);
-        }
-        User userRef = userRepository.getReferenceById(storeId);
-
         if (!storeRepository.existsById(storeId)) {
             throw new CustomException(StoreErrorCode.STORE_NOT_FOUND);
         }
         Store foundStore = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(StoreErrorCode.STORE_NOT_FOUND));
 
+        User userRef = userRepository.getReferenceById(userId);
         Review newReview = Review.createReview(userRef, foundStore, foundOrder, dto);
         Review savedReview = reviewRepository.save(newReview);
 
@@ -94,10 +81,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public void delete(Long id) {
-        if (!reviewRepository.existsById(id)) {
+    public void delete(Long reviewId, Long userId) {
+
+
+        if (!reviewRepository.existsById(reviewId)) {
             throw new CustomException(ReviewErrorCode.REVIEW_NOT_FOUND);
         }
-        reviewRepository.deleteById(id);
+        reviewRepository.deleteById(reviewId);
     }
 }

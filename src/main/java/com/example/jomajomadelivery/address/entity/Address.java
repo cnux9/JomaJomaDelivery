@@ -17,11 +17,6 @@ public class Address extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long addressId;
 
-    @Enumerated(EnumType.STRING)
-    private EntityType type;
-
-    private Long entityId;
-
     private String name;
 
     private String zipcode;
@@ -37,8 +32,6 @@ public class Address extends BaseEntity {
 
     public static Address createAddress(AddressRequestDto dto) {
         return Address.builder()
-                .type(dto.type())
-                .entityId(dto.entityId())
                 .name(dto.name())
                 .zipcode(dto.zipcode())
                 .state(dto.state())
@@ -56,8 +49,6 @@ public class Address extends BaseEntity {
     public Address getUpdatedAddress(AddressRequestDto dto) {
         // dto에서 널값인 경우 기존의 값을 사용
         return Address.builder()
-            .type(coalesce(dto.type(), type))
-            .entityId(coalesce(dto.entityId(), entityId))
             .name(coalesce(dto.name(), name))
             .zipcode(coalesce(dto.zipcode(), zipcode))
             .state(coalesce(dto.state(), state))
