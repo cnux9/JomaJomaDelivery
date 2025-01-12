@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.review.controller;
 
+import com.example.jomajomadelivery.common.aop.account.CurrentUserId;
 import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
 import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import com.example.jomajomadelivery.review.dto.response.ReviewResponseDto;
@@ -28,9 +29,9 @@ public class ReviewController {
 //        return new ResponseEntity<>(reviewService.create(storeId, dto), HttpStatus.CREATED);
 //    }
     @PostMapping
-    public String create(@PathVariable Long storeId, ReviewCreateRequestDto dto) {
-        reviewService.create(storeId, dto);
-        return "redirect:/stores/"+storeId+"/reviews";
+    public String create(@PathVariable Long storeId, @CurrentUserId Long userId, ReviewCreateRequestDto dto) {
+        reviewService.create(storeId, userId, dto);
+        return "redirect:/stores/" + storeId + "/reviews";
     }
 
     @GetMapping
@@ -52,8 +53,8 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        reviewService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long reviewId, @CurrentUserId Long userId) {
+        reviewService.delete(reviewId, userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

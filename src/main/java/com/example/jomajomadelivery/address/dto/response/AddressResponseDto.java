@@ -1,14 +1,11 @@
 package com.example.jomajomadelivery.address.dto.response;
 
 import com.example.jomajomadelivery.address.entity.Address;
-import com.example.jomajomadelivery.address.entity.EntityType;
 
 import java.time.LocalDateTime;
 
 public record AddressResponseDto(
         Long addressId,
-        EntityType type,
-        Long entityId,
         String name,
 
         String zipcode,
@@ -21,8 +18,6 @@ public record AddressResponseDto(
     public static AddressResponseDto toDto(Address address) {
         return new AddressResponseDto(
                 address.getAddressId(),
-                address.getType(),
-                address.getEntityId(),
                 address.getName(),
                 address.getZipcode(),
                 address.getState(),
