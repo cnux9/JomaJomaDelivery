@@ -16,6 +16,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             r.reviewId,
             r.store.storeId,
             r.user.userId,
+            r.order.orderId,
             r.contents,
             r.rating,
             r.imgPath,

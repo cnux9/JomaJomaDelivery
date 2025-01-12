@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 public record ReviewResponseDto(
         Long reviewId,
         Long storeId,
-        Long orderId,
         Long userId,
+        Long orderId,
         String contents,
         Integer rating,
         String imgPath,
@@ -18,8 +18,8 @@ public record ReviewResponseDto(
         return new ReviewResponseDto(
                 savedReview.getReviewId(),
                 savedReview.getStore().getStoreId(),
-                savedReview.getOrder().getOrderId(),
                 savedReview.getUser().getUserId(),
+                savedReview.getOrder().getOrderId(),
                 savedReview.getContents(),
                 savedReview.getRating(),
                 savedReview.getImgPath(),
