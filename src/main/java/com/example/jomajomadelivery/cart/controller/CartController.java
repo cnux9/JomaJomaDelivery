@@ -19,9 +19,7 @@ public class CartController {
         CartResponseDto responseDto = cartService.add();
         model.addAttribute("dto", requestDto);
         model.addAttribute("cart", responseDto);
-//        System.out.println("cart " + requestDto.menuId());
-//        System.out.println("cart " + requestDto.quantity());
-        return "forward:/items";
+        return "forward:/carts/"+responseDto.cartId()+"/items";
     }
 
     @GetMapping("/{cartId}")
