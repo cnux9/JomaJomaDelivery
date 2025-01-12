@@ -1,7 +1,6 @@
 package com.example.jomajomadelivery.util;
 
 import com.example.jomajomadelivery.address.entity.Address;
-import com.example.jomajomadelivery.address.entity.EntityType;
 import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.review.entity.Review;
 import com.example.jomajomadelivery.store.entity.Category;

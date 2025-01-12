@@ -5,25 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store List</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
-        table, th, td {
-            border: 1px solid black;
+
+        .container {
+            width: 70%;
+            max-width: 1000px;
+            margin: 20px auto;
         }
-        th, td {
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
             padding: 10px;
-            text-align: left;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+            min-width: 200px;
         }
-        th {
-            background-color: #f2f2f2;
+
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-left: 10px;
         }
+
+        .btn-category {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-category.active {
+            background-color: #0056b3;
+        }
+
+        .btn-category:hover {
+            background-color: #0056b3;
+        }
+
+        .search-bar button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        .search-bar button[type="submit"]:hover {
+            background-color: #218838;
+        }
+
+        .store-card {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .store-card:hover {
+            background-color: #f9f9f9;
+        }
+
+        .store-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .store-card .details {
+            padding: 15px;
+            flex: 1;
+        }
+
+        .store-card .details h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .store-card .details p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .store-card .details .stats {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
         .pagination {
             margin: 20px 0;
             text-align: center;
         }
+
         .pagination a {
             margin: 0 5px;
             text-decoration: none;
@@ -31,9 +142,11 @@
             border: 1px solid #ddd;
             color: black;
         }
+
         .pagination a:hover {
             background-color: #f2f2f2;
         }
+
         .pagination .current {
             font-weight: bold;
             color: white;
@@ -41,53 +154,62 @@
             border-color: #007bff;
             padding: 5px 10px;
         }
+
     </style>
 </head>
 <body>
-<h1>Store List</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Store ID</th>
-        <th>Category</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-        <th>Open Time</th>
-        <th>Close Time</th>
-        <th>Rating</th>
-        <th>Min Order Price</th>
-        <th>Delivery Price</th>
-        <th>Favorite Count</th>
-    </tr>
-    </thead>
-    <tbody>
-    <!-- Thymeleaf iteration to display store data -->
-    <tr th:each="store : ${storeList.content}">
-        <td th:text="${store.storeId}"></td>
-        <td th:text="${store.category}"></td>
-        <td th:text="${store.name}"></td>
-        <td th:text="${store.description ?: '-'}"></td>
-        <td th:text="${store.address}"></td>
-        <td th:text="${store.phoneNumber}"></td>
-        <td th:text="${store.openTime ?: '-'}"></td>
-        <td th:text="${store.closeTime ?: '-'}"></td>
-        <td th:text="${store.rating ?: '-'}"></td>
-        <td th:text="${store.minOrderPrice}"></td>
-        <td th:text="${store.deliveryPrice}"></td>
-        <td th:text="${store.favoriteCount ?: 0}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <div class="header">
+        <h1>Store List</h1>
+    </div>
 
-<!-- Pagination -->
-<div class="pagination">
-    <a th:href="@{|/stores?page=${storeList.number - 1}|}" th:if="${!storeList.first}">Previous</a>
-    <span th:each="pageNum : ${#numbers.sequence(0, storeList.totalPages - 1)}">
+    <!-- 검색 바 및 카테고리 선택 -->
+    <div class="search-bar">
+        <form method="GET" th:action="@{/stores}" style="display: flex; align-items: center; width: 100%; flex-wrap: wrap;">
+            <input type="text" name="query" placeholder="가게 이름 또는 메뉴이름을 검색해보세요!" th:value="${query}" />
+            <button type="submit">Search</button>
+
+            <div class="category-buttons" style="margin-top: 10px; width: 100%; display: flex; justify-content: center; gap: 10px;">
+                <button type="submit" name="category" value="" th:classappend="${category == null} ? 'active'" class="btn-category">All</button>
+                <button th:each="cat : ${T(com.example.jomajomadelivery.store.entity.Category).values()}"
+                        type="submit"
+                        name="category"
+                        th:value="${cat.name()}"
+                        th:text="${cat.displayName}"
+                        th:classappend="${category == cat.name()} ? 'active'"
+                        class="btn-category">
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- 가게 카드 목록 -->
+    <a th:each="store : ${storeList.content}"
+       th:href="@{/stores/seller/{id}(id=${store.storeId})}"
+       class="store-card">
+        <img th:src="${store.imgPath}" alt="Store Image">
+        <div class="details">
+            <h2 th:text="${store.name}"></h2>
+            <p><strong>카테고리:</strong> <span th:text="${store.category}"></span></p>
+            <p><strong>오픈시간:</strong> <span th:text="${store.openTime ?: '-'}"></span> - <strong>마감시간:</strong> <span th:text="${store.closeTime ?: '-'}"></span></p>
+            <p><strong>최소 주문 금액:</strong> <span th:text="${store.minOrderPrice} + ' 원'"></span></p>
+            <p><strong>기본 배달팁:</strong> <span th:text="${store.deliveryPrice} + ' 원'"></span></p>
+            <div class="stats">
+                <span><strong>⭐</strong> <span th:text="${store.rating ?: 'N/A'}"></span></span>
+                <span style="margin-left: 15px;"><strong>찜 :</strong> <span th:text="${store.favoriteCount ?: 0}"></span></span>
+            </div>
+        </div>
+    </a>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a th:href="@{|/stores?page=${storeList.number - 1}|}" th:if="${!storeList.first}">Previous</a>
+        <span th:each="pageNum : ${#numbers.sequence(0, storeList.totalPages - 1)}">
             <a th:href="@{|/stores?page=${pageNum}|}" th:classappend="${pageNum == storeList.number} ? 'current'" th:text="${pageNum + 1}"></a>
         </span>
-    <a th:href="@{|/stores?page=${storeList.number + 1}|}" th:if="${!storeList.last}">Next</a>
+        <a th:href="@{|/stores?page=${storeList.number + 1}|}" th:if="${!storeList.last}">Next</a>
+    </div>
 </div>
 </body>
 </html>

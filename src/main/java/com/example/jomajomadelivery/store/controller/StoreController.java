@@ -3,13 +3,13 @@ package com.example.jomajomadelivery.store.controller;
 import com.example.jomajomadelivery.common.aop.account.CurrentUserId;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
+import com.example.jomajomadelivery.store.dto.response.StoreAndMenusResponseDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.service.StoreService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,18 +46,24 @@ public class StoreController {
 //        return new ResponseEntity<>(storeList, HttpStatus.OK);
 //    }
     @GetMapping
-    public String findAllStore(Pageable pageable, Model model) {
-        Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
+    public String findAllStore(Pageable pageable,
+                               Model model,
+                               @RequestParam(required = false) String query,
+                               @RequestParam(required = false) String category
+                               ) {
+        Page<StoreResponseDto> storeList = storeService.findAllStoreByFilter(pageable,query,category);
         model.addAttribute("storeList", storeList);
         return "storesview";
     }
 
+    // 사장님 본인의 가게 조회
     @GetMapping("/seller")
     public String findAllStoreBySeller(Pageable pageable, Model model,@CurrentUserId Long userId) {
         Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable,userId);
         model.addAttribute("storeList", storeList);
         return "/seller/store/storesview";
     }
+
 
     @GetMapping("/seller/{storeId}")
     public String sellerStoreMain(@PathVariable Long storeId,Model model) {
@@ -73,14 +79,15 @@ public class StoreController {
     }
 
     @GetMapping("/{store_id}")
-    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long storeId) {
-        StoreResponseDto responseDto = storeService.findById(storeId);
-        return new ResponseEntity<>(responseDto, HttpStatus.OK);
+    public String findById(@PathVariable Long storeId,Model model) {
+        StoreAndMenusResponseDto responseDto = storeService.findById(storeId);
+        model.addAttribute("store",responseDto);
+        return "/StoreDetail";
     }
 
     @GetMapping("/update/{storeId}")
     public String updateStoreForm(@PathVariable Long storeId, Model model) {
-        StoreResponseDto responseDto = storeService.findById(storeId);
+        StoreAndMenusResponseDto responseDto = storeService.findById(storeId);
         model.addAttribute("storeId", storeId);
         model.addAttribute("storeDto",responseDto);
         return "/seller/store/UpdateStoreForm";
