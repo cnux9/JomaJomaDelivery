@@ -3,6 +3,9 @@ package com.example.jomajomadelivery.account.auth.controller;
 import com.example.jomajomadelivery.account.auth.dto.request.LoginUserDto;
 import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.account.auth.service.UserAuthService;
+import com.example.jomajomadelivery.account.exception.EmailErrorCode;
+import com.example.jomajomadelivery.account.exception.PasswordErrorCode;
+import com.example.jomajomadelivery.exception.CustomException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,9 +44,9 @@ public class AuthController {
             Cookie cookie = userAuthService.authenticateUser(dto);
             response.addCookie(cookie);
             return "redirect:/";
-        } catch (IllegalArgumentException ex) {
+        } catch (CustomException ex) {
             model.addAttribute("loginUserForm", LoginUserDto.empty());
-            model.addAttribute("errorMessage", ex.getMessage());
+            model.addAttribute("errorMessage", ex.getErrorCode().getMessage());
             return "account/login";
         }
     }
@@ -54,7 +57,6 @@ public class AuthController {
     @GetMapping("/signup")
     public String signUpPage(Model model) {
         model.addAttribute("userSignUp", SignUpUserDto.empty());
-        model.addAttribute("errorMessage", null);
         model.addAttribute("isSocial", false);
         return "account/signup";
     }
@@ -70,9 +72,22 @@ public class AuthController {
             userAuthService.emailDuplicate(dto.email());
             userAuthService.registerUser(dto);
             return "redirect:/login";
-        } catch (IllegalArgumentException ex) {
+        } catch (CustomException ex) {
+            if (ex.getErrorCode() instanceof EmailErrorCode emailErrorCode) {
+                if (emailErrorCode == EmailErrorCode.EMAIL_ALREADY_USED) {
+                    model.addAttribute("emailErrorMessage", emailErrorCode.getMessage());
+                }
+
+                if (emailErrorCode == EmailErrorCode.EMAIL_INVALID_FORMAT) {
+                    model.addAttribute("emailErrorMessage", emailErrorCode.getMessage());
+                }
+            } else if (ex.getErrorCode() instanceof PasswordErrorCode passwordErrorCode &&
+                    passwordErrorCode == PasswordErrorCode.PASSWORD_INVALID_FORMAT
+            ) {
+                model.addAttribute("passwordErrorMessage", passwordErrorCode.getMessage());
+            }
+
             model.addAttribute("userSignUp", dto);
-            model.addAttribute("errorMessage", ex.getMessage());
             model.addAttribute("isSocial", false);
             return "account/signup";
         }
