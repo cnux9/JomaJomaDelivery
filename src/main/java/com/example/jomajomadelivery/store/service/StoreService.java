@@ -60,7 +60,11 @@ public class StoreService {
     @Transactional
     public StoreResponseDto updateStore(Long storeId, UpdateStoreRequestDto dto) {
         Store store = getStore(storeId);
-        store.updateStore(dto);
+        String imgPath = store.getImgPath();
+        if (dto.img() != null) {
+            imgPath = imageHandler.save(dto.img(), "store");
+        }
+        store.updateStore(dto,imgPath);
         return StoreResponseDto.toDTO(store);
 
     }
@@ -69,6 +73,11 @@ public class StoreService {
     public StoreResponseDto findById(Long storeId) {
         Store store = getStore(storeId);
         return StoreResponseDto.toDTO(store);
+    }
+    @Transactional(readOnly = true)
+    public String findSellerNameById(Long storeId) {
+        Store store = getStore(storeId);
+        return store.getUser().getName();
     }
 
     @Transactional
