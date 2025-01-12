@@ -1,6 +1,5 @@
 package com.example.jomajomadelivery.store.service;
 
-import com.example.jomajomadelivery.account.auth.dto.request.SignUpUserDto;
 import com.example.jomajomadelivery.address.dto.request.AddressRequestDto;
 import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.address.entity.EntityType;
@@ -107,4 +106,5 @@ public class StoreService {
             throw new CustomException(StoreErrorCode.NOT_SELLER);
         }
     }
+
 }

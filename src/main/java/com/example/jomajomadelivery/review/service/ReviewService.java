@@ -56,11 +56,13 @@ public class ReviewService {
         if (!storeRepository.existsById(storeId)) {
             throw new CustomException(StoreErrorCode.STORE_NOT_FOUND);
         }
-        Store storeRef = storeRepository.getReferenceById(storeId);
+        Store foundStore = storeRepository.findById(storeId).orElseThrow(() -> new CustomException(StoreErrorCode.STORE_NOT_FOUND));
 
-
-        Review newReview = Review.createReview(userRef, storeRef, foundOrder, dto);
+        Review newReview = Review.createReview(userRef, foundStore, foundOrder, dto);
         Review savedReview = reviewRepository.save(newReview);
+
+        Double averageRating = reviewRepository.getAverageRatingByStoreId(storeId);
+        foundStore.updateRating(averageRating);
 
         return ReviewResponseDto.toDto(savedReview);
     }

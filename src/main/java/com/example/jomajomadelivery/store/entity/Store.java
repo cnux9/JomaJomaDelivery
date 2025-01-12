@@ -98,4 +98,7 @@ public class Store extends BaseEntity {
         this.isDeleted=true;
     }
 
+    public void updateRating(Double rating) {
+        this.rating = rating;
+    }
 }
