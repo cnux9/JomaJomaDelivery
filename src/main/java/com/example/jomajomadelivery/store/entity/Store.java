@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.store.entity;
 
 import com.example.jomajomadelivery.common.BaseEntity;
+import com.example.jomajomadelivery.menu.entity.Menu;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.user.entity.User;
@@ -8,6 +9,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "stores")
@@ -64,6 +67,9 @@ public class Store extends BaseEntity {
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Menu> menus = new ArrayList<>();
 
     public static Store addStore(User user, StoreRequestDto dto,String imgPath){
         return Store.builder()

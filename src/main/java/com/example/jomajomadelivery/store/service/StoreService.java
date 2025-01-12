@@ -9,6 +9,7 @@ import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.store.dto.request.StoreRequestDto;
 import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
+import com.example.jomajomadelivery.store.entity.Category;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.exception.StoreErrorCode;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
@@ -31,12 +32,12 @@ public class StoreService {
     private final AddressRepository addressRepository;
     private final ImageHandler imageHandler;
 
-    public void addStore(StoreRequestDto dto,Long userId) {
+    public void addStore(StoreRequestDto dto, Long userId) {
         User user = userRepository.findById(userId).get();
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
 
-        String imgPath = imageHandler.save(dto.img(),"store");
+        String imgPath = imageHandler.save(dto.img(), "store");
         Store store = Store.addStore(user, dto, imgPath);
         store = storeRepository.save(store);
         AddressRequestDto addressRequestDto = new AddressRequestDto(
@@ -47,13 +48,17 @@ public class StoreService {
         addressRepository.save(address);
     }
 
-    //Todo: 요청에따라 필터링
 
     @Transactional(readOnly = true)
-    public Page<StoreResponseDto> findAllStore(Pageable pageable) {
-        Page<Store> storeList = storeRepository.findAll(pageable);
-        // Todo: 빈 배열일 경우 에러 던지깅
-
+    public Page<StoreResponseDto> findAllStoreByFilter(Pageable pageable,
+                                                       String query,
+                                                       String category) {
+        Category enumCategory = null;
+        if(category!=null && !category.isEmpty()){
+            enumCategory = Category.valueOf(category);
+        }
+        Page<Store> storeList = storeRepository.searchStoresByKeywordAndCategory(
+                query, enumCategory,pageable);
         return storeList.map(StoreResponseDto::toDTO);
     }
 
@@ -64,7 +69,7 @@ public class StoreService {
         if (dto.img() != null) {
             imgPath = imageHandler.save(dto.img(), "store");
         }
-        store.updateStore(dto,imgPath);
+        store.updateStore(dto, imgPath);
         return StoreResponseDto.toDTO(store);
 
     }
@@ -74,6 +79,7 @@ public class StoreService {
         Store store = getStore(storeId);
         return StoreResponseDto.toDTO(store);
     }
+
     @Transactional(readOnly = true)
     public String findSellerNameById(Long storeId) {
         Store store = getStore(storeId);
@@ -86,12 +92,10 @@ public class StoreService {
         store.shutDownStore();
     }
 
-    @Transactional
-    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable,Long userId) {
+    @Transactional(readOnly = true)
+    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable, Long userId) {
         User user = userRepository.findById(userId).get();
         Page<Store> storeList = storeRepository.findAllByUser(user, pageable);
-        // Todo: 빈 배열일 경우 에러 던지깅
-
         return storeList.map(StoreResponseDto::toDTO);
     }
 

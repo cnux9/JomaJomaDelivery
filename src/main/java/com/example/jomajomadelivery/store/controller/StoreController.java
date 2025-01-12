@@ -46,18 +46,24 @@ public class StoreController {
 //        return new ResponseEntity<>(storeList, HttpStatus.OK);
 //    }
     @GetMapping
-    public String findAllStore(Pageable pageable, Model model) {
-        Page<StoreResponseDto> storeList = storeService.findAllStore(pageable);
+    public String findAllStore(Pageable pageable,
+                               Model model,
+                               @RequestParam(required = false) String query,
+                               @RequestParam(required = false) String category
+                               ) {
+        Page<StoreResponseDto> storeList = storeService.findAllStoreByFilter(pageable,query,category);
         model.addAttribute("storeList", storeList);
         return "storesview";
     }
 
+    // 사장님 본인의 가게 조회
     @GetMapping("/seller")
     public String findAllStoreBySeller(Pageable pageable, Model model,@CurrentUserId Long userId) {
         Page<StoreResponseDto> storeList = storeService.findAllStoreBySeller(pageable,userId);
         model.addAttribute("storeList", storeList);
         return "/seller/store/storesview";
     }
+
 
     @GetMapping("/seller/{storeId}")
     public String sellerStoreMain(@PathVariable Long storeId,Model model) {
