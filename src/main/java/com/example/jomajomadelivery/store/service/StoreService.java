@@ -38,7 +38,6 @@ public class StoreService {
         User user = User.createUser(signUpUserDto);
         userRepository.save(user);
 
-
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
 

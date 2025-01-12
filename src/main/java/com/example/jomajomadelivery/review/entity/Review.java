@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.review.entity;
 
 import com.example.jomajomadelivery.common.BaseEntity;
+import com.example.jomajomadelivery.orders.entity.Order;
 import com.example.jomajomadelivery.review.dto.request.ReviewCreateRequestDto;
 import com.example.jomajomadelivery.review.dto.request.ReviewUpdateRequestDto;
 import com.example.jomajomadelivery.store.entity.Store;
@@ -23,9 +24,9 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-//    @ManyToOne
-//    @JoinColumn(name = "order_id")
-//    private Order order;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
@@ -40,10 +41,11 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "TINYINT")
     private Integer rating;
 
-    public static Review createReview(User user, Store store, ReviewCreateRequestDto dto) {
+    public static Review createReview(User user, Store store, Order order, ReviewCreateRequestDto dto) {
         return Review.builder()
                 .user(user)
                 .store(store)
+                .order(order)
                 .contents(dto.contents())
                 .imgPath(dto.imgPath())
                 .rating(dto.rating())
