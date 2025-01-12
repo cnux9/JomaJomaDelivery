@@ -1,6 +1,5 @@
 package com.example.jomajomadelivery.orders.entity;
 
-import com.example.jomajomadelivery.address.entity.Address;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.common.BaseEntity;
 import com.example.jomajomadelivery.store.entity.Store;
@@ -37,17 +36,16 @@ public class Order extends BaseEntity {
     @Column(name = "status")
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", nullable = false)
-    private Address address;
+    @Column(nullable = false)
+    private Long addressId;
 
-    public static Order newOrders(User user, Store store, Cart cart, Address address) {
+    public static Order newOrders(User user, Store store, Cart cart,Long addressId) {
         return Order.builder()
                 .user(user)
                 .store(store)
                 .cart(cart)
                 .status(Status.ORDERED)
-                .address(address)
+                .addressId(addressId)
                 .build();
     }
 

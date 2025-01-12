@@ -1,4 +1,7 @@
 package com.example.jomajomadelivery.orders.dto.request;
 
-public class OrdersRequestDto {
+public record OrdersRequestDto(
+        Long storeId,
+        Long cartId
+) {
 }

@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum LoginErrorCode implements ErrorCode {
-    INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "BAD REQUEST", "ACCOUNT-100", "아이디(이메일) 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요.");
+    INVALID_CREDENTIALS(HttpStatus.BAD_REQUEST, "BAD REQUEST", "ACCOUNT-100", "아이디(이메일) 또는 비밀번호가 잘못 되었습니다. 아이디와 비밀번호를 정확히 입력해 주세요."),
+    NEED_LOGIN(HttpStatus.BAD_REQUEST, "BAD REQUEST", "ACCOUNT-040", "로그인이 필요한 서비스입니다.");
 
     private final HttpStatus status;
     private final String name;

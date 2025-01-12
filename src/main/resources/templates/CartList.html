@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <style>
+        /* CSS는 동일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .cart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .item-details {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .item-actions input {
+            width: 50px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .summary {
+            margin-top: 20px;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            font-size: 1.1em;
+        }
+
+        .summary div {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .order-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.2em;
+            border-radius: 5px;
+        }
+
+        .order-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="cart-container">
+    <h1>장바구니</h1>
+
+    <!-- 아이템 리스트 -->
+    <div th:if="${cart.items != null and !cart.items.isEmpty()}">
+        <div th:each="item : ${cart.items}" class="cart-item">
+            <img th:src="${item.menu.imgPath}" alt="Menu Image" onerror="this.src='/images/default.jpg'">
+            <div class="item-details">
+                <h3 th:text="${item.name}">Item Name</h3>
+                <p th:text="'₩' + ${item.totalPrice}">₩0</p>
+            </div>
+            <div class="item-actions">
+                <!-- 수량 변경 -->
+                <input type="number" th:value="${item.quantity}" min="1"
+                       th:data-item-id="${item.itemId}"
+                       onchange="updateItemQuantity(this, this.value)">
+                <!-- 삭제 버튼 -->
+                <button
+                        th:data-item-id2="${item.itemId}"
+                        onclick="deleteItem(this)">삭제</button>
+            </div>
+        </div>
+    </div>
+    <div th:if="${cart.items == null or cart.items.isEmpty()}">
+        <p>장바구니가 비어 있습니다.</p>
+    </div>
+
+    <!-- 요약 -->
+    <div class="summary">
+        <div>
+            <span>총 수량:</span>
+            <span th:text="${cart.totalQuantity}">0</span>
+        </div>
+        <div>
+            <span>총 가격:</span>
+            <span th:text="'₩ ' + ${cart.totalItemPrice}">₩0</span>
+        </div>
+        <div>
+            <span>배달팁:</span>
+            <span th:text="'₩ ' + ${cart.deliveryFee}">₩0</span>
+        </div>
+        <div>
+            <span>총 주문 금액:</span>
+            <span th:text="'₩ ' + ${cart.orderFee()}">₩0</span>
+        </div>
+    </div>
+
+
+    <!-- 주문하기 버튼 -->
+    <a href="javascript:void(0);"
+       class="order-button"
+       th:if="${cart.items != null and !cart.items.isEmpty()}"
+       onclick="submitOrder()">주문하기</a>
+</div>
+
+<script>
+    // 아이템 수량 업데이트
+    function updateItemQuantity(element, quantity) {
+        const cartId = [[${cart.cartId}]]; // Thymeleaf에서 렌더링된 cartId
+        const itemId = element.getAttribute('data-item-id'); // 속성 직접 접근
+
+        fetch(`/carts/${cartId}/items/${itemId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantity: quantity }),
+        }).then(response => {
+            if (response.ok) {
+                location.reload(); // 성공 시 새로고침
+            } else {
+                alert("수량 업데이트에 실패했습니다.");
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+
+    function deleteItem(element) {
+        const cartId = [[${cart.cartId}]]; // Thymeleaf에서 렌더링된 cartId
+        const itemId2 = element.getAttribute('data-item-id2'); // 속성 직접 접근
+        fetch(`/carts/${cartId}/items/${itemId2}`, {
+            method: 'DELETE',
+        }).then(response => {
+            if (response.ok) {
+                location.reload(); // 성공 시 새로고침
+            } else {
+                alert("아이템 삭제에 실패했습니다.");
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+
+    function submitOrder() {
+        const orderData = {
+            cartId: [[${cart.cartId}]],
+            storeId: [[${cart.storeId}]]
+        };
+
+        fetch('/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        }).then(response => {
+            if (response.ok) {
+                alert("주문이 성공적으로 처리되었습니다.");
+                window.location.href = '/stores'; // 주문 완료 후 이동할 페이지
+                //todo: 주문 상태 페이지 만들어야함.
+            } else {
+                alert("주문 처리 중 오류가 발생했습니다.");
+            }
+        }).catch(error => console.error('Error:', error));
+    }
+
+</script>
+</body>
+</html>

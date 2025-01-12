@@ -8,10 +8,10 @@ public record OrderResponseDto (
 //    TODO: 주소 반환값
     String address
 ) {
-    public static OrderResponseDto toDto(Order order) {
+    public static OrderResponseDto toDto(Order order,String address) {
         return new OrderResponseDto(
                 order.getStatus(),
-                order.getAddress().toString()
+                address
         );
     }
 }

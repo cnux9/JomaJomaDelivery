@@ -1,11 +1,12 @@
 package com.example.jomajomadelivery.orders.service;
 
-import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.account.exception.LoginErrorCode;
 import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.repository.CartRepository;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.item.entity.Item;
+import com.example.jomajomadelivery.orders.dto.request.OrdersRequestDto;
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.entity.Order;
 import com.example.jomajomadelivery.orders.exception.OrderErrorCode;
@@ -54,21 +55,22 @@ public class OrdersService {
         }
     }
 
-    //Todo:: User, Store, Cart, Address 주입 필요
-    public OrderResponseDto createOrder() {
-        User user = userRepository.findById(1L).get();
-        Store store = storeRepository.findById(1L).get();
-        Cart cart = cartRepository.findById(1L).get();
-        Address address = addressRepository.findById(user.getAddressId()).get();
+    @Transactional
+    public OrderResponseDto createOrder(Long userId, OrdersRequestDto dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new CustomException(LoginErrorCode.NEED_LOGIN));
+        Store store = storeRepository.findById(dto.storeId()).get();
+        Cart cart = cartRepository.findById(dto.cartId()).get();
 
         throwIfCartIsEmpty(cart);
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);
         throwIfStoreIsNotOpen(store);
 
-        Order order = Order.newOrders(user, store, cart, address);
+        Order order = Order.newOrders(user, store, cart, user.getAddressId());
         Order savedOrder = ordersRepository.save(order);
+        cart = cart.UpdateCartStatus();
 
-        return OrderResponseDto.toDto(savedOrder);
+        return OrderResponseDto.toDto(savedOrder,addressToString(savedOrder.getAddressId()));
     }
 
     private void throwIfCartIsEmpty(Cart cart) {
@@ -79,7 +81,7 @@ public class OrdersService {
 
     public OrderResponseDto find(Long orderId) {
         Order order = getById(orderId);
-        return OrderResponseDto.toDto(order);
+        return OrderResponseDto.toDto(order,addressToString(order.getAddressId()));
     }
 
     @Transactional
@@ -97,7 +99,7 @@ public class OrdersService {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
-        return OrderResponseDto.toDto(order);
+        return OrderResponseDto.toDto(order,addressToString(order.getAddressId()));
     }
 
     public void delete(Long orderId) {
@@ -125,5 +127,8 @@ public class OrdersService {
         if (now.isBefore(store.getOpenTime()) || now.isAfter(store.getCloseTime())) {
             throw new CustomException(OrderErrorCode.STORE_NOT_OPEN);
         }
+    }
+    private String addressToString(Long addressId){
+        return addressRepository.findById(addressId).get().toString();
     }
 }
