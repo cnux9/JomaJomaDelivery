@@ -130,13 +130,13 @@
         <img th:src="${store.imgPath}" alt="Store Image">
         <div class="details">
             <h2 th:text="${store.name}"></h2>
-            <p><strong>Category:</strong> <span th:text="${store.category}"></span></p>
-            <p><strong>Open:</strong> <span th:text="${store.openTime ?: '-'}"></span> - <strong>Close:</strong> <span th:text="${store.closeTime ?: '-'}"></span></p>
-            <p><strong>Min Order Price:</strong> <span th:text=" ${store.minOrderPrice}"></span></p>
-            <p><strong>Delivery Fee:</strong> <span th:text="${store.deliveryPrice}"></span></p>
+            <p><strong>카테고리:</strong> <span th:text="${store.category}"></span></p>
+            <p><strong>오픈시간:</strong> <span th:text="${store.openTime ?: '-'}"></span> - <strong>마감시간:</strong> <span th:text="${store.closeTime ?: '-'}"></span></p>
+            <p><strong>최소 주문 금액:</strong> <span th:text=" ${store.minOrderPrice} + ' 원'"></span></p>
+            <p><strong>기본 배달팁:</strong> <span th:text="${store.deliveryPrice} + ' 원'"></span></p>
             <div class="stats">
-                <span><strong>Rating:</strong> <span th:text="${store.rating ?: 'N/A'}"></span></span>
-                <span style="margin-left: 15px;"><strong>Likes:</strong> <span th:text="${store.favoriteCount ?: 0}"></span></span>
+                <span><strong>⭐</strong> <span th:text="${store.rating ?: 'N/A'}"></span></span>
+                <span style="margin-left: 15px;"><strong>찜 :</strong> <span th:text="${store.favoriteCount ?: 0}"></span></span>
             </div>
         </div>
     </a>

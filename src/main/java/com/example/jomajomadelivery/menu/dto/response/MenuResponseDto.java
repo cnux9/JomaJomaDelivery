@@ -10,6 +10,6 @@ public record MenuResponseDto(
         String imgPath
 ) {
     public static MenuResponseDto toDto(Menu menu) {
-        return new MenuResponseDto(menu.getMenuId(), menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImgPath());
+        return new MenuResponseDto(menu.getMenuId() ,menu.getName(), menu.getDescription(), menu.getPrice(), menu.getImgPath());
     }
 }

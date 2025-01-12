@@ -84,9 +84,9 @@ public class Store extends BaseEntity {
                 .build();
     }
 
-    public Store updateStore(UpdateStoreRequestDto dto){
+    public Store updateStore(UpdateStoreRequestDto dto,String imgPath){
         this.description=dto.description();
-        this.imgPath=dto.imgPath();
+        this.imgPath=imgPath;
         this.openTime=dto.openTime();
         this.closeTime=dto.closeTime();
         this.minOrderPrice=dto.minOrderPrice();
