@@ -32,16 +32,12 @@ public class StoreService {
     private final AddressRepository addressRepository;
     private final ImageHandler imageHandler;
 
-    public void addStore(StoreRequestDto dto) {
-//        User user = userRepository.findById(userId).get();
-        SignUpUserDto signUpUserDto = new SignUpUserDto(null,"aa","dd","dd","dd","","","","","","","","",Role.ROLE_SELLER);
-        User user = User.createUser(signUpUserDto);
-        userRepository.save(user);
-
+    public void addStore(StoreRequestDto dto,Long userId) {
+        User user = userRepository.findById(userId).get();
         throwIfUserIsNotSeller(user);
         throwIfStoreIsMoreThanThree(user);
 
-        String imgPath = imageHandler.save(dto.img());
+        String imgPath = imageHandler.save(dto.img(),"store");
         Store store = Store.addStore(user, dto, imgPath);
         store = storeRepository.save(store);
         AddressRequestDto addressRequestDto = new AddressRequestDto(
@@ -83,8 +79,8 @@ public class StoreService {
     }
 
     @Transactional
-    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable) {
-        User user = userRepository.findById(1L).get();
+    public Page<StoreResponseDto> findAllStoreBySeller(Pageable pageable,Long userId) {
+        User user = userRepository.findById(userId).get();
         Page<Store> storeList = storeRepository.findAllByUser(user, pageable);
         // Todo: 빈 배열일 경우 에러 던지깅
 

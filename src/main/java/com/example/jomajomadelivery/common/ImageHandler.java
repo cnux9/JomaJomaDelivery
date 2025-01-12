@@ -9,15 +9,17 @@ import java.util.UUID;
 
 @Component
 public class ImageHandler {
-    public String save(MultipartFile img) {
-        String baseDir = new File("src/main/resources/static/img/").getAbsolutePath() + File.separator;
-        String fileName = img.getOriginalFilename() + UUID.randomUUID().toString();
+    public String save(MultipartFile img,String path) {
+        String baseDir = new File("src/main/resources/static/images/"+path).getAbsolutePath() + File.separator;
+        String fileName = UUID.randomUUID().toString()+ img.getOriginalFilename();
         String fullPathName = baseDir + fileName;
+        String savePath = "/images/"+path+"/" + fileName;
         try {
             img.transferTo(new File(fullPathName));
-        }catch (Exception e){
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new FileSaveException(e.getMessage());
         }
-        return fullPathName;
+        return savePath;
     }
 }

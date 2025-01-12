@@ -16,21 +16,21 @@ public class GoogleUserInfoResponse implements OAuth2UserInfo {
 
     @Override
     public SocialProvider getProvider() {
-        return null;
+        return socialProvider;
     }
 
     @Override
     public String getProviderId() {
-        return "";
+        return attributes.get("sub").toString();
     }
 
     @Override
     public String getName() {
-        return "";
+        return attributes.get("name").toString();
     }
 
     @Override
     public String getEmail() {
-        return "";
+        return attributes.get("email").toString();
     }
 }

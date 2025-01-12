@@ -28,7 +28,7 @@
                        class="form-control"
                        th:classappend="${errorMessage != null} ? 'is-invalid' : ''"
                        placeholder="비밀번호를 입력하세요" required>
-                <div class="invalid-feedback" th:if="${errorMessage}">
+                <div class="invalid-feedback">
                     <span th:text="${errorMessage}"></span>
                 </div>
             </div>
@@ -41,15 +41,15 @@
         <div class="d-flex flex-column align-items-center gap-3">
             <!-- 네이버 로그인 -->
             <a href="/oauth2/authorization/naver" class="btn">
-                <img width="180" src="/images/login/naver_login.png" alt="네이버 로그인">
+                <img src="/images/login/naver_login.png" alt="네이버 로그인">
             </a>
             <!-- 카카오 로그인 -->
             <a href="/oauth2/authorization/kakao" class="btn">
-                <img width="150" src="/images/kakao_login.png" alt="카카오 로그인">
+                <img src="/images/login/kakao_login.png" alt="카카오 로그인">
             </a>
             <!-- 구글 로그인 -->
             <a href="/oauth2/authorization/google" class="btn">
-                <img width="150" src="/images/google_login.png" alt="구글 로그인">
+                <img src="/images/login/google_login.png" alt="구글 로그인">
             </a>
         </div>
 
