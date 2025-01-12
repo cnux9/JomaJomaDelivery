@@ -1,4 +1,4 @@
-package com.example.jomajomadelivery.user.util;
+package com.example.jomajomadelivery.account.util;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
