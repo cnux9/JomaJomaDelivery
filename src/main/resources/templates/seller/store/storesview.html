@@ -5,25 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store List</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
         }
-        table, th, td {
-            border: 1px solid black;
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
         }
-        th, td {
-            padding: 10px;
-            text-align: left;
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
         }
-        th {
-            background-color: #f2f2f2;
+
+        .store-card {
+            display: flex;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer; /* 커서 모양을 클릭 가능하게 변경 */
+            text-decoration: none; /* 밑줄 제거 */
+            color: inherit; /* 텍스트 색상 상속 */
         }
+
+        .store-card:hover {
+            background-color: #f9f9f9; /* 호버 시 배경색 변경 (선택 사항) */
+        }
+
+        .store-card img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .store-card .details {
+            padding: 15px;
+            flex: 1;
+        }
+
+        .store-card .details h2 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #333;
+        }
+
+        .store-card .details p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .store-card .details .stats {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .btn-create {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .btn-create:hover {
+            background-color: #0056b3;
+        }
+
         .pagination {
             margin: 20px 0;
             text-align: center;
         }
+
         .pagination a {
             margin: 0 5px;
             text-decoration: none;
@@ -31,9 +97,11 @@
             border: 1px solid #ddd;
             color: black;
         }
+
         .pagination a:hover {
             background-color: #f2f2f2;
         }
+
         .pagination .current {
             font-weight: bold;
             color: white;
@@ -41,57 +109,37 @@
             border-color: #007bff;
             padding: 5px 10px;
         }
+
     </style>
 </head>
 <body>
-<h1>Store List</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Store ID</th>
-        <th>Category</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Address</th>
-        <th>Phone Number</th>
-        <th>Open Time</th>
-        <th>Close Time</th>
-        <th>Rating</th>
-        <th>Min Order Price</th>
-        <th>Delivery Price</th>
-        <th>Favorite Count</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="store : ${storeList.content}">
-        <td th:text="${store.storeId}"></td>
-        <td th:text="${store.category}"></td>
-        <td th:text="${store.name}"></td>
-        <td th:text="${store.description ?: '-'}"></td>
-        <td th:text="${store.address}"></td>
-        <td th:text="${store.phoneNumber}"></td>
-        <td th:text="${store.openTime ?: '-'}"></td>
-        <td th:text="${store.closeTime ?: '-'}"></td>
-        <td th:text="${store.rating ?: '-'}"></td>
-        <td th:text="${store.minOrderPrice}"></td>
-        <td th:text="${store.deliveryPrice}"></td>
-        <td th:text="${store.favoriteCount ?: 0}"></td>
-        <!-- 수정 버튼 -->
-        <td>
-            <a th:href="@{/stores/update/{store_id}(store_id=${store.storeId})}" class="btn btn-primary">수정</a>
-        </td>
-    </tr>
-    </tbody>
+<div class="container">
+    <div class="header">
+        <h1>Store List</h1>
+    </div>
 
-</table>
+    <!-- 가게가 없거나 3개 미만일 경우 가게 생성 버튼 -->
+    <div th:if="${storeList.content.size() < 3}" class="create-store">
+        <a th:href="@{/stores/new}" class="btn-create">+ Create New Store</a>
+    </div>
 
-<!-- Pagination -->
-<div class="pagination">
-    <a th:href="@{|/stores?page=${storeList.number - 1}|}" th:if="${!storeList.first}">Previous</a>
-    <span th:each="pageNum : ${#numbers.sequence(0, storeList.totalPages - 1)}">
-            <a th:href="@{|/stores?page=${pageNum}|}" th:classappend="${pageNum == storeList.number} ? 'current'" th:text="${pageNum + 1}"></a>
-        </span>
-    <a th:href="@{|/stores?page=${storeList.number + 1}|}" th:if="${!storeList.last}">Next</a>
+    <!-- 가게 카드 목록 -->
+    <a th:each="store : ${storeList.content}"
+       th:href="@{/stores/seller/{id}(id=${store.storeId})}"
+       class="store-card">
+        <img th:src="${store.imgPath}" alt="Store Image">
+        <div class="details">
+            <h2 th:text="${store.name}"></h2>
+            <p><strong>Category:</strong> <span th:text="${store.category}"></span></p>
+            <p><strong>Open:</strong> <span th:text="${store.openTime ?: '-'}"></span> - <strong>Close:</strong> <span th:text="${store.closeTime ?: '-'}"></span></p>
+            <p><strong>Min Order Price:</strong> <span th:text=" ${store.minOrderPrice}"></span></p>
+            <p><strong>Delivery Fee:</strong> <span th:text="${store.deliveryPrice}"></span></p>
+            <div class="stats">
+                <span><strong>Rating:</strong> <span th:text="${store.rating ?: 'N/A'}"></span></span>
+                <span style="margin-left: 15px;"><strong>Likes:</strong> <span th:text="${store.favoriteCount ?: 0}"></span></span>
+            </div>
+        </div>
+    </a>
 </div>
 </body>
 </html>
