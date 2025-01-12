@@ -1,10 +1,12 @@
 package com.example.jomajomadelivery.store.dto.request;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.time.LocalTime;
 
 public record UpdateStoreRequestDto(
         String description,
-        String imgPath,
+        MultipartFile img,
         LocalTime openTime,
         LocalTime closeTime,
         int minOrderPrice,

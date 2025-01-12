@@ -67,18 +67,22 @@ public class StoreController {
     @GetMapping("/seller/self/{storeId}")
     public String sellerSelfService(@PathVariable Long storeId,Model model) {
         model.addAttribute("storeId",storeId);
+        model.addAttribute("storeName",storeService.findById(storeId).name());
+        model.addAttribute("sellerName",storeService.findSellerNameById(storeId));
         return "/seller/store/StoreSelfHome";
     }
 
     @GetMapping("/{store_id}")
-    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long store_id) {
-        StoreResponseDto responseDto = storeService.findById(store_id);
+    public ResponseEntity<StoreResponseDto> findById(@PathVariable Long storeId) {
+        StoreResponseDto responseDto = storeService.findById(storeId);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/update/{store_id}")
-    public String updateStoreForm(@PathVariable Long store_id, Model model) {
-        model.addAttribute("store_id", store_id);
+    @GetMapping("/update/{storeId}")
+    public String updateStoreForm(@PathVariable Long storeId, Model model) {
+        StoreResponseDto responseDto = storeService.findById(storeId);
+        model.addAttribute("storeId", storeId);
+        model.addAttribute("storeDto",responseDto);
         return "/seller/store/UpdateStoreForm";
     }
 
@@ -90,9 +94,8 @@ public class StoreController {
 //    }
     @PatchMapping("/{store_id}")
     public String updateStore(@PathVariable Long store_id,
-                              UpdateStoreRequestDto dto) {
-        System.out.println(dto.description());
-        StoreResponseDto responseDto = storeService.updateStore(store_id, dto);
+                             @ModelAttribute UpdateStoreRequestDto dto) {
+        storeService.updateStore(store_id, dto);
         return "redirect:/stores/seller";
     }
 

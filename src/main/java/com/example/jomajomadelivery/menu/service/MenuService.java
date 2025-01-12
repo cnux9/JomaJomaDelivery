@@ -74,6 +74,6 @@ public class MenuService {
      */
     public Menu getMenuEntity(Long menuId) {
         return menuRepository.findById(menuId)
-                .orElseThrow(() -> new NoSuchElementException("Store with id " + menuId + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Menu with id " + menuId + " not found"));
     }
 }
