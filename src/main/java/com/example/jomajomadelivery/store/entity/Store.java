@@ -38,8 +38,8 @@ public class Store extends BaseEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "address", nullable = false)
-    private String address;
+    @Column(nullable = false, unique = true)
+    private Long addressId;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -71,13 +71,14 @@ public class Store extends BaseEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Menu> menus = new ArrayList<>();
 
-    public static Store addStore(User user, StoreRequestDto dto,String imgPath){
+    public static Store addStore(User user, StoreRequestDto dto,
+                                 String imgPath,Long addressId){
         return Store.builder()
                 .user(user)
                 .category(Category.valueOf(dto.category()))
                 .name(dto.name())
                 .description(dto.description())
-                .address(dto.fullAddress())
+                .addressId(addressId)
                 .phoneNumber(dto.phoneNumber())
                 .imgPath(imgPath)
                 .openTime(dto.openTime())

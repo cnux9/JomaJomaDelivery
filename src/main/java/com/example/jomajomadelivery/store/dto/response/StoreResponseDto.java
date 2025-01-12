@@ -21,13 +21,13 @@ public record StoreResponseDto(
         Integer deliveryPrice,
         Long favoriteCount
 ) {
-    public static StoreResponseDto toDTO(Store store) {
+    public static StoreResponseDto toDTO(Store store,String address) {
         return StoreResponseDto.builder()
                 .storeId(store.getStoreId())
                 .category(store.getCategory())
                 .name(store.getName())
                 .description(store.getDescription())
-                .address(store.getAddress())
+                .address(address)
                 .phoneNumber(store.getPhoneNumber())
                 .imgPath(store.getImgPath())
                 .openTime(store.getOpenTime())

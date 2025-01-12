@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface StoreRepository extends JpaRepository<Store,Long> {
     Page<Store> findAll(Pageable pageable);
     Page<Store> findAllByUser(User user, Pageable pageable);
@@ -33,6 +35,9 @@ public interface StoreRepository extends JpaRepository<Store,Long> {
             @Param("category") Category category,
             Pageable pageable
     );
+
+    @Query("SELECT s FROM Store s LEFT JOIN FETCH s.menus WHERE s.storeId = :storeId")
+    Optional<Store> findByIdWithMenus(@Param("storeId") Long storeId);
 
 
 }

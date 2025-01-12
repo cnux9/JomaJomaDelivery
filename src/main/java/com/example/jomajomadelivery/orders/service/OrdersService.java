@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.orders.service;
 
 import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.repository.CartRepository;
 import com.example.jomajomadelivery.exception.CustomException;
@@ -36,6 +37,7 @@ public class OrdersService {
     private final UserRepository userRepository;
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
+    private final AddressRepository addressRepository;
 
     @Pointcut("execution(* com.example.jomajomadelivery.orders.service.OrdersService.createOrder(..)) ||" +
     "execution(* com.example.jomajomadelivery.orders.service.OrdersService.updateOrder(..))")
@@ -57,7 +59,7 @@ public class OrdersService {
         User user = userRepository.findById(1L).get();
         Store store = storeRepository.findById(1L).get();
         Cart cart = cartRepository.findById(1L).get();
-        Address address = user.getAddresses().get(0);
+        Address address = addressRepository.findById(user.getAddressId()).get();
 
         throwIfCartIsEmpty(cart);
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);

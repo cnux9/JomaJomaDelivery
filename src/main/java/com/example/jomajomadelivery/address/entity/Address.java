@@ -63,6 +63,6 @@ public class Address extends BaseEntity {
     }
 
     public String toString() {
-        return zipcode + state + city + street + detailedAddress;
+        return  state + " " + city + " " + street + " " + detailedAddress;
     }
 }
