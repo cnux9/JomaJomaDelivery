@@ -33,4 +33,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             @Param("maxRating") Integer maxRating,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT AVG(r.rating)
+        FROM Review r
+        WHERE r.store.storeId = :storeId
+    """)
+    Double getAverageRatingByStoreId(@Param("storeId") Long storeId);
 }

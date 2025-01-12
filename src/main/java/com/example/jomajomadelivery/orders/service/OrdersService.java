@@ -106,7 +106,7 @@ public class OrdersService {
     /**
      * Orders 객체 가져오며 예외처리
      */
-    private Order getById(Long orderId) {
+    public Order getById(Long orderId) {
         return ordersRepository.findById(orderId)
                 .orElseThrow(() -> new NoSuchElementException("요청하신 주문내역이 없습니다."));
     }
