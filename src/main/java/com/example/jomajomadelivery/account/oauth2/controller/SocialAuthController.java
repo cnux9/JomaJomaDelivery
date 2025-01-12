@@ -37,6 +37,6 @@ public class SocialAuthController {
     @PostMapping("/signup/social")
     public String socialSignupProcess(SignUpUserDto dto) {
         userAuthService.registerUser(dto);
-        return "/home";
+        return "redirect:/login";
     }
 }
