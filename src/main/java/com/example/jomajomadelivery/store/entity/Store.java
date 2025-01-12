@@ -101,4 +101,8 @@ public class Store extends BaseEntity {
     public void updateRating(Double rating) {
         this.rating = rating;
     }
+
+    public void updateFavoriteCount(Long favoriteCount) {
+        this.favoriteCount = favoriteCount;
+    }
 }

@@ -30,7 +30,7 @@ public class ReviewController {
     @PostMapping
     public String create(@PathVariable Long storeId, ReviewCreateRequestDto dto) {
         reviewService.create(storeId, dto);
-        return "redirect:/stores/"+storeId+"/reviews";
+        return "redirect:/stores/" + storeId + "/reviews";
     }
 
     @GetMapping
