@@ -1,6 +1,8 @@
-package com.example.jomajomadelivery.user.domain;
+package com.example.jomajomadelivery.account.domain;
 
-import com.example.jomajomadelivery.user.util.BCryptUtil;
+import com.example.jomajomadelivery.account.exception.PasswordErrorCode;
+import com.example.jomajomadelivery.account.util.BCryptUtil;
+import com.example.jomajomadelivery.exception.CustomException;
 import lombok.Getter;
 
 import java.util.regex.Pattern;
@@ -16,7 +18,7 @@ public class Password {
 
     private Password(String encryptedPassword) {
         if (encryptedPassword == null || encryptedPassword.isEmpty()) {
-            throw new IllegalArgumentException("Password must not be null or empty");
+            throw new CustomException(PasswordErrorCode.PASSWORD_EMPTY);
         }
 
         this.stringPassword = encryptedPassword;
@@ -41,7 +43,7 @@ public class Password {
      */
     public static Password validatePassword(String password) {
         if (!pattern.matcher(password).matches()) {
-            throw new IllegalArgumentException("Password must contain at least 8 characters, including uppercase, lowercase, number, and special character.");
+            throw new CustomException(PasswordErrorCode.PASSWORD_INVALID_FORMAT);
         }
         return new Password(password);
     }

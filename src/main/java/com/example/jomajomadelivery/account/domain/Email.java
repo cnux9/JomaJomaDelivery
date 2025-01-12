@@ -1,5 +1,7 @@
-package com.example.jomajomadelivery.user.domain;
+package com.example.jomajomadelivery.account.domain;
 
+import com.example.jomajomadelivery.account.exception.EmailErrorCode;
+import com.example.jomajomadelivery.exception.CustomException;
 import lombok.Getter;
 
 import java.util.regex.Pattern;
@@ -22,11 +24,11 @@ public class Email {
      */
     public static Email generateEmail(String email) {
         if (email == null || email.isEmpty()) {
-            throw new IllegalArgumentException("Email must not be empty");
+            throw new CustomException(EmailErrorCode.EMAIL_EMPTY);
         }
 
         if (!validateEmail(email)) {
-            throw new IllegalArgumentException("이메일 형식이 맞지 않습니다.");
+            throw new CustomException(EmailErrorCode.EMAIL_INVALID_FORMAT);
         }
 
         return new Email(email);
