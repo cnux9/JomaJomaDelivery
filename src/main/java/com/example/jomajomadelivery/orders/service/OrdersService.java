@@ -19,11 +19,6 @@ import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< Updated upstream
-import org.apache.coyote.BadRequestException;
-=======
-import org.aspectj.lang.annotation.AfterReturning;
->>>>>>> Stashed changes
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
