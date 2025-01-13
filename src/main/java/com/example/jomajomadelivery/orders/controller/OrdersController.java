@@ -5,9 +5,12 @@ import com.example.jomajomadelivery.orders.dto.request.OrdersRequestDto;
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.service.OrdersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -25,6 +28,13 @@ public class OrdersController {
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> find(@PathVariable Long orderId) {
         return ResponseEntity.ok(ordersService.find(orderId));
+    }
+    @GetMapping
+    public String findAllByUser(
+            @CurrentUserId Long userId, Pageable pageable, Model model) {
+        Page<OrderResponseDto> orders =  ordersService.findAllByUser(userId,pageable);
+        model.addAttribute("orders",orders);
+        return "UserOrderList";
     }
 
     @PatchMapping("/{orderId}")

@@ -172,7 +172,8 @@
     function submitOrder() {
         const orderData = {
             cartId: [[${cart.cartId}]],
-            storeId: [[${cart.storeId}]]
+            storeId: [[${cart.storeId}]],
+            totalOrderPrice: [[${cart.orderFee()}]]
         };
 
         fetch('/orders', {

@@ -39,13 +39,16 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private Long addressId;
 
-    public static Order newOrders(User user, Store store, Cart cart,Long addressId) {
+    private int totalOrderPrice;
+
+    public static Order newOrders(User user, Store store, Cart cart,Long addressId,int totalOrderPrice) {
         return Order.builder()
                 .user(user)
                 .store(store)
                 .cart(cart)
                 .status(Status.ORDERED)
                 .addressId(addressId)
+                .totalOrderPrice(totalOrderPrice)
                 .build();
     }
 

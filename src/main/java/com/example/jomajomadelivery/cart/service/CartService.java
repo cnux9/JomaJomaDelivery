@@ -22,7 +22,7 @@ public class CartService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public CartResponseDto getUserCart(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new CustomException(LoginErrorCode.NEED_LOGIN));

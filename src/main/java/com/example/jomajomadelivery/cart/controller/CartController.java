@@ -28,7 +28,6 @@ public class CartController {
     public String find(@PathVariable Long cartId, Model model){
         CartResponseDto responseDto = cartService.find(cartId);
         model.addAttribute("cart", responseDto);
-        // TODO:
         return "/carts";
     }
     @GetMapping
