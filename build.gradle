@@ -34,6 +34,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework.boot:spring-boot-devtools'
 
+    // thymeleaf-springsecurity
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.1.RELEASE'
+
     // jwt
     implementation "io.jsonwebtoken:jjwt-api:0.12.6"
     implementation "io.jsonwebtoken:jjwt-impl:0.12.6"
