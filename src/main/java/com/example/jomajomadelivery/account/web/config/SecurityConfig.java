@@ -8,14 +8,17 @@ import com.example.jomajomadelivery.account.web.filter.JWTFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfig {
 
     private final OAuth2AuthenticationService oAuth2AuthenticationService;
@@ -52,6 +55,17 @@ public class SecurityConfig {
                         .failureHandler(customAuthenticationFailureHandler)
                 );
 
+        // logout
+        http
+                .logout(logout -> logout
+                        .invalidateHttpSession(true)
+                        .deleteCookies("Authorization", "JSESSIONID")
+                        .permitAll()
+                )
+                .headers(headers -> headers
+                        .cacheControl(HeadersConfigurer.CacheControlConfig::disable)
+                );
+
         // JWTFilter
         http
                 .addFilterBefore(new JWTFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
@@ -59,10 +73,7 @@ public class SecurityConfig {
         // 경로별 인가
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**").hasRole("USER") // ROLE_USER 권한만 접근 가능
-                        .requestMatchers("/seller/**").hasRole("SELLER") // ROLE_SELLER 권한만 접근 가능
-//                        .requestMatchers("/","/login/**","/signup/**" , "/css/**","/js/**" , "/images/**").permitAll() // 해당 요청을 인증 없이 허용
-                        .requestMatchers("/**").permitAll() // 해당 요청을 인증 없이 허용
+                        .requestMatchers("/","/login/**","/signup/**" , "/css/**","/js/**" , "/images/**").permitAll() // 해당 요청을 인증 없이 허용
                         .anyRequest().authenticated()
                 );
 
