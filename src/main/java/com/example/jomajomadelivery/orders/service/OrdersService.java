@@ -20,9 +20,7 @@ import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,28 +42,12 @@ public class OrdersService {
     private final AddressRepository addressRepository;
     private final CartService cartService;
 
-    @Pointcut("execution(* com.example.jomajomadelivery.orders.service.OrdersService.createOrder(..)) ||" +
-            "execution(* com.example.jomajomadelivery.orders.service.OrdersService.updateOrder(..))")
-    public void ordersServicePointcut() {
-    }
-
-    @AfterReturning(pointcut = "ordersServicePointcut()", returning = "result")
-    public void logOrderActivity(Object result) {
-        if (result instanceof Order order) {
-            log.info("Order Log - 상태: {}, 요청 시각: {}, 가게 ID: {}, 주문 ID: {}",
-                    order.getStatus(),
-                    LocalTime.now(),
-                    order.getStore().getStoreId(),
-                    order.getOrderId());
-        }
-    }
-
-    @Transactional
+    //Todo:: User, Store, Cart, Address 주입 필요
     public OrderResponseDto createOrder(Long userId, OrdersRequestDto dto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(LoginErrorCode.NEED_LOGIN));
-        Store store = storeRepository.findById(dto.storeId()).get();
-        Cart cart = cartRepository.findById(dto.cartId()).get();
+        Store store = storeRepository.findById(1L).get();
+        Cart cart = cartRepository.findById(1L).get();
 
         throwIfCartIsEmpty(cart);
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);
