@@ -1,5 +1,6 @@
 package com.example.jomajomadelivery.cart.service;
 
+import com.example.jomajomadelivery.account.exception.LoginErrorCode;
 import com.example.jomajomadelivery.cart.dto.response.CartResponseDto;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.entity.CartStatus;
@@ -21,12 +22,10 @@ public class CartService {
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
 
-    public CartResponseDto add() {
-        // TODO
-        Long userId = 1L;
-//        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND));
-        User user = userRepository.findById(userId).get();
-
+    @Transactional
+    public CartResponseDto getUserCart(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new CustomException(LoginErrorCode.NEED_LOGIN));
         Optional<Cart> foundOptionalCart = cartRepository.findCartByUserAndStatus(user, CartStatus.ORDERING);
         Cart foundCart = foundOptionalCart.orElseGet(() ->
                 cartRepository.save(Cart.newCart(user))
@@ -50,4 +49,5 @@ public class CartService {
         // TODO: Item이 DB에서 삭제 되는지 확인
         cart.getItems().clear();
     }
+
 }
