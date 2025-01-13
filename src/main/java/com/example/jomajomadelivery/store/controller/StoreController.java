@@ -6,11 +6,13 @@ import com.example.jomajomadelivery.store.dto.request.UpdateStoreRequestDto;
 import com.example.jomajomadelivery.store.dto.response.StoreAndMenusResponseDto;
 import com.example.jomajomadelivery.store.dto.response.StoreResponseDto;
 import com.example.jomajomadelivery.store.service.StoreService;
+import com.example.jomajomadelivery.user.entity.RoleConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/stores")
+@Secured(RoleConstants.ROLE_SELLER)
 public class StoreController {
 
 
@@ -46,6 +49,7 @@ public class StoreController {
 //        return new ResponseEntity<>(storeList, HttpStatus.OK);
 //    }
     @GetMapping
+    @Secured(RoleConstants.ROLE_USER)
     public String findAllStore(Pageable pageable,
                                Model model,
                                @RequestParam(required = false) String query,
@@ -79,6 +83,7 @@ public class StoreController {
     }
 
     @GetMapping("/{store_id}")
+    @Secured(RoleConstants.ROLE_USER)
     public String findById(@PathVariable Long store_id,Model model) {
         StoreAndMenusResponseDto responseDto = storeService.findById(store_id);
         model.addAttribute("store",responseDto);

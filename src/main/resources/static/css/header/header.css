@@ -1,0 +1,28 @@
+/* Header 스타일 */
+header {
+    border-bottom: 2px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #f8f9fa;
+}
+
+/* 로고 스타일 */
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* 네비게이션 버튼 스타일 */
+nav .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+}
+
+/* 네비게이션 버튼 호버 효과 */
+nav .btn:hover {
+    transform: scale(1.05);
+    transition: all 0.2s ease-in-out;
+}

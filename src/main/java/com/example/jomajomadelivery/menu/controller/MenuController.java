@@ -3,8 +3,10 @@ package com.example.jomajomadelivery.menu.controller;
 import com.example.jomajomadelivery.menu.dto.request.MenuRequestDto;
 import com.example.jomajomadelivery.menu.dto.response.MenuResponseDto;
 import com.example.jomajomadelivery.menu.service.MenuService;
+import com.example.jomajomadelivery.user.entity.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/stores/{storeId}/menus")
+@Secured(RoleConstants.ROLE_USER)
 public class MenuController {
     private final MenuService menuService;
 
