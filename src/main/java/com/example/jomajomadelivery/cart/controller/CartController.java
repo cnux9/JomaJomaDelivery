@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/carts") //todo url은 팀원들과 상의 후 정리해야될듯합니다.
+@RequestMapping("/carts")
 @Secured(RoleConstants.ROLE_USER)
 public class CartController {
     private final CartService cartService;
