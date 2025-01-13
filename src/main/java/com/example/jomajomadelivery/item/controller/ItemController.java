@@ -2,15 +2,18 @@ package com.example.jomajomadelivery.item.controller;
 
 import com.example.jomajomadelivery.cart.dto.request.AddCartRequestDto;
 import com.example.jomajomadelivery.item.service.ItemService;
+import com.example.jomajomadelivery.user.entity.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/carts/{cartId}/items")
+@Secured(RoleConstants.ROLE_USER)
 public class ItemController {
     private final ItemService itemService;
 

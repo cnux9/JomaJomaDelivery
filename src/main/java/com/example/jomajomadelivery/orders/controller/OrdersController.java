@@ -2,15 +2,18 @@ package com.example.jomajomadelivery.orders.controller;
 
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.service.OrdersService;
+import com.example.jomajomadelivery.user.entity.RoleConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/orders")
+@Secured(RoleConstants.ROLE_USER)
 public class OrdersController {
 
     private final OrdersService ordersService;
