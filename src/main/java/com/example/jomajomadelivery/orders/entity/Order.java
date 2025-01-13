@@ -6,7 +6,6 @@ import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.apache.coyote.BadRequestException;
 
 @Entity
 @Getter
@@ -33,6 +32,7 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
 
@@ -52,17 +52,16 @@ public class Order extends BaseEntity {
                 .build();
     }
 
-    public void updateStatus() throws BadRequestException {
-        if(this.status==Status.ORDERED) {
+    public Order updateStatus() {
+        System.out.println(status);
+        if(this.status.equals(Status.ORDERED)) {
             this.status=Status.IN_PROGRESS;
+            return this;
         }
         if(this.status==Status.IN_PROGRESS) {
             this.status=Status.DELIVERED;
+            return this;
         }
-        if(this.status==Status.DELIVERED) {
-            throw new BadRequestException("이미 배달이 완료된 주문입니다.");
-//            TODO: CustomException으로 리팩토링
-//            throw new CustomeException(OrderErrorCode.ALREADY_COMPLETE_ORDER);
-        }
+        return this;
     }
 }

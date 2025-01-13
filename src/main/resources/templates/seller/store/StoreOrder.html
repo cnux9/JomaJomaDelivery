@@ -1,10 +1,232 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+        }
+
+        .status-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .status-btn {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+
+        .status-btn.processing {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .status-btn.completed {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .status-btn:hover {
+            opacity: 0.9;
+        }
+
+        .order-card {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .order-card-header span {
+            color: #6c757d;
+        }
+
+        .order-card-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .order-details {
+            flex: 1;
+        }
+
+        .order-details h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #343a40;
+        }
+
+        .order-details p {
+            margin: 5px 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        .order-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-ordered {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        .btn-in-progress {
+            background-color: #17a2b8;
+            color: #fff;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .status.ORDERED {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .status.IN_PROGRESS {
+            color: #17a2b8;
+            font-weight: bold;
+        }
+
+        .status.DELIVERED {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #f8f9fa;
+            border-top: 2px solid #ccc;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #0056b3;
+            background: #e9ecef;
+            border-color: #007bff;
+        }
+    </style>
 </head>
 <body>
+<div class="container">
+    <!-- 처리중 / 완료 필터 버튼 -->
+    <div class="status-btn-container">
+        <button class="status-btn processing" onclick="window.location.href='?completed=false'">처리중</button>
+        <button class="status-btn completed" onclick="window.location.href='?completed=true'">완료</button>
+    </div>
 
+    <!-- 주문 카드 반복 -->
+    <div th:each="order : ${orders.content}" class="order-card">
+        <div class="order-card-header">
+            <span th:text="${order.createdAt}">주문일</span>
+            <span th:class="'status ' + ${order.status}" th:text="${order.status}">주문상태</span>
+        </div>
+        <div class="order-card-content">
+            <div class="order-details">
+                <h3 th:text="'주문번호: ' + ${order.orderId}">주문번호</h3>
+                <p th:text="${order.menu} + ' 외 ' + ${order.totalItemQuantity} + '개 ' + ${order.totalOrderPrice} + ' 원'">메뉴</p>
+            </div>
+        </div>
+        <div class="order-actions">
+            <!-- ORDERED 상태일 때만 접수 버튼 표시 -->
+            <button th:if="${order.status.name() == 'ORDERED'}" class="btn btn-ordered"
+                    th:data-order-id="${order.orderId}"
+                    onclick="updateOrder(this)">접수</button>
+
+            <!-- IN_PROGRESS 상태일 때만 배달 시작 버튼 표시 -->
+            <button th:if="${order.status.name() == 'IN_PROGRESS'}" class="btn btn-in-progress"
+                    th:data-order-id="${order.orderId}"
+                    onclick="updateOrder(this)">배달 시작</button>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <a th:href="@{/orders/store/{storeId}(storeId=${storeId})}">주문현황</a>
+    <a th:href="@{/stores/seller/self/{storeId}(storeId=${storeId})}">가게관리</a>
+</div>
+<script>
+    function updateOrder(element) {
+        const orderId = element.getAttribute('data-order-id');
+        fetch(`/orders/${orderId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert('주문 상태가 업데이트되었습니다.');
+                    window.location.reload(); // 페이지 새로고침
+                } else {
+                    alert('주문 상태 업데이트에 실패했습니다.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
 </body>
 </html>

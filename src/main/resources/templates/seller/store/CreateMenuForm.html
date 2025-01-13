@@ -26,5 +26,9 @@
 
     <button type="submit">Create Menu</button>
 </form>
+<div class="footer">
+    <a th:href="@{/orders/store/{storeId}(storeId=${storeId})}">주문현황</a>
+    <a th:href="@{/stores/seller/self/{storeId}(storeId=${storeId})}">가게관리</a>
+</div>
 </body>
 </html>

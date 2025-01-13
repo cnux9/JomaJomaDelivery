@@ -77,34 +77,6 @@
             gap: 10px;
         }
 
-        .btn {
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-        .status {
-            font-weight: bold;
-        }
-
-        .status.completed {
-            color: #28a745;
-        }
-
-        .status.cancelled {
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>
@@ -147,9 +119,7 @@
                 <p th:text="${order.menu}+' 외 ' + (${order.totalItemQuantity}) + '개  '+ ${order.totalOrderPrice} +' 원'">메뉴</p>
             </div>
         </div>
-        <div class="order-actions">
-            <button class="btn btn-primary"
-                    onclick="window.location.href='/orders/' + [[${order.orderId}]]">주문상세</button>
+    <a th:href="@{/stores/{storeId}/reviews/new(storeId=${order.store.storeId})}">리뷰 작성</a>
         </div>
     </div>
 </div>
