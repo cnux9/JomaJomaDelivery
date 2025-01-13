@@ -25,24 +25,34 @@ public class OrdersController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDto> createOrder(@CurrentUserId Long userId, @RequestBody OrdersRequestDto dto) {
-        return new ResponseEntity<>(ordersService.createOrder(userId,dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(ordersService.createOrder(userId, dto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<OrderResponseDto> find(@PathVariable Long orderId) {
         return ResponseEntity.ok(ordersService.find(orderId));
     }
+
     @GetMapping
     public String findAllByUser(
             @CurrentUserId Long userId, Pageable pageable, Model model) {
-        Page<OrderResponseDto> orders =  ordersService.findAllByUser(userId,pageable);
-        model.addAttribute("orders",orders);
+        Page<OrderResponseDto> orders = ordersService.findAllByUser(userId, pageable);
+        model.addAttribute("orders", orders);
         return "UserOrderList";
     }
 
+    @GetMapping("/store/{storeId}")
+    public String findAllByStore(@PathVariable Long storeId, Pageable pageable, Model model,
+                                 @RequestParam(defaultValue = "false") boolean completed) {
+        Page<OrderResponseDto> orders = ordersService.findAllByStore(storeId, pageable, completed);
+        model.addAttribute("orders", orders);
+        return "/seller/store/StoreOrder";
+    }
+
     @PatchMapping("/{orderId}")
-    public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(ordersService.updateOrder(orderId));
+    public ResponseEntity<Void> updateOrder(@PathVariable Long orderId) {
+        ordersService.updateOrder(orderId);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{orderId}")

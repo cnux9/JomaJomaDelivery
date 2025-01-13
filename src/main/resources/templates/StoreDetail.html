@@ -264,6 +264,7 @@
             ⭐
             <span th:text="${store.rating}">4.7</span>
         </div>
+        <a th:href="@{/stores/{storeId}/reviews(storeId=${store.storeId})}">가게 리뷰 보기</a>
     </div>
 
     <!-- Menu List -->

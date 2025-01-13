@@ -109,7 +109,7 @@
     <!-- 아이템 리스트 -->
     <div th:if="${cart.items != null and !cart.items.isEmpty()}">
         <div th:each="item : ${cart.items}" class="cart-item">
-            <img th:src="${item.menu.imgPath}" alt="Menu Image" onerror="this.src='/images/default.jpg'">
+            <img th:src="${item.menu.imgPath}" alt="Menu Image">
             <div class="item-details">
                 <h3 th:text="${item.name}">Item Name</h3>
                 <p th:text="'₩' + ${item.totalPrice}">₩0</p>

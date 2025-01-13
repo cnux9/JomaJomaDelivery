@@ -96,6 +96,36 @@
             font-size: 1.2em;
             color: #555;
         }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #f8f9fa;
+            border-top: 2px solid #ccc;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 15px 0;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #0056b3;
+            background: #e9ecef;
+            border-color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -111,7 +141,7 @@
     <div class="section">
         <h2>Settlement Amount</h2>
         <p class="highlight">₩ 434,500</p>
-        <a href="#">Settle</a>
+        <a href="#">정산받기</a>
     </div>
 </div>
 <!-- Menu Management Section -->
@@ -126,17 +156,16 @@
 <!-- Store Management Section -->
 <div class="container">
     <div class="section">
-        <h2>Store Settings</h2>
-        <a href="#">Review Management</a>
+        <h2>가게 관리</h2>
+        <a th:href="@{/stores/{storeId}/reviews(storeId=${storeId})}">가게 리뷰 보기</a>
         <a th:href="@{/stores/update/{storeId}(storeId=${storeId})}">가게 정보 수정</a>
         <a href="/stores/seller">전체 가게 목록</a>
     </div>
 </div>
 
 <div class="footer">
-    <a href="#">Home</a>
-    <a href="#">Order</a>
-    <a href="#">Self</a>
+    <a th:href="@{/orders/store/{storeId}(storeId=${storeId})}">주문현황</a>
+    <a th:href="@{/stores/seller/self/{storeId}(storeId=${storeId})}">가게관리</a>
 </div>
 
 </body>

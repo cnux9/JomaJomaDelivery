@@ -125,7 +125,7 @@
 
     <!-- 가게 카드 목록 -->
     <a th:each="store : ${storeList.content}"
-       th:href="@{/stores/seller/{id}(id=${store.storeId})}"
+       th:href="@{/orders/store/{storeId}(storeId=${store.storeId})}"
        class="store-card">
         <img th:src="${store.imgPath}" alt="Store Image">
         <div class="details">

@@ -18,57 +18,43 @@
       color: #343a40;
     }
 
-    table {
-      width: 100%;
-      max-width: 800px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      background-color: #ffffff;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border: 1px solid #dee2e6;
-    }
-
-    th {
-      background-color: #343a40;
-      color: #ffffff;
-    }
-
-    td img {
-      max-width: 100px;
-      border-radius: 5px;
-    }
-
-    .pagination {
+    .review-container {
       display: flex;
+      flex-wrap: wrap;
       justify-content: center;
-      align-items: center;
-      margin-top: 20px;
+      gap: 20px;
+      margin: 20px auto;
     }
 
-    .pagination button {
-      padding: 10px 20px;
-      margin: 0 5px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: #ffffff;
+    .review-card {
+      width: 300px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .review-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .review-card .card-content {
+      padding: 15px;
+    }
+
+    .review-card .card-content h2 {
+      font-size: 18px;
+      margin: 0 0 10px;
+      color: #343a40;
+    }
+
+    .review-card .card-content p {
       font-size: 14px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .pagination button:hover {
-      background-color: #0056b3;
-    }
-
-    .pagination span {
-      font-size: 16px;
-      margin: 0 10px;
+      margin: 5px 0;
       color: #495057;
     }
 
@@ -80,6 +66,12 @@
     .no-rating {
       color: #6c757d;
       font-size: 14px;
+    }
+
+    .card-footer {
+      margin-top: 10px;
+      font-size: 12px;
+      color: #868e96;
     }
   </style>
 </head>
@@ -109,46 +101,24 @@
 
 <h1>Reviews</h1>
 
-<table>
-  <thead>
-  <tr>
-    <th>Review ID</th>
-    <th>User ID</th>
-    <th>Contents</th>
-    <th>Rating</th>
-    <th>Image</th>
-    <th>Created At</th>
-  </tr>
-  </thead>
-  <tbody>
+<div class="review-container">
   <!-- 리뷰 데이터 반복 -->
-  <tr th:each="review : ${reviews.content}">
-    <td th:text="${review.reviewId}"></td>
-    <td th:text="${review.userId}"></td>
-    <td th:text="${review.contents}"></td>
-    <td>
-      <span th:each="i : ${#numbers.sequence(1, review.rating)}" class="stars">★</span>
-    </td>
-    <td>
-      <img th:if="${review.imgPath != null}" th:src="${review.imgPath}" alt="Review Image">
-      <span th:if="${review.imgPath == null}" class="no-rating">No Image</span>
-    </td>
-    <td th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></td>
-  </tr>
-  </tbody>
-</table>
-
-<!--<div class="pagination">-->
-<!--  <button th:if="${reviews.hasPrevious()}"-->
-<!--          th:href="@{/stores/{storeId}/reviews(page=${reviews.number - 1}) (storeId=${storeId})}">-->
-<!--    Previous-->
-<!--  </button>-->
-<!--  <span th:text="'Page ' + (${reviews.number + 1}) + ' of ' + ${reviews.totalPages}"></span>-->
-<!--  <button th:if="${reviews.hasNext()}"-->
-<!--          th:href="@{/stores/{storeId}/reviews(page=${reviews.number + 1}) (storeId=${storeId})}">-->
-<!--    Next-->
-<!--  </button>-->
-<!--</div>-->
+  <div class="review-card" th:each="review : ${reviews.content}">
+    <img th:if="${review.imgPath != null}" th:src="${review.imgPath}" alt="Review Image">
+    <div th:if="${review.imgPath == null}" class="no-rating">No Image</div>
+    <div class="card-content">
+      <h2 th:text="'Review ID: ' + ${review.reviewId}"></h2>
+      <p th:text="'User ID: ' + ${review.userId}"></p>
+      <p th:text="${review.contents}"></p>
+      <div>
+        <span th:each="i : ${#numbers.sequence(1, review.rating)}" class="stars">★</span>
+      </div>
+      <div class="card-footer">
+        <span th:text="${#temporals.format(review.createdAt, 'yyyy-MM-dd HH:mm')}"></span>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

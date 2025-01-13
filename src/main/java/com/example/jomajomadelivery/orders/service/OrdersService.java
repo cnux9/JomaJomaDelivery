@@ -10,16 +10,20 @@ import com.example.jomajomadelivery.item.entity.Item;
 import com.example.jomajomadelivery.orders.dto.request.OrdersRequestDto;
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.entity.Order;
+import com.example.jomajomadelivery.orders.entity.Status;
 import com.example.jomajomadelivery.orders.exception.OrderErrorCode;
 import com.example.jomajomadelivery.orders.repository.OrdersRepository;
 import com.example.jomajomadelivery.store.entity.Store;
 import com.example.jomajomadelivery.store.repository.StoreRepository;
-import com.example.jomajomadelivery.user.entity.Role;
 import com.example.jomajomadelivery.user.entity.User;
 import com.example.jomajomadelivery.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< Updated upstream
 import org.apache.coyote.BadRequestException;
+=======
+import org.aspectj.lang.annotation.AfterReturning;
+>>>>>>> Stashed changes
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Slf4j
@@ -53,7 +59,7 @@ public class OrdersService {
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);
         throwIfStoreIsNotOpen(store);
 
-        Order order = Order.newOrders(user, store, cart, user.getAddressId(),dto.totalOrderPrice());
+        Order order = Order.newOrders(user, store, cart, user.getAddressId(), dto.totalOrderPrice());
         Order savedOrder = ordersRepository.save(order);
         cart = cart.UpdateCartStatus();
         cartRepository.save(cart);
@@ -80,22 +86,25 @@ public class OrdersService {
 
     }
 
-    @Transactional
-    public OrderResponseDto updateOrder(Long orderId) {
-        // FIXME:
-        User loginUser = userRepository.getReferenceById(1L);
-        if (loginUser.getRole().equals(Role.ROLE_USER)) {
-            throw new CustomException(OrderErrorCode.USER_CHANGES_ORDER_STATUS);
+    public Page<OrderResponseDto> findAllByStore(Long storeId, Pageable pageable, boolean completed) {
+        Store store = storeRepository.findById(storeId).get();
+        Page<Order> orders;
+        if (completed) {
+            orders = ordersRepository.findAllByStoreAndStatus(store, Status.DELIVERED, pageable);
+        } else {
+            List<Status> statuses = Arrays.asList(Status.ORDERED, Status.IN_PROGRESS);
+            orders = ordersRepository.findAllByStoreAndStatusIn(store, statuses, pageable);
         }
+        return orders.map(order -> OrderResponseDto.toDto(order, addressToString(order.getAddressId())));
+
+    }
+
+    @Transactional
+    public void updateOrder(Long orderId) {
 
         Order order = getById(orderId);
-        //Todo:: try catch 문 리팩토링 가능하면 필요
-        try {
-            order.updateStatus();
-        } catch (BadRequestException e) {
-            throw new RuntimeException(e);
-        }
-        return OrderResponseDto.toDto(order, addressToString(order.getAddressId()));
+        order = order.updateStatus();
+        ordersRepository.save(order);
     }
 
     public void delete(Long orderId) {
