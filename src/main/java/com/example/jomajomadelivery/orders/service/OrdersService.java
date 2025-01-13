@@ -1,11 +1,13 @@
 package com.example.jomajomadelivery.orders.service;
 
-import com.example.jomajomadelivery.address.entity.Address;
+import com.example.jomajomadelivery.account.exception.LoginErrorCode;
 import com.example.jomajomadelivery.address.repository.AddressRepository;
 import com.example.jomajomadelivery.cart.entity.Cart;
 import com.example.jomajomadelivery.cart.repository.CartRepository;
+import com.example.jomajomadelivery.cart.service.CartService;
 import com.example.jomajomadelivery.exception.CustomException;
 import com.example.jomajomadelivery.item.entity.Item;
+import com.example.jomajomadelivery.orders.dto.request.OrdersRequestDto;
 import com.example.jomajomadelivery.orders.dto.response.OrderResponseDto;
 import com.example.jomajomadelivery.orders.entity.Order;
 import com.example.jomajomadelivery.orders.exception.OrderErrorCode;
@@ -21,6 +23,8 @@ import org.apache.coyote.BadRequestException;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,12 +42,14 @@ public class OrdersService {
     private final StoreRepository storeRepository;
     private final CartRepository cartRepository;
     private final AddressRepository addressRepository;
+    private final CartService cartService;
 
     @Pointcut("execution(* com.example.jomajomadelivery.orders.service.OrdersService.createOrder(..)) ||" +
-    "execution(* com.example.jomajomadelivery.orders.service.OrdersService.updateOrder(..))")
-    public void ordersServicePointcut() {}
+            "execution(* com.example.jomajomadelivery.orders.service.OrdersService.updateOrder(..))")
+    public void ordersServicePointcut() {
+    }
 
-    @AfterReturning(pointcut = "ordersServicePointcut()",returning = "result")
+    @AfterReturning(pointcut = "ordersServicePointcut()", returning = "result")
     public void logOrderActivity(Object result) {
         if (result instanceof Order order) {
             log.info("Order Log - 상태: {}, 요청 시각: {}, 가게 ID: {}, 주문 ID: {}",
@@ -54,21 +60,22 @@ public class OrdersService {
         }
     }
 
-    //Todo:: User, Store, Cart, Address 주입 필요
-    public OrderResponseDto createOrder() {
-        User user = userRepository.findById(1L).get();
-        Store store = storeRepository.findById(1L).get();
-        Cart cart = cartRepository.findById(1L).get();
-        Address address = addressRepository.findById(user.getAddressId()).get();
+    @Transactional
+    public OrderResponseDto createOrder(Long userId, OrdersRequestDto dto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(LoginErrorCode.NEED_LOGIN));
+        Store store = storeRepository.findById(dto.storeId()).get();
+        Cart cart = cartRepository.findById(dto.cartId()).get();
 
         throwIfCartIsEmpty(cart);
         throwIfTotalPriceIsLowerThanMinOrderPrice(cart, store);
         throwIfStoreIsNotOpen(store);
 
-        Order order = Order.newOrders(user, store, cart, address);
+        Order order = Order.newOrders(user, store, cart, user.getAddressId(),dto.totalOrderPrice());
         Order savedOrder = ordersRepository.save(order);
-
-        return OrderResponseDto.toDto(savedOrder);
+        cart = cart.UpdateCartStatus();
+        cartRepository.save(cart);
+        return OrderResponseDto.toDto(savedOrder, addressToString(savedOrder.getAddressId()));
     }
 
     private void throwIfCartIsEmpty(Cart cart) {
@@ -79,7 +86,16 @@ public class OrdersService {
 
     public OrderResponseDto find(Long orderId) {
         Order order = getById(orderId);
-        return OrderResponseDto.toDto(order);
+        return OrderResponseDto.toDto(order, addressToString(order.getAddressId()));
+    }
+
+    public Page<OrderResponseDto> findAllByUser(Long userId, Pageable pageable) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(LoginErrorCode.NEED_LOGIN));
+        // 최신순으로 주문 목록 가져오기
+        Page<Order> orders = ordersRepository.findAllByUserOrderByCreatedAtDesc(user, pageable);
+        return orders.map(order -> OrderResponseDto.toDto(order, addressToString(order.getAddressId())));
+
     }
 
     @Transactional
@@ -97,7 +113,7 @@ public class OrdersService {
         } catch (BadRequestException e) {
             throw new RuntimeException(e);
         }
-        return OrderResponseDto.toDto(order);
+        return OrderResponseDto.toDto(order, addressToString(order.getAddressId()));
     }
 
     public void delete(Long orderId) {
@@ -115,7 +131,7 @@ public class OrdersService {
 
     private static void throwIfTotalPriceIsLowerThanMinOrderPrice(Cart cart, Store store) {
         int totalPrice = cart.getItems().stream().mapToInt(Item::getTotalPrice).sum();
-        if (totalPrice< store.getMinOrderPrice()) {
+        if (totalPrice < store.getMinOrderPrice()) {
             throw new CustomException(OrderErrorCode.LOWER_THAN_MIN_ORDER_PRICE);
         }
     }
@@ -126,4 +142,9 @@ public class OrdersService {
             throw new CustomException(OrderErrorCode.STORE_NOT_OPEN);
         }
     }
+
+    private String addressToString(Long addressId) {
+        return addressRepository.findById(addressId).get().toString();
+    }
+
 }

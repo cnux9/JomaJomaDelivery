@@ -1,6 +1,7 @@
 package com.example.jomajomadelivery.item.controller;
 
 import com.example.jomajomadelivery.cart.dto.request.AddCartRequestDto;
+import com.example.jomajomadelivery.item.dto.request.UpdateQuantityRequestDto;
 import com.example.jomajomadelivery.item.service.ItemService;
 import com.example.jomajomadelivery.user.entity.RoleConstants;
 import lombok.RequiredArgsConstructor;
@@ -27,14 +28,16 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public String updateQuantity(@PathVariable Long itemId, @RequestParam int quantity) {
-        itemService.updateQuantity(itemId,quantity);
-        return "redirect:/items";
+    public ResponseEntity<Void>  updateQuantity(@PathVariable Long itemId, @RequestBody UpdateQuantityRequestDto dto) {
+        System.out.println("itemId = " + itemId);
+        System.out.println("quantity = " + dto.quantity());
+        itemService.updateQuantity(itemId,dto.quantity());
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{itemId}")
-    public String deleteItem(@PathVariable Long itemId){
+    public ResponseEntity<Void> deleteItem(@PathVariable Long itemId){
         itemService.deleteItem(itemId);
-        return "redirect:/items";
+        return ResponseEntity.ok().build();
     }
 }

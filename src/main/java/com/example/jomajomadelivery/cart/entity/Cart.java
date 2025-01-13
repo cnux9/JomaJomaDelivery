@@ -36,4 +36,9 @@ public class Cart {
                 .status(CartStatus.ORDERING)
                 .build();
     }
+
+    public Cart UpdateCartStatus(){
+        this.status=CartStatus.COMPLETED;
+        return this;
+    }
 }

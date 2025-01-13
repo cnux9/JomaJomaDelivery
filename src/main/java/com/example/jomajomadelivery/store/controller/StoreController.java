@@ -84,8 +84,8 @@ public class StoreController {
 
     @GetMapping("/{store_id}")
     @Secured(RoleConstants.ROLE_USER)
-    public String findById(@PathVariable Long storeId,Model model) {
-        StoreAndMenusResponseDto responseDto = storeService.findById(storeId);
+    public String findById(@PathVariable Long store_id,Model model) {
+        StoreAndMenusResponseDto responseDto = storeService.findById(store_id);
         model.addAttribute("store",responseDto);
         return "/StoreDetail";
     }

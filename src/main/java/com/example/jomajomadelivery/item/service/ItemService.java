@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ItemService {
@@ -20,25 +22,34 @@ public class ItemService {
     private final MenuService menuService;
     private final CartService cartService;
 
+    @Transactional
     public void addItem(Long cartId, AddCartRequestDto dto) {
         Menu menu = menuService.getMenuEntity(dto.menuId());
         Cart cart = cartService.getByCartId(cartId);
+        boolean sameMenu = false;
 
-        // 다른 가게일 때 장바구니 비우기
-        checkSameStore(cart, menu);
+        if (!cart.getItems().isEmpty()) {
+            // 다른 가게일 때 장바구니 비우기
+            checkSameStore(cart, menu);
+            sameMenu = checkSameMenu(cart, menu, dto.quantity());
+        }
+        if(sameMenu){
+            return;
+        }
 
         Item item = Item.selectItme(cart, menu, dto.quantity());
         itmeRepositoy.save(item);
     }
 
 
-//    @Transactional(readOnly = true)
+    //    @Transactional(readOnly = true)
 //    public List<ItemResponseDto> findAllItem() {
 //        // TODO: 로그인된 유저
 //        Long userId = 1L;
 //        User user = userRepository.findById(userId).get();
 //
-//        Cart cart = cartRepository.findCartByUserAndStatus(user, CartStatus.ORDERING).orElseThrow(() -> new CustomException(ItemErrorCode));
+//        Cart cart = cartRepository.findCartByUserAndStatus(user, CartStatus.ORDERING).orElseThrow(() -> new
+//        CustomException(ItemErrorCode));
 //        List<Item> itemList = itmeRepositoy.findAllByCart(cart);
 //        return itemList.stream().map(ItemResponseDto::toDto).toList();
 //    }
@@ -63,4 +74,17 @@ public class ItemService {
             cartService.delete(cart.getCartId());
         }
     }
+
+    private boolean checkSameMenu(Cart cart, Menu menu, int quantity) {
+        List<Item> itemList = cart.getItems();
+        for (Item item : itemList) {
+            if (item.getMenu().getMenuId().equals(menu.getMenuId())) {
+                item.plusQuantity(quantity);
+                System.out.println("!@@@@@@@@@@!#$"+item.getQuantity());
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

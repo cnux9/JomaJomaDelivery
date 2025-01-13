@@ -41,11 +41,12 @@ public class StoreService {
                 dto.name(), dto.zipcode(), dto.state(),
                 dto.city(), dto.street(), dto.detailAddress());
         Address address = Address.createAddress(addressRequestDto);
+        address = addressRepository.save(address);
+        System.out.println(address.getAddressId());
 
         String imgPath = imageHandler.save(dto.img(), "store");
         Store store = Store.addStore(user, dto, imgPath, address.getAddressId());
-        store = storeRepository.save(store);
-        addressRepository.save(address);
+        storeRepository.save(store);
     }
 
 
